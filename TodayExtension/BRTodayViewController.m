@@ -29,8 +29,8 @@
 #import "UIImage+Utils.h"
 #import <NotificationCenter/NotificationCenter.h>
 
-#define SCAN_URL @"digibytewallet://x-callback-url/scanqr"
-#define OPEN_URL @"digibytewallet://"
+#define SCAN_URL @"bitradiowallet://x-callback-url/scanqr"
+#define OPEN_URL @"bitradiowallet://"
 
 @interface BRTodayViewController () <NCWidgetProviding>
 

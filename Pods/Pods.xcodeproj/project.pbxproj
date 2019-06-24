@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 46;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -15,6 +15,7 @@
 			dependencies = (
 			);
 			name = "Reveal-SDK";
+			productName = "Reveal-SDK";
 		};
 /* End PBXAggregateTarget section */
 
@@ -151,20 +152,20 @@
 		895AF0E416B86294A7F6554BAA124BC6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		89B1D8758A6AB0A6BAD86213A7ED1F76 /* LIFEContainerModalPresentAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = FDC547725639275C57BBCFC47899FF40 /* LIFEContainerModalPresentAnimator.m */; };
 		8A0A74D114580BE272EF419656593629 /* LIFEPickerInputField.h in Headers */ = {isa = PBXBuildFile; fileRef = FC875A771C5E10AD7DFEF95CD2127BFA /* LIFEPickerInputField.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		8A3F42D4C8C7A4C2EE0DA5DFFAA69013 /* Pods-digibyteTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 647FDA78BF61CE20DFB7DDC9E27EA71F /* Pods-digibyteTests-dummy.m */; };
+		8A3F42D4C8C7A4C2EE0DA5DFFAA69013 /* Pods-bitradioTests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 647FDA78BF61CE20DFB7DDC9E27EA71F /* Pods-bitradioTests-dummy.m */; };
 		8C964337FA1F5DA525EF20AD40CA1266 /* LIFEContainerAlertToImageEditorAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 62DA0A4114AB23870A4FA2886236B51C /* LIFEContainerAlertToImageEditorAnimator.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		8DF7388ADA07915F8F8810AE6AF3E6E2 /* UIApplication+LIFEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 936EC46ECD5FB73F329EB3FEC214FEF1 /* UIApplication+LIFEAdditions.m */; };
 		8E38D682305BB16139701F77E7D37CD9 /* LIFEImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8A3DF55CA02084F7896E647CD0FBECFB /* LIFEImageEditorViewController.m */; };
 		8E39A0261CD1BDE4CABFE5BFE7D396C3 /* LIFEImageFormat.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A5A4542A46CC6D78CD1E77B5917D44B /* LIFEImageFormat.m */; };
 		8E91C4796DDE226010DBCA1EFDB1181B /* LIFEAttachmentManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C912FDF5F1C30C5A5680589BED5B2AED /* LIFEAttachmentManager.m */; };
-		9083D305D877B30260435C130338C045 /* Pods-digibyte-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B65EE159F79D1E23C4F73CA8D9FD9D86 /* Pods-digibyte-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9083D305D877B30260435C130338C045 /* Pods-bitradio-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B65EE159F79D1E23C4F73CA8D9FD9D86 /* Pods-bitradio-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		92FF86FE1E68C5FA1C016521F0FD37DD /* NSMutableDictionary+LIFEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 1A6808A3D8A1F655643469B3B0FAD872 /* NSMutableDictionary+LIFEAdditions.m */; };
 		958ECD47C0956359266906CEC8EC491C /* LIFEReportWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B6D91FB6AA0C11250DFB52F8C6E57DC /* LIFEReportWindow.m */; };
 		95B1DF9C564A84F341EC7A8E46C10F6E /* LIFEContextAwareLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 655AD4BA17A766C417B1584B302CAD93 /* LIFEContextAwareLogFormatter.m */; };
 		97307A276FB1574CBC1DC49D37A4CA0E /* LIFEPanGestureRecognizer.m in Sources */ = {isa = PBXBuildFile; fileRef = A62DEF16BDE1357BDA24CFD6EB02D349 /* LIFEPanGestureRecognizer.m */; };
 		97652A5F35E9E45E864110C4E44E22EC /* LIFEToastController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E80D3BABFA57953BFCDCAD52546029D /* LIFEToastController.m */; };
 		984100EC683A03EAAC8F9A29AE4865BE /* LIFEAwesomeLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = 4920315E0C7C21355DAA0A84F88B0A3A /* LIFEAwesomeLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		98A9840B42F00234488CDA845B960273 /* Pods-digibyteTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 86BC67A8D203EE607F29B3DB6845F1F7 /* Pods-digibyteTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		98A9840B42F00234488CDA845B960273 /* Pods-bitradioTests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 86BC67A8D203EE607F29B3DB6845F1F7 /* Pods-bitradioTests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		98B0839371882A68C42A03DE3E0A77AC /* LIFEAppearanceImpl.m in Sources */ = {isa = PBXBuildFile; fileRef = 1AAF0E0F70D0FC8151118BDDC08490FB /* LIFEAppearanceImpl.m */; };
 		98B5066871B2A0C17470DF6790CFD46C /* LIFEAlertActionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 5F30D5CF2C9B5A1278B3E0F304049F37 /* LIFEAlertActionView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		990C3C84048AFBA3FBF1A24E22B59B96 /* LIFEAnnotatedImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A857F4B2775F672DDFD55368D3CF6DD /* LIFEAnnotatedImageView.m */; };
@@ -172,21 +173,21 @@
 		9AF09EFC531F37E46817BBFCA4FAA13D /* LIFEContainerModalDismissAnimator.m in Sources */ = {isa = PBXBuildFile; fileRef = F41F3937B13ECE7D2BD590739CB78236 /* LIFEContainerModalDismissAnimator.m */; };
 		9AF83D6F875897AA49FA4986C189B55D /* LIFEUserDefaults.h in Headers */ = {isa = PBXBuildFile; fileRef = 54C9624FD672FE438014F5F578D7612D /* LIFEUserDefaults.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9AFFE825EF826626F6364384EB94490A /* Buglife+UIStuff.m in Sources */ = {isa = PBXBuildFile; fileRef = CFBBF3E96DC142D941BC4F5357A6877A /* Buglife+UIStuff.m */; };
-		9C447742FEED70E1B4A2B6815315A8E6 /* Pods-digibyte-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AA11B723E93AACD4FE9312CC7840EEB4 /* Pods-digibyte-dummy.m */; };
+		9C447742FEED70E1B4A2B6815315A8E6 /* Pods-bitradio-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AA11B723E93AACD4FE9312CC7840EEB4 /* Pods-bitradio-dummy.m */; };
 		9D711E0A04A1AD9CB40FA3F80103DE43 /* LIFEDeviceInfoProvider.h in Headers */ = {isa = PBXBuildFile; fileRef = BCA522928A2A17698BD39B8B6ACE16AE /* LIFEDeviceInfoProvider.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		9FAA4E008984773A5EB53442EBFBA01A /* LIFEContainerModalDismissAnimator.h in Headers */ = {isa = PBXBuildFile; fileRef = 27051950FC8ACD6E83871158D9155D6A /* LIFEContainerModalDismissAnimator.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A21CBD219E194D91FBCBCE63CA607273 /* UIViewController+LIFEAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 7AD107AF69C902123BB126B2D327C871 /* UIViewController+LIFEAdditions.m */; };
 		A27B31F22EF03BB131E15F05E9407F77 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A16F4CFC63FAC439D7A04994F579A03 /* Foundation.framework */; };
 		A35DC02101B1096B7022EC04F9931BF6 /* Buglife+LocalizedStrings.h in Headers */ = {isa = PBXBuildFile; fileRef = 21AC43419C8E4952F2430A2638913828 /* Buglife+LocalizedStrings.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A3F0854DCBC57C55690171DB4B4F753E /* LIFEAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = E348BA428DEECFCFFC7A8D59AE496C20 /* LIFEAnnotation.m */; };
-		A6B8952F6A8A1FE6672E3B75AE2677F5 /* Pods-digibyteUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 156C0866CF4ADEEC2FB2E780401F81F1 /* Pods-digibyteUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A6B8952F6A8A1FE6672E3B75AE2677F5 /* Pods-bitradioUITests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 156C0866CF4ADEEC2FB2E780401F81F1 /* Pods-bitradioUITests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A7234C502EA4C456323BCC8190F9C04B /* LIFEImagePickerController.h in Headers */ = {isa = PBXBuildFile; fileRef = 4EDDCB90DC459E4C6F63D1759A7C1F1B /* LIFEImagePickerController.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A744E942C3839EA5DCBC00DB333178D3 /* LIFEArrowAnnotationView.h in Headers */ = {isa = PBXBuildFile; fileRef = 83CD4DE836181F09EE0C631E5244726F /* LIFEArrowAnnotationView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		A8F86BCA10717AA1756C458FB1359215 /* LIFEAwesomeLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CF7159C1D27ED96261646E4CD155DA6 /* LIFEAwesomeLogger.m */; };
 		A90B42F904C0D9CCB91BED148645B038 /* LIFEAlertView.h in Headers */ = {isa = PBXBuildFile; fileRef = 928270B5DCD40EE51F1D52FF3FF66FC4 /* LIFEAlertView.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		AACFF4E5D0FB9C2351D6AE706F6162B2 /* LIFEImageEditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = F2035C7747E9C99179C66BB6435DD6E4 /* LIFEImageEditorView.m */; };
 		AAD0AB7684904A3A9E0B456109627169 /* LIFEToastController.h in Headers */ = {isa = PBXBuildFile; fileRef = 564D0220F1A07F82F9B08C224DDB4BFC /* LIFEToastController.h */; settings = {ATTRIBUTES = (Project, ); }; };
-		AB2FF6CE64078448379F4FBABB97A99B /* Pods-digibyteUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 38942E0FD071CA028EE8540850EFF9DC /* Pods-digibyteUITests-dummy.m */; };
+		AB2FF6CE64078448379F4FBABB97A99B /* Pods-bitradioUITests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 38942E0FD071CA028EE8540850EFF9DC /* Pods-bitradioUITests-dummy.m */; };
 		AD44B148C33B01D01D42D16F7B16E1A6 /* LIFELocalizedStringProvider.m in Sources */ = {isa = PBXBuildFile; fileRef = 6E2CD23AEEF419391A75DEB4E5FB1D08 /* LIFELocalizedStringProvider.m */; };
 		AD6AE9283BFDABF02CD303B47D555E1E /* LIFEAppearanceImpl.h in Headers */ = {isa = PBXBuildFile; fileRef = F8C569FCD275E822C7292289F2DCB10D /* LIFEAppearanceImpl.h */; settings = {ATTRIBUTES = (Project, ); }; };
 		ADA63D124CF87D5A204BFDEACDAEB346 /* LIFETextInputField.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BD744A38AC5FD28490442DCD30F52EF /* LIFETextInputField.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -290,14 +291,14 @@
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 567EE664F5C2FB01509E4717779DD37D;
-			remoteInfo = "Pods-digibyte";
+			remoteInfo = "Pods-bitradio";
 		};
 		CBA9F20C5E92CD2AAC0305B0E0AE75D4 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 567EE664F5C2FB01509E4717779DD37D;
-			remoteInfo = "Pods-digibyte";
+			remoteInfo = "Pods-bitradio";
 		};
 		D5E0B75DAA31FA26C8B7C1ACB5ECC384 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -329,25 +330,25 @@
 		0736197E4BB1DC05A4F9BCE56613254C /* UITableView+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UITableView+LIFEAdditions.h"; path = "Source/Additions/UITableView+LIFEAdditions.h"; sourceTree = "<group>"; };
 		08211E89C2270EE04C5F862EC2BACFC3 /* LIFEAlertAnimator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAlertAnimator.h; path = "Source/Controllers/Alert View/LIFEAlertAnimator.h"; sourceTree = "<group>"; };
 		0856A3E5ACAC2EAF5A26BF5DC052CBA9 /* LIFENetworkManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFENetworkManager.m; path = Source/Services/LIFENetworkManager.m; sourceTree = "<group>"; };
-		0AD43FBB0D326A6A39809C575A267A5E /* Pods-digibyte.testnet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyte.testnet.xcconfig"; sourceTree = "<group>"; };
+		0AD43FBB0D326A6A39809C575A267A5E /* Pods-bitradio.testnet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradio.testnet.xcconfig"; sourceTree = "<group>"; };
 		0AEFD22E9DEDBCE981EC30D4DD90E3E2 /* LIFEBugButtonWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEBugButtonWindow.m; path = Source/Views/LIFEBugButtonWindow.m; sourceTree = "<group>"; };
 		0B64CCBF895AC4540EC9BF53A1E30D7E /* UIImage+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+LIFEAdditions.m"; path = "Source/Additions/UIImage+LIFEAdditions.m"; sourceTree = "<group>"; };
 		0BD744A38AC5FD28490442DCD30F52EF /* LIFETextInputField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFETextInputField.h; path = Source/LIFETextInputField.h; sourceTree = "<group>"; };
 		0EB1D87FA3ADACED1D0AA95DA784C5B2 /* LIFELoupeAnnotationView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFELoupeAnnotationView.m; path = Source/Views/AnnotationViews/LIFELoupeAnnotationView.m; sourceTree = "<group>"; };
 		101AD00E19275E0BB5022E8E4719BD71 /* LIFEAppInfoProvider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAppInfoProvider.m; path = Source/Services/LIFEAppInfoProvider.m; sourceTree = "<group>"; };
-		12A619E2C06CD72CEB95F6F4A39C3093 /* Pods_digibyteUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_digibyteUITests.framework; path = "Pods-digibyteUITests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		12A619E2C06CD72CEB95F6F4A39C3093 /* Pods_bitradioUITests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bitradioUITests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13DA771BD189E348A3754612D17EBEB1 /* LIFEReportBuilder.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEReportBuilder.h; path = Source/Services/LIFEReportBuilder.h; sourceTree = "<group>"; };
 		140F323754C05B837C6C46D977DCBCE1 /* LIFEAttachmentView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAttachmentView.m; path = Source/Views/LIFEAttachmentView.m; sourceTree = "<group>"; };
 		14B753702F454411AD574AACE4216455 /* LIFEASLLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEASLLogger.h; path = Source/Services/Logging/LIFEASLLogger.h; sourceTree = "<group>"; };
 		15258B00A4CE72E6BDBA0E113057BA51 /* LIFEUserFacingAttachment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEUserFacingAttachment.h; path = Source/Models/LIFEUserFacingAttachment.h; sourceTree = "<group>"; };
-		156C0866CF4ADEEC2FB2E780401F81F1 /* Pods-digibyteUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-digibyteUITests-umbrella.h"; sourceTree = "<group>"; };
+		156C0866CF4ADEEC2FB2E780401F81F1 /* Pods-bitradioUITests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-bitradioUITests-umbrella.h"; sourceTree = "<group>"; };
 		15A368BD528AE625114BBAF14429641A /* LIFETitleCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFETitleCell.m; path = Source/Views/LIFETitleCell.m; sourceTree = "<group>"; };
 		1672A449AB5E880B0D119574EE738BE0 /* LIFEAppInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAppInfo.m; path = Source/Models/LIFEAppInfo.m; sourceTree = "<group>"; };
 		170C09582B46F23F921028071CD4E208 /* LIFEFloatingButton.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEFloatingButton.m; path = Source/Views/LIFEFloatingButton.m; sourceTree = "<group>"; };
 		1724293513732E43F871A948D39CCD75 /* LIFEStepsToReproTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEStepsToReproTableViewController.m; path = Source/Controllers/LIFEStepsToReproTableViewController.m; sourceTree = "<group>"; };
 		1732EC852F8BAA263AE70241F554289A /* LIFEAttribute.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAttribute.m; path = Source/Models/LIFEAttribute.m; sourceTree = "<group>"; };
-		1A23A67FF6812C24803BC00C8C19BF7A /* Pods-digibyteTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteTests.debug.xcconfig"; sourceTree = "<group>"; };
-		1A6155E6788B681D40E31870D9368BB1 /* Pods-digibyteTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteTests.release.xcconfig"; sourceTree = "<group>"; };
+		1A23A67FF6812C24803BC00C8C19BF7A /* Pods-bitradioTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioTests.debug.xcconfig"; sourceTree = "<group>"; };
+		1A6155E6788B681D40E31870D9368BB1 /* Pods-bitradioTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioTests.release.xcconfig"; sourceTree = "<group>"; };
 		1A6808A3D8A1F655643469B3B0FAD872 /* NSMutableDictionary+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSMutableDictionary+LIFEAdditions.m"; path = "Source/Additions/NSMutableDictionary+LIFEAdditions.m"; sourceTree = "<group>"; };
 		1AAF0E0F70D0FC8151118BDDC08490FB /* LIFEAppearanceImpl.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAppearanceImpl.m; path = Source/Views/LIFEAppearanceImpl.m; sourceTree = "<group>"; };
 		1B1630CC920A4A050D596E6B6DF8D3FC /* LIFEDependencyLoader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEDependencyLoader.m; path = Source/Services/LIFEDependencyLoader.m; sourceTree = "<group>"; };
@@ -359,8 +360,8 @@
 		215E4BDE0106190AEB9CD9E222238BEC /* LIFELogViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFELogViewController.m; path = Source/Controllers/LIFELogViewController.m; sourceTree = "<group>"; };
 		21AC43419C8E4952F2430A2638913828 /* Buglife+LocalizedStrings.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Buglife+LocalizedStrings.h"; path = "Source/Buglife+LocalizedStrings.h"; sourceTree = "<group>"; };
 		22BC7AC3E89D743E48E2B75D0E979570 /* LIFEAppearance.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAppearance.h; path = Source/LIFEAppearance.h; sourceTree = "<group>"; };
-		22D268084C03C24A455B668DD35B86E6 /* Pods-digibyte-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-digibyte-Info.plist"; sourceTree = "<group>"; };
-		24F49C26EF2505B369F8FF708984E033 /* Pods_digibyte.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_digibyte.framework; path = "Pods-digibyte.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		22D268084C03C24A455B668DD35B86E6 /* Pods-bitradio-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-bitradio-Info.plist"; sourceTree = "<group>"; };
+		24F49C26EF2505B369F8FF708984E033 /* Pods_bitradio.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bitradio.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		2542E55C6AD2C2153086C322BE77CD67 /* LIFEComponentPickerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEComponentPickerViewController.h; path = Source/Controllers/LIFEComponentPickerViewController.h; sourceTree = "<group>"; };
 		27051950FC8ACD6E83871158D9155D6A /* LIFEContainerModalDismissAnimator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEContainerModalDismissAnimator.h; path = "Source/Views/Container Window/LIFEContainerModalDismissAnimator.h"; sourceTree = "<group>"; };
 		27972DEE5ADBD4D25494243C0330176F /* LIFENotificationLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFENotificationLogger.m; path = Source/Services/Logging/LIFENotificationLogger.m; sourceTree = "<group>"; };
@@ -373,19 +374,19 @@
 		2C73FD883B8F458D6B66067ECE5A84D5 /* LIFEReport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReport.m; path = Source/Models/LIFEReport.m; sourceTree = "<group>"; };
 		2CF7080B6B50517A8A6FD1162201F703 /* Buglife-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Buglife-umbrella.h"; sourceTree = "<group>"; };
 		2E606862807F7BC092DF779E9F9904EC /* LIFEAwesomeLogger+Protected.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "LIFEAwesomeLogger+Protected.h"; path = "Source/Protected/LIFEAwesomeLogger+Protected.h"; sourceTree = "<group>"; };
-		2EEC46053AE5647D0BE1810BEA90078E /* Pods-digibyteUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteUITests.debug.xcconfig"; sourceTree = "<group>"; };
+		2EEC46053AE5647D0BE1810BEA90078E /* Pods-bitradioUITests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioUITests.debug.xcconfig"; sourceTree = "<group>"; };
 		31ACF57AC4459470F5012FE1F1A9A7DF /* LIFELocalizedStringProvider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFELocalizedStringProvider.h; path = Source/Views/LIFELocalizedStringProvider.h; sourceTree = "<group>"; };
 		31DB46FC6FBFD8806EBB59B908B26D6A /* LIFEComponentPickerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEComponentPickerViewController.m; path = Source/Controllers/LIFEComponentPickerViewController.m; sourceTree = "<group>"; };
 		3293682BA6F50D7826A08389AE5D4222 /* LIFEAVPlayerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAVPlayerViewController.h; path = Source/Controllers/LIFEAVPlayerViewController.h; sourceTree = "<group>"; };
 		330377F2BC528F6A24F8B903C0F86D3C /* UITextView+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UITextView+LIFEAdditions.h"; path = "Source/Additions/UITextView+LIFEAdditions.h"; sourceTree = "<group>"; };
 		35D8C07D8D5F7801BF24E3731DBCCC8B /* LIFEImageEditorSegmentedControl.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEImageEditorSegmentedControl.m; path = "Source/Controllers/Image Editor/LIFEImageEditorSegmentedControl.m"; sourceTree = "<group>"; };
-		3625DE56A2D2431230B2A40828DAE1D4 /* Pods-digibyteUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteUITests.release.xcconfig"; sourceTree = "<group>"; };
+		3625DE56A2D2431230B2A40828DAE1D4 /* Pods-bitradioUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioUITests.release.xcconfig"; sourceTree = "<group>"; };
 		36A96A6E989D3E2A8D845C1AECBEBC4A /* LIFEStepsToReproduceCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEStepsToReproduceCell.m; path = Source/Views/LIFEStepsToReproduceCell.m; sourceTree = "<group>"; };
 		372F8FE5695EC40D645E4462D113BA1C /* LIFEVideoAttachment.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEVideoAttachment.m; path = Source/Models/LIFEVideoAttachment.m; sourceTree = "<group>"; };
 		37B9007AC2EBB10BA991A41EC3FC13CB /* LIFEStepsToReproTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEStepsToReproTableViewController.h; path = Source/Controllers/LIFEStepsToReproTableViewController.h; sourceTree = "<group>"; };
 		37BE107C3C2F21C994C002FE5E6DECC1 /* UIControl+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIControl+LIFEAdditions.m"; path = "Source/Additions/UIControl+LIFEAdditions.m"; sourceTree = "<group>"; };
 		37D23C338BDF71F33C69649531137E89 /* LIFEFloatingButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEFloatingButton.h; path = Source/Views/LIFEFloatingButton.h; sourceTree = "<group>"; };
-		38942E0FD071CA028EE8540850EFF9DC /* Pods-digibyteUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-digibyteUITests-dummy.m"; sourceTree = "<group>"; };
+		38942E0FD071CA028EE8540850EFF9DC /* Pods-bitradioUITests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-bitradioUITests-dummy.m"; sourceTree = "<group>"; };
 		38A4C52FA5FAA62A4F992C0B357A4508 /* LIFEInputField.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEInputField.m; path = Source/LIFEInputField.m; sourceTree = "<group>"; };
 		395933FC62080A1B228471A75B780612 /* UIApplication+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIApplication+LIFEAdditions.h"; path = "Source/Additions/UIApplication+LIFEAdditions.h"; sourceTree = "<group>"; };
 		3A33CA4A3226BB2A3B58FCC3BA2A2AB8 /* LIFEDataProvider.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEDataProvider.h; path = Source/Services/LIFEDataProvider.h; sourceTree = "<group>"; };
@@ -399,7 +400,7 @@
 		41C6D92C0E9ADFE829CBE7AA187D7857 /* LIFEContainerWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEContainerWindow.m; path = "Source/Views/Container Window/LIFEContainerWindow.m"; sourceTree = "<group>"; };
 		44DCB7758E738ABC7F54ACE735DA2FCD /* LIFEJelloView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEJelloView.m; path = "Source/Views/Jello View/LIFEJelloView.m"; sourceTree = "<group>"; };
 		459FBDF1B1305D608C0E7ABBC9833FE3 /* LIFEJSONLogFileFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEJSONLogFileFormatter.h; path = Source/Services/Logging/LIFEJSONLogFileFormatter.h; sourceTree = "<group>"; };
-		47C04E6DF50FE3E67DAAB179B3DB4503 /* Pods_digibyteTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Pods_digibyteTests.framework; path = "Pods-digibyteTests.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		47C04E6DF50FE3E67DAAB179B3DB4503 /* Pods_bitradioTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bitradioTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4920315E0C7C21355DAA0A84F88B0A3A /* LIFEAwesomeLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAwesomeLogger.h; path = Source/LIFEAwesomeLogger.h; sourceTree = "<group>"; };
 		49C5859A28341616B83AB338F483C21C /* LIFETextInputField.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFETextInputField.m; path = Source/LIFETextInputField.m; sourceTree = "<group>"; };
 		4A54F68F44A5318BC674D69023B4AD04 /* LIFEImageEditorView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEImageEditorView.h; path = "Source/Controllers/Image Editor/LIFEImageEditorView.h"; sourceTree = "<group>"; };
@@ -407,13 +408,13 @@
 		4B6D91FB6AA0C11250DFB52F8C6E57DC /* LIFEReportWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReportWindow.m; path = Source/Views/LIFEReportWindow.m; sourceTree = "<group>"; };
 		4B83469491F4C85CE7D4A3416EECBA0F /* LIFEBlurAnnotationView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEBlurAnnotationView.h; path = Source/Views/AnnotationViews/LIFEBlurAnnotationView.h; sourceTree = "<group>"; };
 		4B856822CC65B3CA140E08A2A2691B87 /* LIFEStepsToReproduceCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEStepsToReproduceCell.h; path = Source/Views/LIFEStepsToReproduceCell.h; sourceTree = "<group>"; };
-		4B865F36103B707434A5BE5F9768DF86 /* Pods-digibyteTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-digibyteTests.modulemap"; sourceTree = "<group>"; };
+		4B865F36103B707434A5BE5F9768DF86 /* Pods-bitradioTests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-bitradioTests.modulemap"; sourceTree = "<group>"; };
 		4EDDCB90DC459E4C6F63D1759A7C1F1B /* LIFEImagePickerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEImagePickerController.h; path = Source/Services/LIFEImagePickerController.h; sourceTree = "<group>"; };
 		50500FC21D50BC93177DD0DDB1CBAEDD /* LIFEContainerModalPresentAnimator.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEContainerModalPresentAnimator.h; path = "Source/Views/Container Window/LIFEContainerModalPresentAnimator.h"; sourceTree = "<group>"; };
 		517015AAB062A8F942DB2CF442FCA2A6 /* Buglife-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Buglife-prefix.pch"; sourceTree = "<group>"; };
 		51A7480AC246512ADF7A6E758F444CEE /* LIFEDeviceInfo.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEDeviceInfo.m; path = Source/Models/LIFEDeviceInfo.m; sourceTree = "<group>"; };
 		51E4C732AFB5EAC7EA0274DF6CE78DFD /* LIFETTYLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFETTYLogger.h; path = Source/Services/Logging/LIFETTYLogger.h; sourceTree = "<group>"; };
-		523435EBF54FB064A79266E0C473EBB3 /* Pods-digibyte-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-digibyte-frameworks.sh"; sourceTree = "<group>"; };
+		523435EBF54FB064A79266E0C473EBB3 /* Pods-bitradio-frameworks.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-bitradio-frameworks.sh"; sourceTree = "<group>"; };
 		54C9624FD672FE438014F5F578D7612D /* LIFEUserDefaults.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEUserDefaults.h; path = Source/Services/LIFEUserDefaults.h; sourceTree = "<group>"; };
 		54ED42E849ABA82DD21AB1D66E398F16 /* LIFETTYLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFETTYLogger.m; path = Source/Services/Logging/LIFETTYLogger.m; sourceTree = "<group>"; };
 		564D0220F1A07F82F9B08C224DDB4BFC /* LIFEToastController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEToastController.h; path = Source/Views/Toast/LIFEToastController.h; sourceTree = "<group>"; };
@@ -436,14 +437,14 @@
 		6303F37C353EFE512BD5E026FC4EEF54 /* NSLayoutConstraint+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSLayoutConstraint+LIFEAdditions.h"; path = "Source/Additions/NSLayoutConstraint+LIFEAdditions.h"; sourceTree = "<group>"; };
 		63C0BD0B6FA4D67A26CCA6E00F70322A /* LIFEReproStep.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReproStep.m; path = Source/Models/LIFEReproStep.m; sourceTree = "<group>"; };
 		6455276A88D9F6A07288D39EF46EB525 /* LIFEReportAttachmentImpl.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReportAttachmentImpl.m; path = Source/Models/LIFEReportAttachmentImpl.m; sourceTree = "<group>"; };
-		647FDA78BF61CE20DFB7DDC9E27EA71F /* Pods-digibyteTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-digibyteTests-dummy.m"; sourceTree = "<group>"; };
-		64B9B84288FE7333ED1D22228CE02AB4 /* Pods-digibyteUITests.screenshots.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteUITests.screenshots.xcconfig"; sourceTree = "<group>"; };
+		647FDA78BF61CE20DFB7DDC9E27EA71F /* Pods-bitradioTests-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-bitradioTests-dummy.m"; sourceTree = "<group>"; };
+		64B9B84288FE7333ED1D22228CE02AB4 /* Pods-bitradioUITests.screenshots.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioUITests.screenshots.xcconfig"; sourceTree = "<group>"; };
 		655AD4BA17A766C417B1584B302CAD93 /* LIFEContextAwareLogFormatter.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEContextAwareLogFormatter.m; path = Source/Services/Logging/LIFEContextAwareLogFormatter.m; sourceTree = "<group>"; };
-		660E49D3BF709E85C3201537AFD27596 /* Pods-digibyte.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyte.testflight.xcconfig"; sourceTree = "<group>"; };
+		660E49D3BF709E85C3201537AFD27596 /* Pods-bitradio.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradio.testflight.xcconfig"; sourceTree = "<group>"; };
 		66DC90F78982793E6B0558A15ED05949 /* LIFELog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFELog.m; path = Source/Services/Logging/LIFELog.m; sourceTree = "<group>"; };
 		6A6BF76AA3BD970BE003B18BE2582340 /* LIFENavigationController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFENavigationController.m; path = Source/Controllers/LIFENavigationController.m; sourceTree = "<group>"; };
-		6AD9EF570FBAB8D29B567EB275326D23 /* Pods-digibyteTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-digibyteTests-Info.plist"; sourceTree = "<group>"; };
-		6C5FE9364DE547D697EB7578E3CF557A /* Pods-digibyteUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-digibyteUITests.modulemap"; sourceTree = "<group>"; };
+		6AD9EF570FBAB8D29B567EB275326D23 /* Pods-bitradioTests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-bitradioTests-Info.plist"; sourceTree = "<group>"; };
+		6C5FE9364DE547D697EB7578E3CF557A /* Pods-bitradioUITests.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-bitradioUITests.modulemap"; sourceTree = "<group>"; };
 		6E2CD23AEEF419391A75DEB4E5FB1D08 /* LIFELocalizedStringProvider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFELocalizedStringProvider.m; path = Source/Views/LIFELocalizedStringProvider.m; sourceTree = "<group>"; };
 		6ED326509EE6AF56EEC1F799FB691230 /* UIImage+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+LIFEAdditions.h"; path = "Source/Additions/UIImage+LIFEAdditions.h"; sourceTree = "<group>"; };
 		6FA3340C5A15C27D14D48D885F7B1827 /* LIFEBugButtonWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEBugButtonWindow.h; path = Source/Views/LIFEBugButtonWindow.h; sourceTree = "<group>"; };
@@ -470,12 +471,12 @@
 		8398DC81617B43B42269A9873647459A /* VisualEffectView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = VisualEffectView.xcconfig; sourceTree = "<group>"; };
 		83CD4DE836181F09EE0C631E5244726F /* LIFEArrowAnnotationView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEArrowAnnotationView.h; path = Source/Views/AnnotationViews/LIFEArrowAnnotationView.h; sourceTree = "<group>"; };
 		8570138A6A73317111FC6E93CE679FC5 /* LIFEContinuousForceTouchGestureRecognizer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEContinuousForceTouchGestureRecognizer.h; path = Source/Views/GestureRecognizers/LIFEContinuousForceTouchGestureRecognizer.h; sourceTree = "<group>"; };
-		86BC67A8D203EE607F29B3DB6845F1F7 /* Pods-digibyteTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-digibyteTests-umbrella.h"; sourceTree = "<group>"; };
+		86BC67A8D203EE607F29B3DB6845F1F7 /* Pods-bitradioTests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-bitradioTests-umbrella.h"; sourceTree = "<group>"; };
 		886951229975F565841CB5226522DE27 /* LIFESwizzler.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFESwizzler.h; path = Source/Services/LIFESwizzler.h; sourceTree = "<group>"; };
-		89676EA30FADE2BD0E876A9E8DC166BD /* Pods-digibyteTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-digibyteTests-acknowledgements.plist"; sourceTree = "<group>"; };
+		89676EA30FADE2BD0E876A9E8DC166BD /* Pods-bitradioTests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-bitradioTests-acknowledgements.plist"; sourceTree = "<group>"; };
 		89E76143B24BA7FF8371C8B3AA6AA17E /* LIFEMenuPopoverView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEMenuPopoverView.m; path = Source/Views/LIFEMenuPopoverView.m; sourceTree = "<group>"; };
 		8A3DF55CA02084F7896E647CD0FBECFB /* LIFEImageEditorViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEImageEditorViewController.m; path = "Source/Controllers/Image Editor/LIFEImageEditorViewController.m"; sourceTree = "<group>"; };
-		8B4A0B0C296312B56952C620ACB837BA /* Pods-digibyteUITests.testnet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteUITests.testnet.xcconfig"; sourceTree = "<group>"; };
+		8B4A0B0C296312B56952C620ACB837BA /* Pods-bitradioUITests.testnet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioUITests.testnet.xcconfig"; sourceTree = "<group>"; };
 		8D964B401C3E060FA48EDD760E23C164 /* LIFEReportTableViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEReportTableViewController.h; path = Source/Controllers/LIFEReportTableViewController.h; sourceTree = "<group>"; };
 		8F039596351B6507C53BE12070CB5E22 /* LIFEContainerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEContainerViewController.m; path = "Source/Views/Container Window/LIFEContainerViewController.m"; sourceTree = "<group>"; };
 		8F5A243A85D03C3ACA2F7937FD1101C9 /* VisualEffectView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "VisualEffectView-dummy.m"; sourceTree = "<group>"; };
@@ -483,10 +484,10 @@
 		928270B5DCD40EE51F1D52FF3FF66FC4 /* LIFEAlertView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAlertView.h; path = "Source/Controllers/Alert View/LIFEAlertView.h"; sourceTree = "<group>"; };
 		928A599DA23E89D340AB3DBC161A91C3 /* UIControl+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIControl+LIFEAdditions.h"; path = "Source/Additions/UIControl+LIFEAdditions.h"; sourceTree = "<group>"; };
 		936EC46ECD5FB73F329EB3FEC214FEF1 /* UIApplication+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIApplication+LIFEAdditions.m"; path = "Source/Additions/UIApplication+LIFEAdditions.m"; sourceTree = "<group>"; };
-		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		93A4A3777CF96A4AAC1D13BA6DCCEA73 /* Podfile */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		953E9A5343A7DCF4778CB839126E25F2 /* LIFEDeviceInfoProvider.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEDeviceInfoProvider.m; path = Source/Services/LIFEDeviceInfoProvider.m; sourceTree = "<group>"; };
 		95C1A03350C507BAAF44E5B17E4DF0E9 /* RevealServer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RevealServer.framework; path = "RevealServer-20/iOS/RevealServer.framework"; sourceTree = "<group>"; };
-		962B5BEBB730AAEA4D89887F77FC97F4 /* Buglife.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = Buglife.framework; path = Buglife.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		962B5BEBB730AAEA4D89887F77FC97F4 /* Buglife.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Buglife.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		96412A9CDDA5E06BDDB859BB9AABFB38 /* LIFEPickerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEPickerViewController.h; path = Source/Controllers/LIFEPickerViewController.h; sourceTree = "<group>"; };
 		97171F9A4C996400C114EFB240814EA0 /* LIFEScreenshotAnnotatorView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEScreenshotAnnotatorView.h; path = Source/Views/LIFEScreenshotAnnotatorView.h; sourceTree = "<group>"; };
 		9A857F4B2775F672DDFD55368D3CF6DD /* LIFEAnnotatedImageView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAnnotatedImageView.m; path = Source/Views/LIFEAnnotatedImageView.m; sourceTree = "<group>"; };
@@ -498,7 +499,7 @@
 		9DBAEEF11927B15F1BD4C9CC9C13F7A5 /* LIFEAnnotation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAnnotation.h; path = Source/Models/LIFEAnnotation.h; sourceTree = "<group>"; };
 		9E49AAE3D5E59AB1A8D288608ECDB293 /* NSString+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSString+LIFEAdditions.m"; path = "Source/Additions/NSString+LIFEAdditions.m"; sourceTree = "<group>"; };
 		A000CF2AC1D20CE64F21E05F5124DF40 /* LIFEMenuPopoverView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEMenuPopoverView.h; path = Source/Views/LIFEMenuPopoverView.h; sourceTree = "<group>"; };
-		A22901024B9EF7FDD3E421857503AA70 /* Pods-digibyteUITests.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteUITests.testflight.xcconfig"; sourceTree = "<group>"; };
+		A22901024B9EF7FDD3E421857503AA70 /* Pods-bitradioUITests.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioUITests.testflight.xcconfig"; sourceTree = "<group>"; };
 		A3A19FD4B3253A1DF59639DB4237413D /* LIFEAttachmentManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAttachmentManager.h; path = Source/Services/LIFEAttachmentManager.h; sourceTree = "<group>"; };
 		A437E83F6A6FFC9A53C7F4294845545A /* LIFEUserDefaults.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEUserDefaults.m; path = Source/Services/LIFEUserDefaults.m; sourceTree = "<group>"; };
 		A4DC4B46F8811524DEAEDF948556F7CB /* LIFEReportView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReportView.m; path = Source/Views/LIFEReportView.m; sourceTree = "<group>"; };
@@ -506,12 +507,12 @@
 		A561DFFCAD76E2E64837C7D7DADC5B27 /* LIFEWhatHappenedTextView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEWhatHappenedTextView.h; path = Source/Views/LIFEWhatHappenedTextView.h; sourceTree = "<group>"; };
 		A62442853096C743AE2C4363D3F26E7E /* LIFEReportOwner.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReportOwner.m; path = Source/Models/LIFEReportOwner.m; sourceTree = "<group>"; };
 		A62DEF16BDE1357BDA24CFD6EB02D349 /* LIFEPanGestureRecognizer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEPanGestureRecognizer.m; path = Source/Views/GestureRecognizers/LIFEPanGestureRecognizer.m; sourceTree = "<group>"; };
-		A684AB9F550BF30D968DD8CE294F08DF /* Pods-digibyteUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-digibyteUITests-acknowledgements.plist"; sourceTree = "<group>"; };
+		A684AB9F550BF30D968DD8CE294F08DF /* Pods-bitradioUITests-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-bitradioUITests-acknowledgements.plist"; sourceTree = "<group>"; };
 		A79BCDAB31CA7EE20D22C6E4543C8ADE /* LIFEDependencyLoader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEDependencyLoader.h; path = Source/Services/LIFEDependencyLoader.h; sourceTree = "<group>"; };
 		A86550F41540498F86BC1449EDB0EBF0 /* LIFEArrowAnnotationView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEArrowAnnotationView.m; path = Source/Views/AnnotationViews/LIFEArrowAnnotationView.m; sourceTree = "<group>"; };
-		A891DDB542D77A7C51D9696135FE93B6 /* Pods-digibyteTests.testnet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteTests.testnet.xcconfig"; sourceTree = "<group>"; };
+		A891DDB542D77A7C51D9696135FE93B6 /* Pods-bitradioTests.testnet.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioTests.testnet.xcconfig"; sourceTree = "<group>"; };
 		A9F4E55522FF3E62240B22CFB7CE884D /* LIFEReportView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEReportView.h; path = Source/Views/LIFEReportView.h; sourceTree = "<group>"; };
-		AA11B723E93AACD4FE9312CC7840EEB4 /* Pods-digibyte-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-digibyte-dummy.m"; sourceTree = "<group>"; };
+		AA11B723E93AACD4FE9312CC7840EEB4 /* Pods-bitradio-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-bitradio-dummy.m"; sourceTree = "<group>"; };
 		AA3FB52B3372A322EB759A3D8A6AD7E2 /* Buglife+LocalizedStrings.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Buglife+LocalizedStrings.m"; path = "Source/Buglife+LocalizedStrings.m"; sourceTree = "<group>"; };
 		AAA2A53E10D9D65788AFCE2F4D9C4513 /* LIFEFileLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEFileLogger.m; path = Source/Services/Logging/LIFEFileLogger.m; sourceTree = "<group>"; };
 		AC2A90E5822B1A53888DB91C05F949F1 /* LIFEReportOwner.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEReportOwner.h; path = Source/Models/LIFEReportOwner.h; sourceTree = "<group>"; };
@@ -525,7 +526,7 @@
 		B3767C1B4ADDFD0F109B891982922926 /* LIFEReachability.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReachability.m; path = Source/Services/LIFEReachability.m; sourceTree = "<group>"; };
 		B44772E5F8631958E3F94A89B29B5FE2 /* LIFEReportTableViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEReportTableViewController.m; path = Source/Controllers/LIFEReportTableViewController.m; sourceTree = "<group>"; };
 		B5E9F45BCD792D5AA723E57B846470CC /* VisualEffectView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "VisualEffectView-prefix.pch"; sourceTree = "<group>"; };
-		B65EE159F79D1E23C4F73CA8D9FD9D86 /* Pods-digibyte-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-digibyte-umbrella.h"; sourceTree = "<group>"; };
+		B65EE159F79D1E23C4F73CA8D9FD9D86 /* Pods-bitradio-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-bitradio-umbrella.h"; sourceTree = "<group>"; };
 		B7D5A1A0266FD00D3038635F0D365010 /* LIFEInputField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEInputField.h; path = Source/LIFEInputField.h; sourceTree = "<group>"; };
 		BC7FFAEAF564FCA775E342897A7CDE58 /* LIFENotificationLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFENotificationLogger.h; path = Source/Services/Logging/LIFENotificationLogger.h; sourceTree = "<group>"; };
 		BCA2EAA4BA62EF3EF76BF409328E073D /* UIWindow+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIWindow+LIFEAdditions.h"; path = "Source/Additions/UIWindow+LIFEAdditions.h"; sourceTree = "<group>"; };
@@ -533,7 +534,7 @@
 		BCDA5B2E91BB8B4D91B07DA6F7BA7BCB /* LIFEContainerViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEContainerViewController.h; path = "Source/Views/Container Window/LIFEContainerViewController.h"; sourceTree = "<group>"; };
 		BEFF28A16E803BD51E892B58D045EC16 /* LIFEScreenshotAnnotatorViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEScreenshotAnnotatorViewController.h; path = Source/Controllers/LIFEScreenshotAnnotatorViewController.h; sourceTree = "<group>"; };
 		C074DEA3317A7696AF1C7A6516C855DB /* NSError+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSError+LIFEAdditions.m"; path = "Source/Additions/NSError+LIFEAdditions.m"; sourceTree = "<group>"; };
-		C1F193A6D8775228D648DA9CE8B8A298 /* Pods-digibyteUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-digibyteUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		C1F193A6D8775228D648DA9CE8B8A298 /* Pods-bitradioUITests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-bitradioUITests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		C2DC45D126AC4E33677D049749974CE9 /* LIFEPoweredByBuglifeView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEPoweredByBuglifeView.m; path = Source/Views/LIFEPoweredByBuglifeView.m; sourceTree = "<group>"; };
 		C5C6FE045AD84C65CB902AAD285CAC9C /* LIFEAlertActionView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAlertActionView.m; path = "Source/Controllers/Alert View/LIFEAlertActionView.m"; sourceTree = "<group>"; };
 		C5CDA9B3C8B89E11A17645A671DBFB2D /* VisualEffectView-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "VisualEffectView-Info.plist"; sourceTree = "<group>"; };
@@ -551,7 +552,7 @@
 		CD90377A54C3083AAE038C3CE917867E /* LIFEContainerAlertToImageEditorAnimator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEContainerAlertToImageEditorAnimator.m; path = "Source/Views/Container Window/LIFEContainerAlertToImageEditorAnimator.m"; sourceTree = "<group>"; };
 		CFBBF3E96DC142D941BC4F5357A6877A /* Buglife+UIStuff.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Buglife+UIStuff.m"; path = "Source/Additions/Buglife+UIStuff.m"; sourceTree = "<group>"; };
 		D020E17FFD3D995528EAD99B31D0984B /* LIFECompatibilityUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFECompatibilityUtils.h; path = Source/Additions/LIFECompatibilityUtils.h; sourceTree = "<group>"; };
-		D100CE7E98A89BE69D25122EA429C021 /* Pods-digibyteTests.screenshots.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteTests.screenshots.xcconfig"; sourceTree = "<group>"; };
+		D100CE7E98A89BE69D25122EA429C021 /* Pods-bitradioTests.screenshots.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioTests.screenshots.xcconfig"; sourceTree = "<group>"; };
 		D3FC0C5AE349649520A8E528443505FA /* LIFEBlurAnnotationView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEBlurAnnotationView.m; path = Source/Views/AnnotationViews/LIFEBlurAnnotationView.m; sourceTree = "<group>"; };
 		D87DE663480FF2192ABBC1F3C5685DC3 /* LIFEReportViewControllerDelegate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEReportViewControllerDelegate.h; path = Source/Controllers/LIFEReportViewControllerDelegate.h; sourceTree = "<group>"; };
 		D936EDF9566F75156330BC005392A509 /* LIFEDeviceBatteryState.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEDeviceBatteryState.h; path = Source/Models/LIFEDeviceBatteryState.h; sourceTree = "<group>"; };
@@ -561,7 +562,7 @@
 		DA22A7F9F9AC494CACBC855BCD7D4E09 /* VisualEffectView-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "VisualEffectView-umbrella.h"; sourceTree = "<group>"; };
 		DAC38EBB38D4F1D36CC020FF8BC2139B /* LIFELogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFELogger.m; path = Source/Services/Logging/LIFELogger.m; sourceTree = "<group>"; };
 		DADEF8F4389A77C22F72396495041990 /* LIFEPickerViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEPickerViewController.m; path = Source/Controllers/LIFEPickerViewController.m; sourceTree = "<group>"; };
-		DB60CD444FA52E1B315EA84DEAA371EF /* Pods-digibyte-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-digibyte-acknowledgements.markdown"; sourceTree = "<group>"; };
+		DB60CD444FA52E1B315EA84DEAA371EF /* Pods-bitradio-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; path = "Pods-bitradio-acknowledgements.markdown"; sourceTree = "<group>"; };
 		DB84CCA2D2AAA95ED862F71607B578B5 /* LIFEAlertView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEAlertView.m; path = "Source/Controllers/Alert View/LIFEAlertView.m"; sourceTree = "<group>"; };
 		DE6E8767E952FC9B56135B83761B6283 /* LIFETextFieldCell.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFETextFieldCell.h; path = Source/Views/LIFETextFieldCell.h; sourceTree = "<group>"; };
 		DEC7A5BC0D5F2EAA3B580E93643CFD9F /* LIFEAppInfo.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAppInfo.h; path = Source/Models/LIFEAppInfo.h; sourceTree = "<group>"; };
@@ -576,38 +577,38 @@
 		E49E951084E3FB52F2844643AEF2B5FD /* LIFEAnnotatedImage.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAnnotatedImage.h; path = Source/Models/LIFEAnnotatedImage.h; sourceTree = "<group>"; };
 		E5D74EE31336841343A2469F0B397D53 /* LIFEToastControllerView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEToastControllerView.h; path = Source/Views/Toast/LIFEToastControllerView.h; sourceTree = "<group>"; };
 		E629552EEB1F0BDEB7E003E9E72E7A9E /* LIFEToastView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEToastView.h; path = Source/Views/Toast/LIFEToastView.h; sourceTree = "<group>"; };
-		E708AB7BCF1F5600A117D265023449F8 /* Pods-digibyteTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-digibyteTests-acknowledgements.markdown"; sourceTree = "<group>"; };
+		E708AB7BCF1F5600A117D265023449F8 /* Pods-bitradioTests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-bitradioTests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		E755BD2F839C059D54CDAE4D95CB2489 /* Buglife.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = Buglife.modulemap; sourceTree = "<group>"; };
 		EA3115A47603DFF8E1E3917762A9991A /* LIFEScreenshotAnnotatorView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEScreenshotAnnotatorView.m; path = Source/Views/LIFEScreenshotAnnotatorView.m; sourceTree = "<group>"; };
 		EA503A3F14744F828F57A669B4BB21B9 /* UITableView+LIFEAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UITableView+LIFEAdditions.m"; path = "Source/Additions/UITableView+LIFEAdditions.m"; sourceTree = "<group>"; };
 		EAD9D71C3FE890D9E5AC37D34AD12961 /* LIFEToastView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEToastView.m; path = Source/Views/Toast/LIFEToastView.m; sourceTree = "<group>"; };
 		EBF00492DE17D4B4297BF8C8DE506206 /* LIFEPanGestureRecognizer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEPanGestureRecognizer.h; path = Source/Views/GestureRecognizers/LIFEPanGestureRecognizer.h; sourceTree = "<group>"; };
-		EC9307F11E765D52F4ACF1EBAF6C45E7 /* Pods-digibyte.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyte.debug.xcconfig"; sourceTree = "<group>"; };
+		EC9307F11E765D52F4ACF1EBAF6C45E7 /* Pods-bitradio.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradio.debug.xcconfig"; sourceTree = "<group>"; };
 		EDC009EDFFBB6E63D3723579B010ADF9 /* LIFEImageProcessor.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEImageProcessor.m; path = Source/Services/LIFEImageProcessor.m; sourceTree = "<group>"; };
-		EF2556920659E5993D1F42A6C20463AA /* Pods-digibyte.screenshots.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyte.screenshots.xcconfig"; sourceTree = "<group>"; };
+		EF2556920659E5993D1F42A6C20463AA /* Pods-bitradio.screenshots.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradio.screenshots.xcconfig"; sourceTree = "<group>"; };
 		F0355F4A24160F8C2E99DEA9FEDA0D45 /* LIFEContainerTransitionContext.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEContainerTransitionContext.h; path = "Source/Views/Container Window/LIFEContainerTransitionContext.h"; sourceTree = "<group>"; };
 		F1039607B684615FEF42DFB4AE4C1F11 /* NSMutableDictionary+LIFEAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSMutableDictionary+LIFEAdditions.h"; path = "Source/Additions/NSMutableDictionary+LIFEAdditions.h"; sourceTree = "<group>"; };
 		F2035C7747E9C99179C66BB6435DD6E4 /* LIFEImageEditorView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEImageEditorView.m; path = "Source/Controllers/Image Editor/LIFEImageEditorView.m"; sourceTree = "<group>"; };
 		F2FB3B44B15045266F775B8FFA7A7ED5 /* LIFEWindowBlindsAnimator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEWindowBlindsAnimator.m; path = "Source/Views/Container Window/LIFEWindowBlindsAnimator.m"; sourceTree = "<group>"; };
-		F339CBB659A4BB183BDC697188B183C4 /* VisualEffectView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; name = VisualEffectView.framework; path = VisualEffectView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F339CBB659A4BB183BDC697188B183C4 /* VisualEffectView.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = VisualEffectView.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F3653A537397B1A50EF7FBA44DB16C80 /* LIFEImageProcessor.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEImageProcessor.h; path = Source/Services/LIFEImageProcessor.h; sourceTree = "<group>"; };
 		F3F58B8A8473F577E747DEAA41D3C4BE /* LIFECompatibilityUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFECompatibilityUtils.m; path = Source/Additions/LIFECompatibilityUtils.m; sourceTree = "<group>"; };
 		F41F3937B13ECE7D2BD590739CB78236 /* LIFEContainerModalDismissAnimator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEContainerModalDismissAnimator.m; path = "Source/Views/Container Window/LIFEContainerModalDismissAnimator.m"; sourceTree = "<group>"; };
 		F4A5706BA7B1AB40FB8563070C1EC1A0 /* LIFEASLLogger.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEASLLogger.m; path = Source/Services/Logging/LIFEASLLogger.m; sourceTree = "<group>"; };
 		F68A491D71500E0C6D05C96FA9F6DE04 /* LIFEToolButton.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEToolButton.h; path = "Source/Controllers/Image Editor/LIFEToolButton.h"; sourceTree = "<group>"; };
-		F6DE253316F3F8CBE72A0B6A1806BE8A /* Pods-digibyte.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = "Pods-digibyte.modulemap"; sourceTree = "<group>"; };
+		F6DE253316F3F8CBE72A0B6A1806BE8A /* Pods-bitradio.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-bitradio.modulemap"; sourceTree = "<group>"; };
 		F75D0AEE7F8B932430FEB1942D714DBB /* Buglife.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Buglife.xcconfig; sourceTree = "<group>"; };
-		F75F0CCD0FAC7E86A8DD4EA0A9439A2B /* Pods-digibyteTests.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyteTests.testflight.xcconfig"; sourceTree = "<group>"; };
+		F75F0CCD0FAC7E86A8DD4EA0A9439A2B /* Pods-bitradioTests.testflight.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradioTests.testflight.xcconfig"; sourceTree = "<group>"; };
 		F7DF169F041EAD03630B0043E82B9846 /* VisualEffectView.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.module; path = VisualEffectView.modulemap; sourceTree = "<group>"; };
 		F8C569FCD275E822C7292289F2DCB10D /* LIFEAppearanceImpl.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEAppearanceImpl.h; path = Source/Views/LIFEAppearanceImpl.h; sourceTree = "<group>"; };
-		F8FE7A4137E8B78D969806BBD4BC96AF /* Pods-digibyte-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-digibyte-acknowledgements.plist"; sourceTree = "<group>"; };
+		F8FE7A4137E8B78D969806BBD4BC96AF /* Pods-bitradio-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-bitradio-acknowledgements.plist"; sourceTree = "<group>"; };
 		F98C5C4054FD135C7F84BCFDB40C2B71 /* LIFELogMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFELogMacros.h; path = Source/Services/Logging/LIFELogMacros.h; sourceTree = "<group>"; };
 		F9F4F974FB4B63102852EBBCDADCB69A /* Buglife-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Buglife-Info.plist"; sourceTree = "<group>"; };
 		F9F7589B5ED1016FAE0DDD00720D7E3D /* LIFEInputField+Protected.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "LIFEInputField+Protected.h"; path = "Source/Protected/LIFEInputField+Protected.h"; sourceTree = "<group>"; };
 		FC875A771C5E10AD7DFEF95CD2127BFA /* LIFEPickerInputField.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEPickerInputField.h; path = Source/LIFEPickerInputField.h; sourceTree = "<group>"; };
-		FCCBBCD09F416D142D8D8685BB2AD07C /* Pods-digibyte.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-digibyte.release.xcconfig"; sourceTree = "<group>"; };
+		FCCBBCD09F416D142D8D8685BB2AD07C /* Pods-bitradio.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-bitradio.release.xcconfig"; sourceTree = "<group>"; };
 		FCF5F85B3B42F952D1149580E805342F /* Buglife.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = Buglife.m; path = Source/Buglife.m; sourceTree = "<group>"; };
-		FD4BE96AE10CF6B46451A93BEB552A0A /* Pods-digibyteUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-digibyteUITests-Info.plist"; sourceTree = "<group>"; };
+		FD4BE96AE10CF6B46451A93BEB552A0A /* Pods-bitradioUITests-Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-bitradioUITests-Info.plist"; sourceTree = "<group>"; };
 		FDAA6EDA4317993470D3B6E61697C38E /* LIFERecordingShrinker.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFERecordingShrinker.h; path = Source/Services/LIFERecordingShrinker.h; sourceTree = "<group>"; };
 		FDC547725639275C57BBCFC47899FF40 /* LIFEContainerModalPresentAnimator.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = LIFEContainerModalPresentAnimator.m; path = "Source/Views/Container Window/LIFEContainerModalPresentAnimator.m"; sourceTree = "<group>"; };
 		FEF5DE22E91A4B40F9D6399E796D1B8F /* LIFEContextAwareLogFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LIFEContextAwareLogFormatter.h; path = Source/Services/Logging/LIFEContextAwareLogFormatter.h; sourceTree = "<group>"; };
@@ -667,31 +668,31 @@
 			path = "../Target Support Files/Reveal-SDK";
 			sourceTree = "<group>";
 		};
-		29CCBE8D2A887FF2849F35252BB55410 /* Pods-digibyteUITests */ = {
+		29CCBE8D2A887FF2849F35252BB55410 /* Pods-bitradioUITests */ = {
 			isa = PBXGroup;
 			children = (
-				6C5FE9364DE547D697EB7578E3CF557A /* Pods-digibyteUITests.modulemap */,
-				C1F193A6D8775228D648DA9CE8B8A298 /* Pods-digibyteUITests-acknowledgements.markdown */,
-				A684AB9F550BF30D968DD8CE294F08DF /* Pods-digibyteUITests-acknowledgements.plist */,
-				38942E0FD071CA028EE8540850EFF9DC /* Pods-digibyteUITests-dummy.m */,
-				FD4BE96AE10CF6B46451A93BEB552A0A /* Pods-digibyteUITests-Info.plist */,
-				156C0866CF4ADEEC2FB2E780401F81F1 /* Pods-digibyteUITests-umbrella.h */,
-				2EEC46053AE5647D0BE1810BEA90078E /* Pods-digibyteUITests.debug.xcconfig */,
-				3625DE56A2D2431230B2A40828DAE1D4 /* Pods-digibyteUITests.release.xcconfig */,
-				64B9B84288FE7333ED1D22228CE02AB4 /* Pods-digibyteUITests.screenshots.xcconfig */,
-				A22901024B9EF7FDD3E421857503AA70 /* Pods-digibyteUITests.testflight.xcconfig */,
-				8B4A0B0C296312B56952C620ACB837BA /* Pods-digibyteUITests.testnet.xcconfig */,
+				6C5FE9364DE547D697EB7578E3CF557A /* Pods-bitradioUITests.modulemap */,
+				C1F193A6D8775228D648DA9CE8B8A298 /* Pods-bitradioUITests-acknowledgements.markdown */,
+				A684AB9F550BF30D968DD8CE294F08DF /* Pods-bitradioUITests-acknowledgements.plist */,
+				38942E0FD071CA028EE8540850EFF9DC /* Pods-bitradioUITests-dummy.m */,
+				FD4BE96AE10CF6B46451A93BEB552A0A /* Pods-bitradioUITests-Info.plist */,
+				156C0866CF4ADEEC2FB2E780401F81F1 /* Pods-bitradioUITests-umbrella.h */,
+				2EEC46053AE5647D0BE1810BEA90078E /* Pods-bitradioUITests.debug.xcconfig */,
+				3625DE56A2D2431230B2A40828DAE1D4 /* Pods-bitradioUITests.release.xcconfig */,
+				64B9B84288FE7333ED1D22228CE02AB4 /* Pods-bitradioUITests.screenshots.xcconfig */,
+				A22901024B9EF7FDD3E421857503AA70 /* Pods-bitradioUITests.testflight.xcconfig */,
+				8B4A0B0C296312B56952C620ACB837BA /* Pods-bitradioUITests.testnet.xcconfig */,
 			);
-			name = "Pods-digibyteUITests";
-			path = "Target Support Files/Pods-digibyteUITests";
+			name = "Pods-bitradioUITests";
+			path = "Target Support Files/Pods-bitradioUITests";
 			sourceTree = "<group>";
 		};
 		2B1C6F4C5D3EE6E476BF52DE681B51A5 /* Targets Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				939B9DC0E8A1E32736AE2A90EE648115 /* Pods-digibyte */,
-				D7B27F058CE6A3B2094F681DE8C43793 /* Pods-digibyteTests */,
-				29CCBE8D2A887FF2849F35252BB55410 /* Pods-digibyteUITests */,
+				939B9DC0E8A1E32736AE2A90EE648115 /* Pods-bitradio */,
+				D7B27F058CE6A3B2094F681DE8C43793 /* Pods-bitradioTests */,
+				29CCBE8D2A887FF2849F35252BB55410 /* Pods-bitradioUITests */,
 			);
 			name = "Targets Support Files";
 			sourceTree = "<group>";
@@ -702,7 +703,6 @@
 				B7DF1B2ABE76611E72ED31F3829EF41B /* Frameworks */,
 				2009F434DD6E522B857E4F7B95D5B42B /* Support Files */,
 			);
-			name = "Reveal-SDK";
 			path = "Reveal-SDK";
 			sourceTree = "<group>";
 		};
@@ -951,7 +951,6 @@
 				AC98464F25CE292058E9A092049C264A /* UIWindow+LIFEAdditions.m */,
 				79FDFD808EE7856868A85AE81213B5CF /* Support Files */,
 			);
-			name = Buglife;
 			path = Buglife;
 			sourceTree = "<group>";
 		};
@@ -1012,24 +1011,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
-		939B9DC0E8A1E32736AE2A90EE648115 /* Pods-digibyte */ = {
+		939B9DC0E8A1E32736AE2A90EE648115 /* Pods-bitradio */ = {
 			isa = PBXGroup;
 			children = (
-				F6DE253316F3F8CBE72A0B6A1806BE8A /* Pods-digibyte.modulemap */,
-				DB60CD444FA52E1B315EA84DEAA371EF /* Pods-digibyte-acknowledgements.markdown */,
-				F8FE7A4137E8B78D969806BBD4BC96AF /* Pods-digibyte-acknowledgements.plist */,
-				AA11B723E93AACD4FE9312CC7840EEB4 /* Pods-digibyte-dummy.m */,
-				523435EBF54FB064A79266E0C473EBB3 /* Pods-digibyte-frameworks.sh */,
-				22D268084C03C24A455B668DD35B86E6 /* Pods-digibyte-Info.plist */,
-				B65EE159F79D1E23C4F73CA8D9FD9D86 /* Pods-digibyte-umbrella.h */,
-				EC9307F11E765D52F4ACF1EBAF6C45E7 /* Pods-digibyte.debug.xcconfig */,
-				FCCBBCD09F416D142D8D8685BB2AD07C /* Pods-digibyte.release.xcconfig */,
-				EF2556920659E5993D1F42A6C20463AA /* Pods-digibyte.screenshots.xcconfig */,
-				660E49D3BF709E85C3201537AFD27596 /* Pods-digibyte.testflight.xcconfig */,
-				0AD43FBB0D326A6A39809C575A267A5E /* Pods-digibyte.testnet.xcconfig */,
+				F6DE253316F3F8CBE72A0B6A1806BE8A /* Pods-bitradio.modulemap */,
+				DB60CD444FA52E1B315EA84DEAA371EF /* Pods-bitradio-acknowledgements.markdown */,
+				F8FE7A4137E8B78D969806BBD4BC96AF /* Pods-bitradio-acknowledgements.plist */,
+				AA11B723E93AACD4FE9312CC7840EEB4 /* Pods-bitradio-dummy.m */,
+				523435EBF54FB064A79266E0C473EBB3 /* Pods-bitradio-frameworks.sh */,
+				22D268084C03C24A455B668DD35B86E6 /* Pods-bitradio-Info.plist */,
+				B65EE159F79D1E23C4F73CA8D9FD9D86 /* Pods-bitradio-umbrella.h */,
+				EC9307F11E765D52F4ACF1EBAF6C45E7 /* Pods-bitradio.debug.xcconfig */,
+				FCCBBCD09F416D142D8D8685BB2AD07C /* Pods-bitradio.release.xcconfig */,
+				EF2556920659E5993D1F42A6C20463AA /* Pods-bitradio.screenshots.xcconfig */,
+				660E49D3BF709E85C3201537AFD27596 /* Pods-bitradio.testflight.xcconfig */,
+				0AD43FBB0D326A6A39809C575A267A5E /* Pods-bitradio.testnet.xcconfig */,
 			);
-			name = "Pods-digibyte";
-			path = "Target Support Files/Pods-digibyte";
+			name = "Pods-bitradio";
+			path = "Target Support Files/Pods-bitradio";
 			sourceTree = "<group>";
 		};
 		B7DF1B2ABE76611E72ED31F3829EF41B /* Frameworks */ = {
@@ -1048,23 +1047,23 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		D7B27F058CE6A3B2094F681DE8C43793 /* Pods-digibyteTests */ = {
+		D7B27F058CE6A3B2094F681DE8C43793 /* Pods-bitradioTests */ = {
 			isa = PBXGroup;
 			children = (
-				4B865F36103B707434A5BE5F9768DF86 /* Pods-digibyteTests.modulemap */,
-				E708AB7BCF1F5600A117D265023449F8 /* Pods-digibyteTests-acknowledgements.markdown */,
-				89676EA30FADE2BD0E876A9E8DC166BD /* Pods-digibyteTests-acknowledgements.plist */,
-				647FDA78BF61CE20DFB7DDC9E27EA71F /* Pods-digibyteTests-dummy.m */,
-				6AD9EF570FBAB8D29B567EB275326D23 /* Pods-digibyteTests-Info.plist */,
-				86BC67A8D203EE607F29B3DB6845F1F7 /* Pods-digibyteTests-umbrella.h */,
-				1A23A67FF6812C24803BC00C8C19BF7A /* Pods-digibyteTests.debug.xcconfig */,
-				1A6155E6788B681D40E31870D9368BB1 /* Pods-digibyteTests.release.xcconfig */,
-				D100CE7E98A89BE69D25122EA429C021 /* Pods-digibyteTests.screenshots.xcconfig */,
-				F75F0CCD0FAC7E86A8DD4EA0A9439A2B /* Pods-digibyteTests.testflight.xcconfig */,
-				A891DDB542D77A7C51D9696135FE93B6 /* Pods-digibyteTests.testnet.xcconfig */,
+				4B865F36103B707434A5BE5F9768DF86 /* Pods-bitradioTests.modulemap */,
+				E708AB7BCF1F5600A117D265023449F8 /* Pods-bitradioTests-acknowledgements.markdown */,
+				89676EA30FADE2BD0E876A9E8DC166BD /* Pods-bitradioTests-acknowledgements.plist */,
+				647FDA78BF61CE20DFB7DDC9E27EA71F /* Pods-bitradioTests-dummy.m */,
+				6AD9EF570FBAB8D29B567EB275326D23 /* Pods-bitradioTests-Info.plist */,
+				86BC67A8D203EE607F29B3DB6845F1F7 /* Pods-bitradioTests-umbrella.h */,
+				1A23A67FF6812C24803BC00C8C19BF7A /* Pods-bitradioTests.debug.xcconfig */,
+				1A6155E6788B681D40E31870D9368BB1 /* Pods-bitradioTests.release.xcconfig */,
+				D100CE7E98A89BE69D25122EA429C021 /* Pods-bitradioTests.screenshots.xcconfig */,
+				F75F0CCD0FAC7E86A8DD4EA0A9439A2B /* Pods-bitradioTests.testflight.xcconfig */,
+				A891DDB542D77A7C51D9696135FE93B6 /* Pods-bitradioTests.testnet.xcconfig */,
 			);
-			name = "Pods-digibyteTests";
-			path = "Target Support Files/Pods-digibyteTests";
+			name = "Pods-bitradioTests";
+			path = "Target Support Files/Pods-bitradioTests";
 			sourceTree = "<group>";
 		};
 		E37FB7E9F8A44C37EFAE70B2D24EE7FC /* VisualEffectView */ = {
@@ -1073,7 +1072,6 @@
 				D94A8E126DC9BBE839E3732B3B27B37C /* VisualEffectView.swift */,
 				7769FC300AB81908AC056DF2A511C82A /* Support Files */,
 			);
-			name = VisualEffectView;
 			path = VisualEffectView;
 			sourceTree = "<group>";
 		};
@@ -1081,9 +1079,9 @@
 			isa = PBXGroup;
 			children = (
 				962B5BEBB730AAEA4D89887F77FC97F4 /* Buglife.framework */,
-				24F49C26EF2505B369F8FF708984E033 /* Pods_digibyte.framework */,
-				47C04E6DF50FE3E67DAAB179B3DB4503 /* Pods_digibyteTests.framework */,
-				12A619E2C06CD72CEB95F6F4A39C3093 /* Pods_digibyteUITests.framework */,
+				24F49C26EF2505B369F8FF708984E033 /* Pods_bitradio.framework */,
+				47C04E6DF50FE3E67DAAB179B3DB4503 /* Pods_bitradioTests.framework */,
+				12A619E2C06CD72CEB95F6F4A39C3093 /* Pods_bitradioUITests.framework */,
 				F339CBB659A4BB183BDC697188B183C4 /* VisualEffectView.framework */,
 			);
 			name = Products;
@@ -1104,7 +1102,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				98A9840B42F00234488CDA845B960273 /* Pods-digibyteTests-umbrella.h in Headers */,
+				98A9840B42F00234488CDA845B960273 /* Pods-bitradioTests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1112,7 +1110,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A6B8952F6A8A1FE6672E3B75AE2677F5 /* Pods-digibyteUITests-umbrella.h in Headers */,
+				A6B8952F6A8A1FE6672E3B75AE2677F5 /* Pods-bitradioUITests-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1253,16 +1251,16 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9083D305D877B30260435C130338C045 /* Pods-digibyte-umbrella.h in Headers */,
+				9083D305D877B30260435C130338C045 /* Pods-bitradio-umbrella.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		567EE664F5C2FB01509E4717779DD37D /* Pods-digibyte */ = {
+		567EE664F5C2FB01509E4717779DD37D /* Pods-bitradio */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B2FFA11EDE3D81897545E175DA5E7862 /* Build configuration list for PBXNativeTarget "Pods-digibyte" */;
+			buildConfigurationList = B2FFA11EDE3D81897545E175DA5E7862 /* Build configuration list for PBXNativeTarget "Pods-bitradio" */;
 			buildPhases = (
 				F78C35502F47F43669A55412CCCDF731 /* Headers */,
 				2C9E96C03360C0A563215E9D04638AD3 /* Sources */,
@@ -1276,9 +1274,9 @@
 				076C2E488F1240102AA499215E143D41 /* PBXTargetDependency */,
 				946F93E020618BDD2824B5ABC6561219 /* PBXTargetDependency */,
 			);
-			name = "Pods-digibyte";
-			productName = "Pods-digibyte";
-			productReference = 24F49C26EF2505B369F8FF708984E033 /* Pods_digibyte.framework */;
+			name = "Pods-bitradio";
+			productName = "Pods-bitradio";
+			productReference = 24F49C26EF2505B369F8FF708984E033 /* Pods_bitradio.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		64B9B242CAF6DC1D1BA5F2C5B7429854 /* VisualEffectView */ = {
@@ -1299,9 +1297,9 @@
 			productReference = F339CBB659A4BB183BDC697188B183C4 /* VisualEffectView.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		774BDBB85623CFA1FD6CC966D54EB485 /* Pods-digibyteUITests */ = {
+		774BDBB85623CFA1FD6CC966D54EB485 /* Pods-bitradioUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AC753A26EC2408BC3DE8C26F717F6267 /* Build configuration list for PBXNativeTarget "Pods-digibyteUITests" */;
+			buildConfigurationList = AC753A26EC2408BC3DE8C26F717F6267 /* Build configuration list for PBXNativeTarget "Pods-bitradioUITests" */;
 			buildPhases = (
 				7764F33356BC853E1176187578A6BD73 /* Headers */,
 				BD5EE8C185D080DBE733C8E9B7DF3DEB /* Sources */,
@@ -1313,9 +1311,9 @@
 			dependencies = (
 				623AA76C7570D4716E5941A9F128EEF2 /* PBXTargetDependency */,
 			);
-			name = "Pods-digibyteUITests";
-			productName = "Pods-digibyteUITests";
-			productReference = 12A619E2C06CD72CEB95F6F4A39C3093 /* Pods_digibyteUITests.framework */;
+			name = "Pods-bitradioUITests";
+			productName = "Pods-bitradioUITests";
+			productReference = 12A619E2C06CD72CEB95F6F4A39C3093 /* Pods_bitradioUITests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		8CC3CE63405B92814C88A2016F839EEF /* Buglife */ = {
@@ -1336,9 +1334,9 @@
 			productReference = 962B5BEBB730AAEA4D89887F77FC97F4 /* Buglife.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		C27159BBC6FB2260C3A8AF2F20883B91 /* Pods-digibyteTests */ = {
+		C27159BBC6FB2260C3A8AF2F20883B91 /* Pods-bitradioTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E58D7EE3470357910C1D206EB707C123 /* Build configuration list for PBXNativeTarget "Pods-digibyteTests" */;
+			buildConfigurationList = E58D7EE3470357910C1D206EB707C123 /* Build configuration list for PBXNativeTarget "Pods-bitradioTests" */;
 			buildPhases = (
 				46E1171CA5D374453498B3199825E418 /* Headers */,
 				205BA3B5F5C9C8B0F3C65806E3263752 /* Sources */,
@@ -1350,9 +1348,9 @@
 			dependencies = (
 				0163DE2AAF4FC24EE20E020D361E984B /* PBXTargetDependency */,
 			);
-			name = "Pods-digibyteTests";
-			productName = "Pods-digibyteTests";
-			productReference = 47C04E6DF50FE3E67DAAB179B3DB4503 /* Pods_digibyteTests.framework */;
+			name = "Pods-bitradioTests";
+			productName = "Pods-bitradioTests";
+			productReference = 47C04E6DF50FE3E67DAAB179B3DB4503 /* Pods_bitradioTests.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 /* End PBXNativeTarget section */
@@ -1369,6 +1367,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 7DB346D0F39D3F0E887471402A8071AB;
@@ -1377,9 +1376,9 @@
 			projectRoot = "";
 			targets = (
 				8CC3CE63405B92814C88A2016F839EEF /* Buglife */,
-				567EE664F5C2FB01509E4717779DD37D /* Pods-digibyte */,
-				C27159BBC6FB2260C3A8AF2F20883B91 /* Pods-digibyteTests */,
-				774BDBB85623CFA1FD6CC966D54EB485 /* Pods-digibyteUITests */,
+				567EE664F5C2FB01509E4717779DD37D /* Pods-bitradio */,
+				C27159BBC6FB2260C3A8AF2F20883B91 /* Pods-bitradioTests */,
+				774BDBB85623CFA1FD6CC966D54EB485 /* Pods-bitradioUITests */,
 				DE7ECEA4CAB344F6DC65522967BBF198 /* Reveal-SDK */,
 				64B9B242CAF6DC1D1BA5F2C5B7429854 /* VisualEffectView */,
 			);
@@ -1429,7 +1428,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A3F42D4C8C7A4C2EE0DA5DFFAA69013 /* Pods-digibyteTests-dummy.m in Sources */,
+				8A3F42D4C8C7A4C2EE0DA5DFFAA69013 /* Pods-bitradioTests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1437,7 +1436,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C447742FEED70E1B4A2B6815315A8E6 /* Pods-digibyte-dummy.m in Sources */,
+				9C447742FEED70E1B4A2B6815315A8E6 /* Pods-bitradio-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1577,7 +1576,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AB2FF6CE64078448379F4FBABB97A99B /* Pods-digibyteUITests-dummy.m in Sources */,
+				AB2FF6CE64078448379F4FBABB97A99B /* Pods-bitradioUITests-dummy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1586,8 +1585,8 @@
 /* Begin PBXTargetDependency section */
 		0163DE2AAF4FC24EE20E020D361E984B /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-digibyte";
-			target = 567EE664F5C2FB01509E4717779DD37D /* Pods-digibyte */;
+			name = "Pods-bitradio";
+			target = 567EE664F5C2FB01509E4717779DD37D /* Pods-bitradio */;
 			targetProxy = CBA9F20C5E92CD2AAC0305B0E0AE75D4 /* PBXContainerItemProxy */;
 		};
 		076C2E488F1240102AA499215E143D41 /* PBXTargetDependency */ = {
@@ -1598,8 +1597,8 @@
 		};
 		623AA76C7570D4716E5941A9F128EEF2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			name = "Pods-digibyte";
-			target = 567EE664F5C2FB01509E4717779DD37D /* Pods-digibyte */;
+			name = "Pods-bitradio";
+			target = 567EE664F5C2FB01509E4717779DD37D /* Pods-bitradio */;
 			targetProxy = 86FB7B67B4CF20419029A1C8D30EB1D3 /* PBXContainerItemProxy */;
 		};
 		946F93E020618BDD2824B5ABC6561219 /* PBXTargetDependency */ = {
@@ -1678,7 +1677,7 @@
 		};
 		1B8EA42158BC6A69D731739DFED723F4 /* Testflight */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F75F0CCD0FAC7E86A8DD4EA0A9439A2B /* Pods-digibyteTests.testflight.xcconfig */;
+			baseConfigurationReference = F75F0CCD0FAC7E86A8DD4EA0A9439A2B /* Pods-bitradioTests.testflight.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1690,12 +1689,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1744,7 +1743,7 @@
 		};
 		27EC20D14F7385BE022C7625A8C7087B /* Testflight */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A22901024B9EF7FDD3E421857503AA70 /* Pods-digibyteUITests.testflight.xcconfig */;
+			baseConfigurationReference = A22901024B9EF7FDD3E421857503AA70 /* Pods-bitradioUITests.testflight.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1756,12 +1755,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1792,7 +1791,7 @@
 		};
 		30AD5C8E199A8C7DA8679ACB35F7DF92 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A6155E6788B681D40E31870D9368BB1 /* Pods-digibyteTests.release.xcconfig */;
+			baseConfigurationReference = 1A6155E6788B681D40E31870D9368BB1 /* Pods-bitradioTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1804,12 +1803,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1885,7 +1884,7 @@
 		};
 		485D62079A9CE91C2FF6124A6E8B7A40 /* Screenshots */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EF2556920659E5993D1F42A6C20463AA /* Pods-digibyte.screenshots.xcconfig */;
+			baseConfigurationReference = EF2556920659E5993D1F42A6C20463AA /* Pods-bitradio.screenshots.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1897,12 +1896,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1910,8 +1909,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -1921,7 +1919,7 @@
 		};
 		505A42F5FD17B57CDB55C89F4DD855E5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 1A23A67FF6812C24803BC00C8C19BF7A /* Pods-digibyteTests.debug.xcconfig */;
+			baseConfigurationReference = 1A23A67FF6812C24803BC00C8C19BF7A /* Pods-bitradioTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -1933,12 +1931,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -1976,8 +1974,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2047,7 +2044,7 @@
 		};
 		5CF4C6B640C7DA19AFC8D928760EE61F /* Testflight */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 660E49D3BF709E85C3201537AFD27596 /* Pods-digibyte.testflight.xcconfig */;
+			baseConfigurationReference = 660E49D3BF709E85C3201537AFD27596 /* Pods-bitradio.testflight.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2059,12 +2056,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2072,8 +2069,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2137,8 +2133,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2171,8 +2166,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2338,7 +2332,7 @@
 		};
 		84B3EE660CF6ECAC6670BEC3B50ED193 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = EC9307F11E765D52F4ACF1EBAF6C45E7 /* Pods-digibyte.debug.xcconfig */;
+			baseConfigurationReference = EC9307F11E765D52F4ACF1EBAF6C45E7 /* Pods-bitradio.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2350,12 +2344,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2387,7 +2381,7 @@
 		};
 		8A963B60211F72228F55C0BA48026210 /* Screenshots */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = D100CE7E98A89BE69D25122EA429C021 /* Pods-digibyteTests.screenshots.xcconfig */;
+			baseConfigurationReference = D100CE7E98A89BE69D25122EA429C021 /* Pods-bitradioTests.screenshots.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2399,12 +2393,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2421,7 +2415,7 @@
 		};
 		8FB313AA9A737DFDF9503294BCCC0F4C /* Testnet */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A891DDB542D77A7C51D9696135FE93B6 /* Pods-digibyteTests.testnet.xcconfig */;
+			baseConfigurationReference = A891DDB542D77A7C51D9696135FE93B6 /* Pods-bitradioTests.testnet.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2433,12 +2427,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteTests/Pods-digibyteTests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioTests/Pods-bitradioTests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2468,7 +2462,7 @@
 		};
 		9DE0F68E8D8DB1CC32E31A381247BF98 /* Testnet */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8B4A0B0C296312B56952C620ACB837BA /* Pods-digibyteUITests.testnet.xcconfig */;
+			baseConfigurationReference = 8B4A0B0C296312B56952C620ACB837BA /* Pods-bitradioUITests.testnet.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2480,12 +2474,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2502,7 +2496,7 @@
 		};
 		B2A0DEAA2CB09018F09D503D68099916 /* Screenshots */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 64B9B84288FE7333ED1D22228CE02AB4 /* Pods-digibyteUITests.screenshots.xcconfig */;
+			baseConfigurationReference = 64B9B84288FE7333ED1D22228CE02AB4 /* Pods-bitradioUITests.screenshots.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2514,12 +2508,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2550,7 +2544,7 @@
 		};
 		B68EB484B6CC19C1BD295CA2D7311E34 /* Testnet */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 0AD43FBB0D326A6A39809C575A267A5E /* Pods-digibyte.testnet.xcconfig */;
+			baseConfigurationReference = 0AD43FBB0D326A6A39809C575A267A5E /* Pods-bitradio.testnet.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2562,12 +2556,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2575,8 +2569,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2703,8 +2696,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) ";
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
@@ -2715,7 +2707,7 @@
 		};
 		E202D753CECE1DC036FBCD6D7B36EBB1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3625DE56A2D2431230B2A40828DAE1D4 /* Pods-digibyteUITests.release.xcconfig */;
+			baseConfigurationReference = 3625DE56A2D2431230B2A40828DAE1D4 /* Pods-bitradioUITests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2727,12 +2719,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2749,7 +2741,7 @@
 		};
 		E36CFF2E782F87AFF83FB61904287176 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FCCBBCD09F416D142D8D8685BB2AD07C /* Pods-digibyte.release.xcconfig */;
+			baseConfigurationReference = FCCBBCD09F416D142D8D8685BB2AD07C /* Pods-bitradio.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2761,12 +2753,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyte/Pods-digibyte.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradio/Pods-bitradio.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2774,8 +2766,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
-				SWIFT_COMPILATION_MODE = wholemodule;
-				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -2799,7 +2790,7 @@
 		};
 		EC2F7886D658490BD4E56E4CC9C4328B /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2EEC46053AE5647D0BE1810BEA90078E /* Pods-digibyteUITests.debug.xcconfig */;
+			baseConfigurationReference = 2EEC46053AE5647D0BE1810BEA90078E /* Pods-bitradioUITests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
 				CODE_SIGN_IDENTITY = "";
@@ -2811,12 +2802,12 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				INFOPLIST_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests-Info.plist";
+				INFOPLIST_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests-Info.plist";
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				MACH_O_TYPE = staticlib;
-				MODULEMAP_FILE = "Target Support Files/Pods-digibyteUITests/Pods-digibyteUITests.modulemap";
+				MODULEMAP_FILE = "Target Support Files/Pods-bitradioUITests/Pods-bitradioUITests.modulemap";
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -2881,7 +2872,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AC753A26EC2408BC3DE8C26F717F6267 /* Build configuration list for PBXNativeTarget "Pods-digibyteUITests" */ = {
+		AC753A26EC2408BC3DE8C26F717F6267 /* Build configuration list for PBXNativeTarget "Pods-bitradioUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				EC2F7886D658490BD4E56E4CC9C4328B /* Debug */,
@@ -2893,7 +2884,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B2FFA11EDE3D81897545E175DA5E7862 /* Build configuration list for PBXNativeTarget "Pods-digibyte" */ = {
+		B2FFA11EDE3D81897545E175DA5E7862 /* Build configuration list for PBXNativeTarget "Pods-bitradio" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				84B3EE660CF6ECAC6670BEC3B50ED193 /* Debug */,
@@ -2905,7 +2896,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		E58D7EE3470357910C1D206EB707C123 /* Build configuration list for PBXNativeTarget "Pods-digibyteTests" */ = {
+		E58D7EE3470357910C1D206EB707C123 /* Build configuration list for PBXNativeTarget "Pods-bitradioTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				505A42F5FD17B57CDB55C89F4DD855E5 /* Debug */,
