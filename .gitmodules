@@ -9,7 +9,7 @@
 	url = https://github.com/wahern/dns.git
 [submodule "Modules/digibytewallet-core"]
 	path = Modules/digibytewallet-core
-	url = https://github.com/SmartArray/digibytewallet-core.git
+	url = https://github.com/DigiByte-Core/digibytewallet-core.git
 [submodule "Modules/VisualEffectView"]
 	path = Modules/VisualEffectView
 	url = https://github.com/efremidze/VisualEffectView.git
