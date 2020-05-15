@@ -162,14 +162,14 @@ struct AssetModel: Codable {
     
     let sha2Issue: String?
     
-    func getAssetInfo() -> String {
+    func getAssetInfo(separator: String = ", ") -> String {
         var res = [String]()
         
         res.append("\(S.Assets.totalSupply): \(totalSupply)")
         res.append("\(S.Assets.numberOfHolders): \(numOfHolders)")
         res.append("\(S.Assets.lockStatus): \(lockStatus ? S.Assets.locked : S.Assets.unlocked)")
         
-        return res.joined(separator: ", ")
+        return res.joined(separator: separator)
     }
     
     func getIssuer() -> String {
@@ -253,10 +253,10 @@ struct TransactionInputModel: Codable {
     let txid: String
     let vout: Int
     let scriptSig: ScriptSigModel
-    let value: UInt64 // Satoshis
+    let value: UInt64? // Satoshis
     let sequence: Int
     
-    let previousOutput: PreviousOutputModel
+    let previousOutput: PreviousOutputModel?
     
     let assets: [AssetHeaderModel]
 }
@@ -304,15 +304,29 @@ struct ExtendedTransactionOutputModel: Codable {
 
 typealias AssetUtxoModel = ExtendedTransactionOutputModel
 
+struct Payment: Codable {
+    let burn: Bool?
+    let amount: Int
+    let input: Int
+}
+
+struct DaData: Codable {
+    let type: String
+    let payments: [Payment]?
+}
+
 struct TransactionInfoModel: Codable {
     let blockheight: Int
     let blockhash: String?
     let txid: String
+    let dadata: [DaData]?
     
     let colored: Bool
     
     let vin: [TransactionInputModel]
     var vout: [TransactionOutputModel]
+    
+    var temporary: Bool? = false
     
     func getAssetIds() -> [String] {
         var res = Set<String>()
@@ -326,6 +340,23 @@ struct TransactionInfoModel: Codable {
         }
         
         return Array(res)
+    }
+    
+    // Returns input for a specific
+    func getBurnAmount(input: Int) -> Int? {
+        guard let dadata = dadata else { return nil }
+        // ToDo: Loop through all indexes
+        guard let index = dadata.firstIndex(where: { $0.type == "burn" }) else { return nil }
+        guard let payments = dadata[index].payments else { return nil }
+        
+        guard
+            let burnIndex = payments.firstIndex(where: { $0.input == input && $0.burn == true })
+        else {
+            return nil
+        }
+        
+        let payment = payments[burnIndex]
+        return payment.amount
     }
     
     func getAssets() -> [AssetHeaderModel] {
@@ -396,6 +427,9 @@ class FetchAssetTransactionOperation: Operation {
     
     override var isFinished: Bool {
         set {
+            if newValue {
+                self.finished()
+            }
             willChangeValue(forKey: "isFinished")
             _isFinished = newValue
             didChangeValue(forKey: "isFinished")
@@ -415,6 +449,13 @@ class FetchAssetTransactionOperation: Operation {
         
         get {
             return _isExecuting
+        }
+    }
+    
+    func finished() {
+        DispatchQueue.main.async {
+            self.state.progress.current = self.state.progress.current + 1
+            AssetNotificationCenter.instance.post(name: AssetNotificationCenter.notifications.updateProgress, object: nil, userInfo: self.state.progress.getUserInfo())
         }
     }
     
@@ -590,21 +631,37 @@ class AssetResolver {
     private let callback: ([AssetResolveState]) -> Void
     private let queue = OperationQueue()
     
+    class ProgressState {
+        var current: Int = 0
+        var total: Int = 0
+        
+        func getUserInfo() -> [String: Int] {
+            var ret = [String: Int]()
+            ret["current"] = current
+            ret["total"] = total
+            return ret
+        }
+    }
+    
     class AssetResolveState {
         var txID: String
         var resolved: Bool = false
         var failed: Bool = false
         
+        let progress: ProgressState
+        
         var transactionInfoModel: TransactionInfoModel? = nil
         var resolvedModels: [AssetModel] = []
         
-        init(txid: String) {
+        init(txid: String, progressState: ProgressState) {
             self.txID = txid
+            self.progress = progressState
         }
     }
     
     var states = [AssetResolveState]()
     var stateMap = [String: AssetResolveState]()
+    var progress = ProgressState()
     
     init(txids: [String], callback: @escaping ([AssetResolveState]) -> Void) {
         self.callback = callback
@@ -616,7 +673,7 @@ class AssetResolver {
 
         states.reserveCapacity(self.txIDSet.count)
         self.txIDSet.forEach { (txid) in
-            let state = AssetResolveState(txid: txid)
+            let state = AssetResolveState(txid: txid, progressState: progress)
             states.append(state)
             stateMap[txid] = state
         }
@@ -630,7 +687,7 @@ class AssetResolver {
     }
     
     private func configureQueue() {
-        queue.maxConcurrentOperationCount = 2
+        queue.maxConcurrentOperationCount = 5
     }
     
     private func launchFetchers() {
@@ -640,6 +697,9 @@ class AssetResolver {
             print("AssetResolver: All operations completed")
             self.callback(self.states)
         }
+        
+        progress.total = self.txIDSet.count
+        AssetNotificationCenter.instance.post(name: AssetNotificationCenter.notifications.updateProgress, object: nil, userInfo: progress.getUserInfo())
         
         for txid in self.txIDSet {
             let state = self.stateMap[txid]!
@@ -659,6 +719,7 @@ class AssetNotificationCenter {
     enum notifications {
         static let newAssetData = Notification.Name("newAssetData")
         static let fetchingAssets = Notification.Name("fetchingAssets")
+        static let updateProgress = Notification.Name("updateProgress")
         static let fetchedAssets = Notification.Name("fetchedAssets")
         static let assetsRecalculated = Notification.Name("assetsRecalculated")
     }
@@ -682,7 +743,7 @@ class AssetHelper {
         return _allAssets
     }
     
-    static var addressPartOfWalletCallback: ((String) -> Bool) = { _ in
+    static var assetWasNotSpentCallback: ((String, Int) -> Bool) = { (_, _) in
         assert(false) // Not assigned
         return false
     }
@@ -707,10 +768,8 @@ class AssetHelper {
                     // Assuming one address
                     guard addresses.count == 1 else { return }
                     
-                    let address = addresses[0]
-                    
                     // Check if address is part of wallet
-                    if addressPartOfWalletCallback(address) {
+                    if assetWasNotSpentCallback(infoModel.txid, model.n) {
                         _allBalances[assetModel.assetId] = (_allBalances[assetModel.assetId] ?? 0) + assetModel.amount
                     }
                 }
@@ -842,7 +901,12 @@ class AssetHelper {
     static func resolveAssetTransaction(for txids: [String], callback: (([TransactionInfoModel]) -> Void)?) -> AssetResolver? {
         AssetNotificationCenter.instance.post(name: AssetNotificationCenter.notifications.fetchingAssets, object: nil)
         
-        return AssetResolver(txids: txids) { states in
+        let filtered = txids.filter { (txid) -> Bool in
+            guard let infoModel = self.getTransactionInfoModel(txid: txid) else { return true }
+            return (infoModel.temporary == true)
+        }
+        
+        return AssetResolver(txids: filtered) { states in
             states.forEach { state in
                 guard state.resolved, !state.failed else { return }
                 state.resolvedModels.forEach({ saveAssetModel(assetModel: $0) })
@@ -873,6 +937,33 @@ class AssetHelper {
     
     static func resolveAssetTransaction(for tx: Transaction, callback: (([TransactionInfoModel]) -> Void)?) -> AssetResolver? {
         return resolveAssetTransaction(for: [tx.hash], callback: callback)
+    }
+    
+    enum Operation {
+        case send
+        case burn
+    }
+    
+    static func createTemporaryAssetModel(for txid: String, mode: Operation, assetModel: AssetModel, amount: Int, to: String) {
+        if self.getTransactionInfoModel(txid: txid) != nil { return }
+        
+        var dadata: [DaData]? = nil
+        if mode == .burn {
+            let payment = Payment(burn: true, amount: amount, input: 0)
+            let burnData = DaData(type: "burn", payments: [payment])
+            dadata = [burnData]
+        }
+        
+        let headerModels = AssetHeaderModel(assetId: assetModel.assetId, amount: amount, issueTxid: assetModel.issuanceTxid ?? "", divisibility: assetModel.divisibility, lockStatus: assetModel.lockStatus, aggregationPolicy: assetModel.aggregationPolicy)
+        
+        let output = TransactionOutputModel(n: 0, used: false, usedTxid: nil, usedBlockheight: nil, value: 0, scriptPubKey: ScriptSigModel(hex: "", addresses: [to]), assets: [headerModels])
+        
+        var newModel = TransactionInfoModel(blockheight: -1, blockhash: nil, txid: txid, dadata: dadata, colored: true, vin: [], vout: [output])
+        newModel.temporary = true
+        
+        self.saveAssetTransactionModel(assetTransactionModel: newModel)
+        
+        AssetNotificationCenter.instance.post(name: AssetNotificationCenter.notifications.newAssetData, object: nil)
     }
     
     static func reset() {

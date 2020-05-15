@@ -274,9 +274,12 @@ class WalletCoordinator : Subscriber, Trackable {
     }
 
     private func addSubscriptions() {
-        store.subscribe(self, name: .retrySync, callback: { _ in 
-            DispatchQueue.walletQueue.async {
+        store.subscribe(self, name: .retrySync, callback: { _ in
+            DispatchQueue.main.async {
                 self.store.perform(action: WalletChange.setSyncingState(.connecting))
+            }
+            
+            DispatchQueue.walletQueue.async {
                 self.walletManager.peerManager?.connect()
             }
         })

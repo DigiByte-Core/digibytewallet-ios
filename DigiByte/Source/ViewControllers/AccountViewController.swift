@@ -247,7 +247,7 @@ fileprivate class BalanceView: UIView, Subscriber {
         })
     }
     
-    private func updateSyncIcon(syncState: SyncState, isConnected: Bool) {
+    func updateSyncIcon(syncState: SyncState, isConnected: Bool) {
         topRightImage.stopAnimating()
         topRightImage.animationImages = []
         
@@ -613,9 +613,9 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         didSet {
             guard let walletManager = walletManager else { return }
             
-            AssetHelper.addressPartOfWalletCallback = { [weak self] address in
-                guard let walletManager = self?.walletManager else { return false }
-                return walletManager.wallet?.containsAddress(address) ?? false
+            AssetHelper.assetWasNotSpentCallback = { [weak self] (txid, n) -> Bool in
+                guard let wallet = self?.walletManager?.wallet else { return false }
+                return wallet.hasUtxo(txid: txid, n: n) && wallet.utxoIsSpendable(txid: txid, n: n)
             }
             
             if !walletManager.noWallet {
@@ -658,6 +658,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         
         if
             let infoModel = AssetHelper.getTransactionInfoModel(txid: tx.hash),
+            infoModel.temporary != true,
             AssetHelper.hasAllAssetModels(for: infoModel.getAssetIds())
         {
             // Display asset if all required models exist
@@ -718,8 +719,15 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         
         // Fetching new assets
         AssetNotificationCenter.instance.addObserver(forName: AssetNotificationCenter.notifications.fetchingAssets, object: nil, queue: nil) { _ in
-            
             self.present(self.loadingAssetsModalView, animated: true, completion: nil)
+        }
+        
+        AssetNotificationCenter.instance.addObserver(forName: AssetNotificationCenter.notifications.updateProgress, object: nil, queue: nil) { notification in
+            if
+                let current = notification.userInfo?["current"] as? Int,
+                let total = notification.userInfo?["total"] as? Int {
+                self.loadingAssetsModalView.updateStep(current: current, total: total)
+            }
         }
         
         // Completed fetching new assets
@@ -744,7 +752,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     
     private let navigationDrawer = NavigationDrawer(id: "navigation", walletTitle: C.applicationTitle, version: C.version)
     private let assetDrawer = AssetDrawer(id: "assets")
-    private var loadingAssetsModalView: UIViewController!
+    private var loadingAssetsModalView: DGBModalLoadingView!
     
     private var assetResolver: AssetResolver? = nil
     
@@ -883,7 +891,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
             }
         } else {
             // if the menu was dragged less than half of it's width, close it. Otherwise, open it.
-            if menuLeftConstraint.constant < -width / 2 {
+            if menuLeftConstraint.constant < -width * 2 / 3 {
                 self.closeNavigationDrawer()
             } else {
                 self.openNavigationDrawer()
@@ -918,7 +926,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
                 }
                 view.layoutIfNeeded()
             } else {
-                if menuLeftConstraint.constant < -width / 2 {
+                if menuLeftConstraint.constant < -width / 3 {
                     self.closeNavigationDrawer()
                 } else {
                     self.openNavigationDrawer()
@@ -948,7 +956,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
                 }
                 view.layoutIfNeeded()
             } else {
-                if assetDrawerRightConstraint.constant > width / 2 {
+                if assetDrawerRightConstraint.constant > width / 3 {
                     self.closeAssetDrawer()
                 } else {
                     self.openAssetDrawer()
@@ -973,11 +981,11 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         
         navigationDrawer.addButton(title: S.MenuButton.digiAssets, icon: UIImage(named: "digiassets")!) {
             // Show confirmation alert (address disclosure)
-            if !self.showDigiAssetsConfirmViewIfNeeded { infoModels in
+            if !self.showDigiAssetsConfirmViewIfNeeded({ infoModels in
                 // Models were probably resolved
                 guard infoModels.count > 0 else { return }
                 self.store.perform(action: HamburgerActions.Present(modal: .digiAssets(nil)))
-            } {
+            }) {
                 self.store.perform(action: HamburgerActions.Present(modal: .digiAssets(nil)))
             }
         }
@@ -1074,7 +1082,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     }
     
     func closeNavigationDrawer() {
-        guard navigationDrawerOpen else { return }
+//        guard navigationDrawerOpen else { return }
         navigationMenuLeftConstraint?.constant = -navigationDrawer.frame.width
         
         UIView.spring(0.3, animations: {
@@ -1165,6 +1173,10 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         
         fadeView.alpha = 0
         fadeView.isHidden = true
+        
+        if let walletState = walletManager?.store.state.walletState {
+            balanceView.updateSyncIcon(syncState: walletState.syncState, isConnected: walletState.isConnected)
+        }
     }
     
     private func addSubviews() {
@@ -1220,9 +1232,13 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     
     func showSingleDigiAssetsConfirmViewIfNeeded(for tx: Transaction, _ callback: (([TransactionInfoModel]) -> Void)? = nil) {
         // Check if models already exist in cache
-        if let infoModel = AssetHelper.getTransactionInfoModel(txid: tx.hash) {
-            // Exit if we have all asset utxos and all required models
-            if AssetHelper.hasAllAssetModels(for: infoModel.getAssetIds()) {
+        if
+            let infoModel = AssetHelper.getTransactionInfoModel(txid: tx.hash) {
+            // Do not show confirm view,
+            // if we have all asset utxos and all required models.
+            if
+                infoModel.temporary != true,
+                AssetHelper.hasAllAssetModels(for: infoModel.getAssetIds()) {
                 callback?([infoModel])
                 return
             }
@@ -1262,11 +1278,11 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     func showDigiAssetsConfirmViewIfNeeded(_ callback: (([TransactionInfoModel]) -> Void)? = nil) -> Bool {
         guard !AssetHelper.resolvedAllAssets(for: self.store.state.walletState.transactions) else { return false }
             
-        let confirmView = DGBConfirmAlert(title: S.Assets.receivedAssetsTitle, message: S.Assets.receivedAssetsMessage, image: UIImage(named: "privacy"), okTitle: S.Assets.confirmAssetsResolve, cancelTitle: S.Assets.skipAssetsResolve)
+        let confirmView = DGBConfirmAlert(title: S.Assets.receivedAssetsTitle, message: S.Assets.receivedAssetsMessage, image: UIImage(named: "privacy"), okTitle: S.Assets.confirmAssetsResolve, cancelTitle: S.Assets.cancelAssetsResolve, alternativeButtonTitle: S.Assets.continueWithoutSync)
         
         let confirmCallback: () -> Void = {
             let transactions = self.store.state.walletState.transactions
-            if self.assetResolver != nil { self.assetResolver!.cancel() }
+            if let resolver = self.assetResolver { resolver.cancel() }
             self.assetResolver = AssetHelper.resolveAssetTransaction(for: transactions.map({ $0.hash }), callback: callback)
         }
         
@@ -1277,6 +1293,11 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         
         confirmView.cancelCallback = { (close: DGBCallback) in
             close()
+        }
+        
+        confirmView.alternativeCallback = { (close: DGBCallback) in
+            close()
+            self.store.perform(action: HamburgerActions.Present(modal: .digiAssets(nil)))
         }
         
         guard !UserDefaults.Privacy.automaticallyResolveAssets else {

@@ -494,7 +494,7 @@ class SendViewController : UIViewController, UIImagePickerControllerDelegate, UI
                         myself.onPublishSuccess?()
                     })
                     //self?.saveEvent("send.success")
-                case .creationError(let message):
+                case .creationError(let message, _):
                     self?.showAlert(title: S.Send.createTransactionError, message: message, buttonLabel: S.Button.ok)
                     //self?.saveEvent("send.publishFailed", attributes: ["errorMessage": message])
                 case .publishFailure(let error):

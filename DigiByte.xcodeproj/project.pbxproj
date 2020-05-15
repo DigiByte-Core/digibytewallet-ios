@@ -20,7 +20,6 @@
 		391BE382233372DF0079B56A /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391BE381233372DF0079B56A /* VisualEffectView.swift */; };
 		391BE383233372DF0079B56A /* VisualEffectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 391BE381233372DF0079B56A /* VisualEffectView.swift */; };
 		3959E468239A62AA0008B531 /* DATextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3959E467239A62AA0008B531 /* DATextBox.swift */; };
-		396B869623DFFC5200D0D243 /* Storez.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3984BB752395210300A775A7 /* Storez.framework */; };
 		3981267E233281050019D5E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 398124B0233281030019D5E6 /* Assets.xcassets */; };
 		39812685233281050019D5E6 /* BIP39Words.plist in Resources */ = {isa = PBXBuildFile; fileRef = 398124B8233281030019D5E6 /* BIP39Words.plist */; };
 		39812687233281050019D5E6 /* Icon.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 398124BF233281030019D5E6 /* Icon.xcassets */; };
@@ -71,7 +70,6 @@
 		398126C0233281050019D5E6 /* BRAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256A233281030019D5E6 /* BRAPIClient.swift */; };
 		398126C1233281050019D5E6 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256B233281030019D5E6 /* Extensions.swift */; };
 		398126C2233281050019D5E6 /* TxMetaData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256C233281030019D5E6 /* TxMetaData.swift */; };
-		398126C3233281050019D5E6 /* BRBSPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256D233281040019D5E6 /* BRBSPatch.swift */; };
 		398126C4233281050019D5E6 /* BRWalletPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256E233281040019D5E6 /* BRWalletPlugin.swift */; };
 		398126C5233281050019D5E6 /* BRHTTPFileMiddleware.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256F233281040019D5E6 /* BRHTTPFileMiddleware.swift */; };
 		398126C6233281050019D5E6 /* BRHTTPRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812570233281040019D5E6 /* BRHTTPRouter.swift */; };
@@ -321,6 +319,7 @@
 		39CD011C233A355400FCF02C /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 39CD011B233A355400FCF02C /* MainInterface.storyboard */; };
 		39CD011F233A379700FCF02C /* DigiByte Wallet.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 39082BDB22760674008657F6 /* DigiByte Wallet.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		39D0349E233254B000DE3E78 /* ToDos.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 39D0349D233254AF00DE3E78 /* ToDos.rtf */; };
+		39D43C01246802D600B51191 /* sqlite3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 752FB04A1DF8BE6B009086FB /* sqlite3.framework */; };
 		39D504502397BFE600A8B339 /* Kingfisher.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39D5044B2397BFDC00A8B339 /* Kingfisher.framework */; };
 		39D504512397BFE600A8B339 /* Kingfisher.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 39D5044B2397BFDC00A8B339 /* Kingfisher.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		39D504542397FFA500A8B339 /* MarqueeLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39D504532397FFA500A8B339 /* MarqueeLabel.swift */; };
@@ -330,6 +329,7 @@
 		39E304582338B3F0008F8386 /* UIImage+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125A3233281040019D5E6 /* UIImage+Utils.swift */; };
 		39E304592338B413008F8386 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398124F1233281030019D5E6 /* Utils.swift */; };
 		39E3045A2338B434008F8386 /* UserDefaults+Shared.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125AA233281040019D5E6 /* UserDefaults+Shared.swift */; };
+		39FA0F59246808E500A0742D /* BRBSPatch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3981256D233281040019D5E6 /* BRBSPatch.swift */; };
 		39FFD180239D563A00CFB302 /* DADetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FFD17F239D563A00CFB302 /* DADetailViewController.swift */; };
 		39FFD18C239E604500CFB302 /* AssetSender.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39FFD18B239E604500CFB302 /* AssetSender.swift */; };
 		751734B91DAC941E00193C87 /* sec-sub-1.c in Sources */ = {isa = PBXBuildFile; fileRef = 755CD8BE1DAA16820075898E /* sec-sub-1.c */; };
@@ -354,7 +354,6 @@
 		752438871DAAC87E00844BEC /* iter_delegpt.c in Sources */ = {isa = PBXBuildFile; fileRef = 755CD3FD1DAA0E3E0075898E /* iter_delegpt.c */; };
 		752438881DAAC8B000844BEC /* val_secalgo.c in Sources */ = {isa = PBXBuildFile; fileRef = 755CD6C51DAA0E400075898E /* val_secalgo.c */; };
 		752FB04C1DF8BEEC009086FB /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FEFD1B1DAED56E00203D3A /* libsqlite3.tbd */; };
-		752FB04D1DF8BF4B009086FB /* sqlite3.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 752FB04A1DF8BE6B009086FB /* sqlite3.framework */; };
 		754868CF1DAB57A200732D70 /* msgencode.c in Sources */ = {isa = PBXBuildFile; fileRef = 755CD6851DAA0E400075898E /* msgencode.c */; };
 		754868D01DAB57BC00732D70 /* iter_fwd.c in Sources */ = {isa = PBXBuildFile; fileRef = 755CD4011DAA0E3E0075898E /* iter_fwd.c */; };
 		754868D11DAB57E900732D70 /* packed_rrset.c in Sources */ = {isa = PBXBuildFile; fileRef = 755CD68B1DAA0E400075898E /* packed_rrset.c */; };
@@ -1919,16 +1918,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39D43C01246802D600B51191 /* sqlite3.framework in Frameworks */,
 				39D504502397BFE600A8B339 /* Kingfisher.framework in Frameworks */,
 				3984BB9A2395212400A775A7 /* Storez.framework in Frameworks */,
 				22A9A9661DF61FEE000F0016 /* WebKit.framework in Frameworks */,
 				22A9A9641DF61FE7000F0016 /* Security.framework in Frameworks */,
 				22A9A9621DF61FE0000F0016 /* SystemConfiguration.framework in Frameworks */,
 				22A9A9601DF61FD8000F0016 /* CoreLocation.framework in Frameworks */,
-				396B869623DFFC5200D0D243 /* Storez.framework in Frameworks */,
 				22A9A95E1DF61FD0000F0016 /* PushKit.framework in Frameworks */,
 				223DB21B1DF69F0F0076A151 /* libbz2.framework in Frameworks */,
-				752FB04D1DF8BF4B009086FB /* sqlite3.framework in Frameworks */,
 				759DA0BE1DAC36A3008CC49B /* libBRCore.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3962,7 +3960,7 @@
 			attributes = {
 				CLASSPREFIX = BR;
 				LastSwiftUpdateCheck = 1100;
-				LastUpgradeCheck = 1100;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "DigiByte Foundation NZ Limited";
 				TargetAttributes = {
 					22A9A9951DF63426000F0016 = {
@@ -4647,7 +4645,6 @@
 				398126F8233281050019D5E6 /* String+Additions.swift in Sources */,
 				39812737233281050019D5E6 /* TransactionsTableViewController.swift in Sources */,
 				39812770233281050019D5E6 /* BlinkingView.swift in Sources */,
-				398126C3233281050019D5E6 /* BRBSPatch.swift in Sources */,
 				3981270A233281050019D5E6 /* ReScanViewController.swift in Sources */,
 				3981274E233281050019D5E6 /* SendAmountCell.swift in Sources */,
 				39812757233281050019D5E6 /* AnimatableIcon.swift in Sources */,
@@ -4787,6 +4784,7 @@
 				39812738233281050019D5E6 /* AccountViewController.swift in Sources */,
 				3981270B233281050019D5E6 /* BCashTransactionViewController.swift in Sources */,
 				39812775233281050019D5E6 /* ModalHeaderView.swift in Sources */,
+				39FA0F59246808E500A0742D /* BRBSPatch.swift in Sources */,
 				3981270E233281050019D5E6 /* ManageWalletViewController.swift in Sources */,
 				39812786233281050019D5E6 /* BRCore.swift in Sources */,
 				398126D9233281050019D5E6 /* Types.swift in Sources */,

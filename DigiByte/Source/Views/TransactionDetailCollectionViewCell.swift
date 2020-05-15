@@ -67,11 +67,12 @@ class TransactionDetailCollectionViewCell : UICollectionViewCell {
             case .received:
                 return UIImage(named: "receivedTransaction")!
             case .moved:
-                return UIImage(named: "hamburger_001Info")!
+                return UIImage(named: "transfer")!
             }
         }()
         
         directionSymbolImageView.image = directionSymbolImage
+        directionSymbolImageView.tintColor = .white
     }
 
     var closeCallback: (() -> Void)? {

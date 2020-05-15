@@ -13,6 +13,9 @@ fileprivate class LogoCell: UITableViewCell {
     private let digiassetsLogo = UIImageView(image: UIImage(named: "digiassets_logo"))
     
     let stackView = UIStackView()
+    let icon = UIView()
+    let iconInner = UIView()
+    let iconIV = UIImageView()
     let headerLabel = UILabel(font: UIFont.da.customBold(size: 20), color: .white)
     let dateLabel = UILabel(font: UIFont.da.customMedium(size: 14), color: .white)
     
@@ -24,6 +27,7 @@ fileprivate class LogoCell: UITableViewCell {
         stackView.distribution = .fill
         stackView.spacing = 8
         
+        stackView.addArrangedSubview(icon)
         stackView.addArrangedSubview(headerLabel)
         stackView.addArrangedSubview(dateLabel)
         
@@ -35,7 +39,6 @@ fileprivate class LogoCell: UITableViewCell {
             digiassetsLogo.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             digiassetsLogo.centerXAnchor.constraint(equalTo: contentView.centerXAnchor, constant: 0),
             digiassetsLogo.heightAnchor.constraint(equalToConstant: 50),
-//            digiassetsLogo.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -50),
         ])
         
         stackView.constrain([
@@ -50,6 +53,28 @@ fileprivate class LogoCell: UITableViewCell {
         
         headerLabel.text = "Asset Transaction"
         headerLabel.textAlignment = .center
+    
+        let padding: CGFloat = 15
+        let iconSize: CGFloat = 20
+        
+        icon.addSubview(iconInner)
+        iconInner.addSubview(iconIV)
+        
+        iconIV.contentMode = .scaleAspectFit
+        iconIV.tintColor = UIColor.white
+        iconIV.constraint(padding: padding)
+        iconIV.constrain([
+            iconIV.widthAnchor.constraint(equalToConstant: iconSize),
+            iconIV.heightAnchor.constraint(equalToConstant: iconSize),
+        ])
+        
+        iconInner.constrain([
+            iconInner.topAnchor.constraint(equalTo: icon.topAnchor, constant: 5),
+            iconInner.bottomAnchor.constraint(equalTo: icon.bottomAnchor, constant: -5),
+            iconInner.centerXAnchor.constraint(equalTo: icon.centerXAnchor)
+        ])
+        
+        iconInner.layer.cornerRadius = (iconSize + 2 * padding) / 2
         
         dateLabel.textAlignment = .center
     }
@@ -78,8 +103,13 @@ class AssetDrawer: UIView {
     private var walletsAssetModels = [AssetHeaderModel]()
     
     var walletManager: WalletManager? = nil
+    
+    // Callback to show the raw tx
     var callback: ((Transaction) -> Void)? = nil
+    
+    // Callback to show the asset transaction details (opens up DigiAssets submenu)
     var assetNavigatorCallback: ((AssetMenuAction) -> Void)? = nil /* AssetId, Transaction */
+    
     let viewRawTxButton = DAButton(title: "View Raw Transaction".uppercased(), backgroundColor: UIColor.da.darkSkyBlue)
     
     init(id: String) {
@@ -242,8 +272,14 @@ extension AssetDrawer: UITableViewDelegate, UITableViewDataSource {
         
         // Check if asset utxo is part of wallet
         infoModel.vout.forEach { (utxo) in
-            // Received transactions should be
-            if walletManager?.wallet?.hasUtxo(txid: txid, n: utxo.n) == received {
+            if tx.direction == .moved {
+                // Moved DGB-TX: most likely burned assets.
+                // Show those, that were not sent to internal wallet
+                assetUtxos.append(utxo)
+                walletsAssetModels.append(contentsOf: utxo.assets)
+                
+            } else if walletManager?.wallet?.hasUtxo(txid: txid, n: utxo.n) == received {
+                // Show appropriate direction
                 assetUtxos.append(utxo)
                 walletsAssetModels.append(contentsOf: utxo.assets)
             }
@@ -262,7 +298,22 @@ extension AssetDrawer: UITableViewDelegate, UITableViewDataSource {
             let tx = self.tx!
             let cell = tableView.dequeueReusableCell(withIdentifier: "logo", for: indexPath) as! LogoCell
             
-            cell.dateLabel.text = tx.direction == .received ? "Received on: \(tx.timeTimestamp)" : "Sent on: \(tx.timeTimestamp)"
+            if tx.direction == .received {
+                cell.dateLabel.text = "Received on: \(tx.longTimestamp)"
+                cell.iconIV.image = UIImage(named: "da-receive")?.withRenderingMode(.alwaysTemplate)
+                cell.iconInner.backgroundColor = UIColor.da.greenApple
+                
+            } else if tx.direction == .sent {
+                cell.dateLabel.text = "Sent on: \(tx.longTimestamp)"
+                cell.iconIV.image = UIImage(named: "da-send")?.withRenderingMode(.alwaysTemplate)
+                cell.iconInner.backgroundColor = UIColor.da.darkSkyBlue
+                
+            } else {
+                // moved (burnt
+                cell.dateLabel.text = "Burned on: \(tx.longTimestamp)"
+                cell.iconIV.image = UIImage(named: "da-burn")?.withRenderingMode(.alwaysTemplate)
+                cell.iconInner.backgroundColor = UIColor.da.burnColor
+            }
             
             return cell
             
@@ -275,8 +326,16 @@ extension AssetDrawer: UITableViewDelegate, UITableViewDataSource {
             cell.margins = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16 + assetDrawerMarginRight)
             
             let assetId = assetInfo.assetId
-            let amount = assetInfo.amount
             let assetModel = assetModels[assetId]!
+            
+            let amount: Int = {
+                if tx.direction == .moved {
+                    // ToDo: Use correct asset input id
+                    return infoModel?.getBurnAmount(input: 0) ?? 0
+                } else {
+                    return assetInfo.amount
+                }
+            }()
             
             cell.imageTappedCallback = { cell in
                 guard

@@ -49,7 +49,6 @@ fileprivate func pad(_ pad: CGFloat, _ view: UIView) -> UIView {
 class DABurnViewController: UIViewController {
     private var hc: NSLayoutConstraint? = nil
     private let store: BRStore
-    private let wallet: BRWallet
     private let walletManager: WalletManager
     private let assetSender: AssetSender!
     
@@ -73,9 +72,8 @@ class DABurnViewController: UIViewController {
         }
     }
     
-    init(store: BRStore, wallet: BRWallet, walletManager: WalletManager) {
+    init(store: BRStore, walletManager: WalletManager) {
         self.store = store
-        self.wallet = wallet
         self.walletManager = walletManager
         self.assetSender = AssetSender(walletManager: walletManager, store: store)
         super.init(nibName: nil, bundle: nil)
@@ -200,7 +198,9 @@ class DABurnViewController: UIViewController {
         assetSelector.callback = { [weak self] asset in
             self?.selectedModel = asset
         }
-        self.present(assetSelector, animated: true, completion: nil)
+        self.present(assetSelector, animated: true, completion: {
+            assetSelector.tableView.reloadData()
+        })
     }
     
     private func modelSelected() {
@@ -265,7 +265,7 @@ class DABurnViewController: UIViewController {
             guard
                 let assetSender = self?.assetSender,
                 assetSender.createBurnTransaction(assetModel: selectedModel, amount: amount) else {
-                self?.showError(with: "Could not create transaction")
+                    self?.showError(with: "Could not create transaction (code=\(self!.assetSender.errorCode ?? 0))")
                 return;
             }
             
@@ -286,11 +286,15 @@ class DABurnViewController: UIViewController {
                 }, completion: { [weak self] result in
                     switch result {
                     case .success:
+                        if let txid = assetSender.transaction?.txHash.description {
+                            AssetHelper.createTemporaryAssetModel(for: txid, mode: .send, assetModel: selectedModel, amount: amount, to: "")
+                        }
+                        
                         self?.showSuccess(with: "Asset(s) burned!")
                         self?.dismiss(animated: true)
                         
-                    case .creationError(let message):
-                        self?.showError(with: "Transaction could not be created: \(message)")
+                    case .creationError(let message, let code):
+                        self?.showError(with: "Transaction could not be created: \(message) (code=\(code ?? -1))")
                         
                     case .publishFailure(let error):
                         self?.showError(with: "Transaction could not be broadcasted: \(error)")

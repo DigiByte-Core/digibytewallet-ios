@@ -46,6 +46,7 @@ enum S {
         static let confirmAssetsResolve = NSLocalizedString("Assets.confirmAssetsResolve", value: "Resolve Asset(s)", comment: "Resolve button caption")
         static let skipAssetsResolve = NSLocalizedString("Assets.skipAssetsResolve", value: "Skip", comment: "Skip button caption")
         static let cancelAssetsResolve = NSLocalizedString("Assets.cancelAssetsResolve", value: "Cancel", comment: "Cancel button caption")
+        static let continueWithoutSync = NSLocalizedString("Assets.continueWithoutSync", value: "Skip Sync", comment: "Skip button caption")
         
         static let totalSupply = NSLocalizedString("Assets.totalSupply", value: "Total Supply", comment: "")
         static let numberOfHolders = NSLocalizedString("Assets.numberOfHolders", value: "Number of Holders", comment: "")

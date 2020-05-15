@@ -12,7 +12,7 @@ import BRCore
 
 enum SendResult {
     case success
-    case creationError(String)
+    case creationError(String, Int?)
     case publishFailure(BRPeerManagerError)
 }
 
@@ -65,7 +65,7 @@ class Sender {
 
     //Amount in bits
     func send(biometricsMessage: String, rate: Rate?, comment: String?, feePerKb: UInt64, verifyPinFunction: @escaping (@escaping(String) -> Bool) -> Void, completion:@escaping (SendResult) -> Void) {
-        guard let tx = transaction else { return completion(.creationError(S.Send.createTransactionError)) }
+        guard let tx = transaction else { return completion(.creationError(S.Send.createTransactionError, 1)) }
 
         self.rate = rate
         self.comment = comment

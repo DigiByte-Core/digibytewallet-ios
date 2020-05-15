@@ -63,6 +63,22 @@ class TransactionCardViewCell: UITableViewCell, Subscriber {
         return utxos.firstIndex { $0.assets.count > 0 } ?? 0
     }
     
+    func tryReduce(_ assets: [AssetHeaderModel]) -> String? {
+        var assetName: String? = nil
+        for asset in assets {
+            guard let model = AssetHelper.getAssetModel(assetID: asset.assetId) else { return nil }
+            let current = model.getAssetName()
+            
+            if assetName != nil, assetName != current {
+                return nil
+            }
+            
+            assetName = current
+        }
+        
+        return assetName
+    }
+    
     func setTransaction(_ transaction: Transaction, isBtcSwapped: Bool, rate: Rate, maxDigits: Int, isSyncing: Bool) {
         self.transaction = transaction
         
@@ -79,8 +95,13 @@ class TransactionCardViewCell: UITableViewCell, Subscriber {
                             transactionLabel.text = S.Assets.unresolved
                         }
                     } else if utxo.assets.count > 1 {
-                        // Multiple assets were transferred in one transaction
-                        transactionLabel.text = S.Assets.multipleAssets
+                        // Multiple assets were transferred in one transaction.
+                        // Show the title of them, if all assets have an equal title
+                        if let reduced = tryReduce(utxo.assets) {
+                            transactionLabel.text = reduced
+                        } else {
+                            transactionLabel.text = S.Assets.multipleAssets
+                        }
                     } else {
                         // No assets
                         transactionLabel.text = S.Assets.noMetadata

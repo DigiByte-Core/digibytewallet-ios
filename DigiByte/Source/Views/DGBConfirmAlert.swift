@@ -18,11 +18,12 @@ fileprivate class ConfirmButton: DGBHapticButton {
 
 class DAModalAssetSelector: DGBModalWindow {
     var callback: ((AssetModel?) -> Void)? = nil
+    let tableView: UITableView = UITableView()
     
     init() {
         super.init(title: "Select an asset", padding: 0)
         
-        let tv = UITableView()
+        let tv = tableView
         stackView.addArrangedSubview(tv)
         
         let hC = tv.heightAnchor.constraint(equalToConstant: 300)
@@ -44,14 +45,6 @@ class DAModalAssetSelector: DGBModalWindow {
 class DAModalAssetSelectorCell: UITableViewCell {
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        
-//        guard let iv = imageView else { return }
-//        iv.constrain([
-//            iv.heightAnchor.constraint(equalToConstant: 32),
-//            iv.widthAnchor.constraint(equalToConstant: 32),
-//        ])
-//
-//        iv.contentMode = .scaleAspectFit
     }
     
     override func layoutSubviews() {
@@ -65,15 +58,17 @@ class DAModalAssetSelectorCell: UITableViewCell {
         let targetX: CGFloat = 77
         var shift: CGFloat!
         
+        let totalWidth = self.bounds.width
+        
         tempFrame = textLabel!.frame
         shift = tempFrame.origin.x - targetX
         tempFrame.origin.x = targetX
-        textLabel!.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y, width: tempFrame.width + shift, height: tempFrame.height)
+        textLabel!.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y, width: totalWidth - targetX - 20, height: tempFrame.height)
         
         tempFrame = detailTextLabel!.frame
         shift = tempFrame.origin.x - targetX
         tempFrame.origin.x = targetX
-        detailTextLabel!.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y, width: tempFrame.width + shift, height: tempFrame.height)
+        detailTextLabel!.frame = CGRect(x: tempFrame.origin.x, y: tempFrame.origin.y, width: totalWidth - shift, height: tempFrame.height)
     }
     
     required init?(coder: NSCoder) {
@@ -525,6 +520,7 @@ typealias DGBCallback = (() -> Void)
 
 class DGBModalLoadingView: DGBModalWindow {
     let ai: UIActivityIndicatorView
+    let label = UILabel()
     var gr: UITapGestureRecognizer!
     var tapCount = 0
     
@@ -534,10 +530,21 @@ class DGBModalLoadingView: DGBModalWindow {
         
         ai.heightAnchor.constraint(equalToConstant: 40).isActive = true
         stackView.addArrangedSubview(ai)
+        stackView.addArrangedSubview(label)
         
         gr = UITapGestureRecognizer(target: self, action: #selector(tapped))
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(gr)
+        
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        label.font = UIFont.da.customBody(size: 14)
+        label.lineBreakMode = .byWordWrapping
+        label.textColor = UIColor.gray
+    }
+    
+    func updateStep(current: Int, total: Int) {
+        label.text = "\(current) / \(total)"
     }
     
     @objc

@@ -14,7 +14,6 @@ class DAMainViewController: UITabBarController {
     // MARK: Private properties
     private let header = ModalHeaderView(title: "DigiAssets", style: ModalHeaderViewStyle.light)
     private let store: BRStore
-    private let wallet: BRWallet
     private let walletManager: WalletManager
     private var tabs: [UIViewController]
     
@@ -24,12 +23,11 @@ class DAMainViewController: UITabBarController {
     
     init(store: BRStore, walletManager: WalletManager, action: AssetMenuAction? = nil) {
         self.store = store
-        self.wallet = walletManager.wallet!
         self.walletManager = walletManager
         
-        assetOverview = DAAssetsViewController(store: store, wallet: wallet)
-        assetSend = DASendViewController(store: store, wallet: wallet, walletManager: walletManager)
-        assetBurn = DABurnViewController(store: store, wallet: wallet, walletManager: walletManager)
+        assetOverview = DAAssetsViewController(store: store, walletManager: walletManager)
+        assetSend = DASendViewController(store: store, walletManager: walletManager)
+        assetBurn = DABurnViewController(store: store, walletManager: walletManager)
         
         self.tabs = [
             assetOverview,

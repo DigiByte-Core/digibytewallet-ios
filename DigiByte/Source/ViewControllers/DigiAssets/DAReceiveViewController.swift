@@ -143,7 +143,9 @@ class DAReceiveViewController: UIViewController {
         assetSelector.callback = { [weak self] asset in
             self?.selectedModel = asset
         }
-        self.present(assetSelector, animated: true, completion: nil)
+        self.present(assetSelector, animated: true, completion: {
+            assetSelector.tableView.reloadData()
+        })
     }
     
     private func modelSelected() {

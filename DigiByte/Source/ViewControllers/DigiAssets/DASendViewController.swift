@@ -67,6 +67,7 @@ class DAPinView: DGBModalWindow {
         descriptionLabel.text = textDescription
         descriptionLabel.numberOfLines = 0
         descriptionLabel.lineBreakMode = .byWordWrapping
+        descriptionLabel.textAlignment = .center
         
         pinView.fill(input.count)
         pinView.translatesAutoresizingMaskIntoConstraints = false
@@ -149,7 +150,6 @@ class DASendViewController: UIViewController {
     let sendButton = DAButton(title: "Send Assets".uppercased(), backgroundColor: UIColor.da.darkSkyBlue, height: 40)
     
     private let store: BRStore
-    private let wallet: BRWallet
     private let walletManager: WalletManager
     private let assetSender: AssetSender!
     
@@ -165,9 +165,8 @@ class DASendViewController: UIViewController {
         UIPasteboard.general.string = assetSender.debug // YOSHI, remove before RELEASE
     }
     
-    init(store: BRStore, wallet: BRWallet, walletManager: WalletManager) {
+    init(store: BRStore, walletManager: WalletManager) {
         self.store = store
-        self.wallet = wallet
         self.walletManager = walletManager
         assetSender = AssetSender(walletManager: walletManager, store: store)
         
@@ -265,6 +264,7 @@ class DASendViewController: UIViewController {
             // Show modal window (gallery, image, scanner)
             let modalWindow = DGBModalMediaOptions { (address) in
                 self?.receiverAddressBox.textBox.text = address
+                self?.toggleSendButton()
                 self?.indexContacts()
                 self?.updateReceiverName(address)
             }
@@ -319,7 +319,9 @@ class DASendViewController: UIViewController {
         assetSelector.callback = { [weak self] asset in
             self?.selectedModel = asset
         }
-        self.present(assetSelector, animated: true, completion: nil)
+        self.present(assetSelector, animated: true, completion: {
+            assetSelector.tableView.reloadData()
+        })
     }
     
     private func setBalance(multiplier: Double = 0.0, constant: Int = 0) {
@@ -425,7 +427,7 @@ class DASendViewController: UIViewController {
             guard
                 let assetSender = self?.assetSender,
                 assetSender.createTransaction(assetModel: selectedModel, amount: amount, to: address) else {
-                self?.showError(with: "Could not create transaction")
+                self?.showError(with: "Could not create transaction (code=\(self!.assetSender.errorCode ?? 0))")
                 return;
             }
             
@@ -449,11 +451,15 @@ class DASendViewController: UIViewController {
                 }, completion: { [weak self] result in
                     switch result {
                     case .success:
+                        if let txid = assetSender.transaction?.txHash.description {
+                            AssetHelper.createTemporaryAssetModel(for: txid, mode: .send, assetModel: selectedModel, amount: amount, to: address)
+                        }
+                        
                         self?.showSuccess(with: "Asset(s) sent!")
                         self?.dismiss(animated: true)
                         
-                    case .creationError(let message):
-                        self?.showError(with: "Transaction could not be created: \(message)")
+                    case .creationError(let message, let code):
+                        self?.showError(with: "Transaction could not be created: \(message), (code=\(code ?? -1))")
                         
                     case .publishFailure(let error):
                         self?.showError(with: "Transaction could not be broadcasted: \(error)")

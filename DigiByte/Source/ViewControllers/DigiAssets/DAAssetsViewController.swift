@@ -483,7 +483,7 @@ class AssetContextMenu: UIView {
     let roundedView = UIView()
     let stackView = UIStackView()
     
-    let txBtn = AssetContextMenuButton(UIImage(named: "da-glyph-info"), text: "Transactions")
+    let txBtn = AssetContextMenuButton(UIImage(named: "da-glyph-info"), text: "Info")
     let sendBtn = AssetContextMenuButton(UIImage(named: "da-glyph-send"), text: "Send")
 //        let receiveBtn = AssetContextMenuButton(UIImage(named: "da-glyph-receive"), text: "Receive"))
     let burnBtn = AssetContextMenuButton(UIImage(named: "da-glyph-burn"), text: "Burn", bgColor: UIColor.da.burnColor)
@@ -537,7 +537,7 @@ class AssetContextMenu: UIView {
 class DAAssetsViewController: UIViewController {
     // MARK: Private
     private let store: BRStore
-    private let wallet: BRWallet
+    private let walletManager: WalletManager
     
     private var loadingAssetsModalView = DGBModalLoadingView(title: S.Assets.fetchingAssetsTitle)
     private var assetResolver: AssetResolver? = nil
@@ -579,9 +579,9 @@ class DAAssetsViewController: UIViewController {
         }
     }
     
-    init(store: BRStore, wallet: BRWallet) {
+    init(store: BRStore, walletManager: WalletManager) {
         self.store = store
-        self.wallet = wallet
+        self.walletManager = walletManager
         super.init(nibName: nil, bundle: nil)
         
         emptyImage.image = UIImage(named: "da-empty")
@@ -816,7 +816,7 @@ class DAAssetsViewController: UIViewController {
             return
         }
         
-        let vc = DADetailViewController(store: store, wallet: wallet, assetModel: assetModel)
+        let vc = DADetailViewController(store: store, walletManager: walletManager, assetModel: assetModel)
         self.present(vc, animated: true, completion: nil)
     }
     
@@ -974,15 +974,18 @@ extension DAAssetsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
         self.decelerate = true
-//        showTableViewBorder = false
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard indexPath.section == 0 else { return }
         
         let openDetailView: (AssetModel) -> Void = { [weak self] assetModel in
-            guard let myself = self else { return }
-            let vc = DADetailViewController(store: myself.store, wallet: myself.wallet, assetModel: assetModel)
+            guard
+                let myself = self
+            else {
+                return
+            }
+            let vc = DADetailViewController(store: myself.store, walletManager: myself.walletManager, assetModel: assetModel)
             myself.present(vc, animated: true, completion: nil)
         }
         
