@@ -1021,7 +1021,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
             }
         }
 
-        navigationDrawer.addButton(title: S.MenuButton.digiDollar, icon: UIImage(named: "DigiByteSymbol")!) {
+        navigationDrawer.addButton(title: S.MenuButton.digiDollar, icon: UIImage(named: "DigiDollarSymbol")!) {
             self.store.perform(action: HamburgerActions.Present(modal: .digiDollar))
         }
         

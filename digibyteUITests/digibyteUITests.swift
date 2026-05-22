@@ -56,28 +56,54 @@ class breadwalletUITests: XCTestCase {
         XCTAssert(waitUntilHittable(digiDollarButton, timeout: 10), app.debugDescription)
         digiDollarButton.tap()
 
-        XCTAssert(waitForAnyText(["DigiDollar", "DigiDollar Balances", "Protocol"], timeout: 10), app.debugDescription)
-        XCTAssert(app.tabBars.buttons["Overview"].waitForExistence(timeout: 3), app.debugDescription)
-        XCTAssert(app.tabBars.buttons["Vault"].exists, app.debugDescription)
+        let overviewTab = app.tabBars.buttons["Overview"].firstMatch
+        XCTAssert(overviewTab.waitForExistence(timeout: 10), app.debugDescription)
+        assertDigiDollarTabsExist()
         XCTAssertFalse(app.tabBars.buttons["More"].exists, app.debugDescription)
 
-        let vaultTab = app.tabBars.buttons["Vault"].firstMatch
-        XCTAssert(vaultTab.waitForExistence(timeout: 3), app.debugDescription)
-        vaultTab.tap()
-        XCTAssert(app.textFields["digidollar-mint-amount"].waitForExistence(timeout: 5), app.debugDescription)
-        XCTAssert(app.textFields["digidollar-lock-tier"].exists, app.debugDescription)
-        XCTAssert(app.textFields["digidollar-oracle-price"].exists, app.debugDescription)
-        XCTAssert(app.textFields["digidollar-system-health"].exists, app.debugDescription)
-        XCTAssert(app.textFields["digidollar-redeem-vault"].exists, app.debugDescription)
-        XCTAssert(app.descendants(matching: .any)["digidollar-mint-button"].exists, app.debugDescription)
-        XCTAssert(app.descendants(matching: .any)["digidollar-redeem-button"].exists, app.debugDescription)
+        overviewTab.tap()
+        assertExists(identifier: "digidollar-overview-card", timeout: 5)
+        assertExists(identifier: "digidollar-transactions-card")
+        XCTAssert(waitForAnyText(["DigiDollar", "Overview", "Protocol"], timeout: 3), app.debugDescription)
+
+        let sendTab = app.tabBars.buttons["Send"].firstMatch
+        XCTAssert(sendTab.waitForExistence(timeout: 3), app.debugDescription)
+        sendTab.tap()
+        assertExists(identifier: "digidollar-send-card", timeout: 5)
+        assertExists(identifier: "digidollar-send-address", timeout: 5)
+        assertExists(identifier: "digidollar-send-amount")
+        assertExists(identifier: "digidollar-send-button")
 
         let receiveTab = app.tabBars.buttons["Receive"].firstMatch
         XCTAssert(receiveTab.waitForExistence(timeout: 3), app.debugDescription)
         receiveTab.tap()
+        assertExists(identifier: "digidollar-receive-card", timeout: 5)
 
         let tdAddress = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "TD")).firstMatch
         XCTAssert(tdAddress.waitForExistence(timeout: 5), app.debugDescription)
+
+        let vaultTab = app.tabBars.buttons["Vault"].firstMatch
+        XCTAssert(vaultTab.waitForExistence(timeout: 3), app.debugDescription)
+        vaultTab.tap()
+        assertExists(identifier: "digidollar-vault-card", timeout: 5)
+        assertExists(identifier: "digidollar-mint-amount", timeout: 5)
+        assertExists(identifier: "digidollar-lock-tier")
+        assertExists(identifier: "digidollar-oracle-price")
+        assertExists(identifier: "digidollar-system-health")
+        assertExists(identifier: "digidollar-redeem-vault")
+        assertExists(identifier: "digidollar-mint-button")
+        assertExists(identifier: "digidollar-redeem-button")
+    }
+
+    private func assertDigiDollarTabsExist() {
+        for tabTitle in ["Overview", "Send", "Receive", "Vault"] {
+            XCTAssert(app.tabBars.buttons[tabTitle].waitForExistence(timeout: 3), "\(tabTitle) tab missing.\n\(app.debugDescription)")
+        }
+    }
+
+    private func assertExists(identifier: String, timeout: TimeInterval = 3) {
+        let element = app.descendants(matching: .any)[identifier].firstMatch
+        XCTAssert(element.waitForExistence(timeout: timeout), "\(identifier) missing.\n\(app.debugDescription)")
     }
 
     private func prepareWalletForMainScreen(timeout: TimeInterval) -> Bool {

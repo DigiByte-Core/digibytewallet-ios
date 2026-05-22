@@ -8,6 +8,15 @@
 
 import UIKit
 
+private final class DrawerMenuButton: UIButton {
+    var activate: ((DrawerMenuButton) -> Void)?
+
+    override func accessibilityActivate() -> Bool {
+        activate?(self)
+        return true
+    }
+}
+
 class NavigationDrawer: UIView {
     private let bgImage = UIImageView(image: UIImage(named: "hamburgerBg"))
     private var digibyteLogo = UIImageView(image: UIImage(named: "DigiByteSymbol"))
@@ -28,6 +37,7 @@ class NavigationDrawer: UIView {
     }
     
     private var buttons: [SideMenuButton] = []
+    private var buttonActivationInProgress = false
     
     init(id: String, walletTitle: String, version: String) {
         self.id = id
@@ -110,6 +120,8 @@ class NavigationDrawer: UIView {
     
     private func setStyles() {
         backgroundColor = .black
+        scrollView.delaysContentTouches = false
+        scrollView.canCancelContentTouches = false
         
         walletLabel.textAlignment = .center
         walletVersionLabel.textAlignment = .center
@@ -128,24 +140,34 @@ class NavigationDrawer: UIView {
         self.supervc = supervc
     }
     
-    @objc private func buttonTapped(button: UIButton) {
+    private func buttonTapped(button: UIControl) {
+        guard !buttonActivationInProgress else { return }
         for (_, btn) in buttons.enumerated() {
             if (btn.view == button) {
+                buttonActivationInProgress = true
                 self.supervc?.closeDrawer(with: id)
                 self.buttonUp(button: button)
-                btn.callback()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
+                    btn.callback()
+                    self.buttonActivationInProgress = false
+                }
+                return
             }
         }
     }
+
+    @objc private func buttonControlTapped(button: UIControl) {
+        buttonTapped(button: button)
+    }
     
-    @objc private func buttonDown(button: UIButton) {
+    @objc private func buttonDown(button: UIControl) {
         button.backgroundColor = UIColor(white: 1, alpha: 0.2)
     }
     
-    @objc private func buttonUp(button: UIButton) {
+    @objc private func buttonUp(button: UIControl) {
         button.backgroundColor = UIColor.clear
     }
-    
+
     func addButton(title: String, icon: UIImage, callback: @escaping (() -> Void)) {
         
         let buttonImage = UIImageView(image: icon.withRenderingMode(.alwaysTemplate))
@@ -157,12 +179,15 @@ class NavigationDrawer: UIView {
         buttonText.lineBreakMode = .byWordWrapping
         buttonText.numberOfLines = 0
         
-        let buttonContainer = DAHapticControl()
+        let buttonContainer = DrawerMenuButton(type: .custom)
         buttonContainer.isUserInteractionEnabled = true
         buttonContainer.isAccessibilityElement = true
         buttonContainer.accessibilityIdentifier = "navigation-menu-\(NavigationDrawer.accessibilitySuffix(for: title))"
         buttonContainer.accessibilityLabel = title
         buttonContainer.accessibilityTraits = UIAccessibilityTraits.button
+        buttonContainer.activate = { [weak self] button in
+            self?.buttonTapped(button: button)
+        }
         buttonContainer.addSubview(buttonImage)
         buttonContainer.addSubview(buttonText)
         
@@ -186,7 +211,8 @@ class NavigationDrawer: UIView {
         ])
         
         buttonContainer.addTarget(self, action: #selector(buttonDown(button:)), for: .touchDown)
-        buttonContainer.addTarget(self, action: #selector(buttonTapped(button:)), for: .touchUpInside)
+        buttonContainer.addTarget(self, action: #selector(buttonControlTapped(button:)), for: .touchUpInside)
+        buttonContainer.addTarget(self, action: #selector(buttonControlTapped(button:)), for: .primaryActionTriggered)
         buttonContainer.addTarget(self, action: #selector(buttonUp(button:)), for: .touchUpOutside)
         buttonContainer.addTarget(self, action: #selector(buttonUp(button:)), for: .touchCancel)
         

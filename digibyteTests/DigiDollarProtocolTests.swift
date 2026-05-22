@@ -135,6 +135,40 @@ class DigiDollarProtocolTests: XCTestCase {
         XCTAssertNil(DigiDollarAmountParser.cents(from: "1.234"))
     }
 
+    func testAmountParserHandlesMintRedeemDisplayInputs() {
+        XCTAssertEqual(DigiDollarAmountParser.cents(from: " 100.00\n"), 10_000)
+        XCTAssertEqual(DigiDollarAmountParser.cents(from: "0.01"), 1)
+        XCTAssertEqual(DigiDollarAmountParser.cents(from: "12.3"), 1_230)
+        XCTAssertEqual(DigiDollarAmountParser.cents(from: "12."), 1_200)
+
+        XCTAssertNil(DigiDollarAmountParser.cents(from: ""))
+        XCTAssertNil(DigiDollarAmountParser.cents(from: ".50"))
+        XCTAssertNil(DigiDollarAmountParser.cents(from: "-1"))
+        XCTAssertNil(DigiDollarAmountParser.cents(from: "1,000.00"))
+        XCTAssertNil(DigiDollarAmountParser.cents(from: "1.001"))
+        XCTAssertNil(DigiDollarAmountParser.cents(from: "\(UInt64.max / 100 + 1)"))
+    }
+
+    func testOracleAndSystemHealthParsersHandleDisplayInputs() {
+        XCTAssertEqual(DigiDollarAmountParser.microUSD(fromUSD: "0.003623"), 3_623)
+        XCTAssertEqual(DigiDollarAmountParser.microUSD(fromUSD: "$1.234567"), 1_234_567)
+        XCTAssertEqual(DigiDollarAmountParser.microUSD(fromUSD: " 12.3\n"), 12_300_000)
+        XCTAssertEqual(DigiDollarAmountParser.microUSD(fromUSD: "12."), 12_000_000)
+
+        XCTAssertNil(DigiDollarAmountParser.microUSD(fromUSD: ""))
+        XCTAssertNil(DigiDollarAmountParser.microUSD(fromUSD: "$"))
+        XCTAssertNil(DigiDollarAmountParser.microUSD(fromUSD: ".25"))
+        XCTAssertNil(DigiDollarAmountParser.microUSD(fromUSD: "1.1234567"))
+        XCTAssertNil(DigiDollarAmountParser.microUSD(fromUSD: "-1"))
+        XCTAssertNil(DigiDollarAmountParser.microUSD(fromUSD: "\(UInt64.max / 1_000_000 + 1)"))
+
+        XCTAssertEqual(DigiDollarAmountParser.systemHealth(from: "150"), 150)
+        XCTAssertEqual(DigiDollarAmountParser.systemHealth(from: "99%"), 99)
+        XCTAssertEqual(DigiDollarAmountParser.systemHealth(from: " 0\n"), 0)
+        XCTAssertNil(DigiDollarAmountParser.systemHealth(from: "-1"))
+        XCTAssertNil(DigiDollarAmountParser.systemHealth(from: "\(Int64(Int32.max) + 1)"))
+    }
+
     func testLockTierSchedule() {
         XCTAssertEqual(DigiDollarProtocol.lockTiers.count, 10)
         XCTAssertEqual(DigiDollarProtocol.lockTiers[0].blocks, 240)
@@ -145,12 +179,26 @@ class DigiDollarProtocolTests: XCTestCase {
 
     func testEmergencyRedemptionBurnSchedule() {
         XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 150), 10_000)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 100), 10_000)
         XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 99), 9_500)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 95), 9_500)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 90), 9_000)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 89), 8_500)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 85), 8_500)
         XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 94), 9_000)
         XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 84), 8_000)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 0), 8_000)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: -1), 8_000)
         XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 150), 10_000)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 100), 10_000)
         XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 99), 10_527)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 95), 10_527)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 94), 11_112)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 89), 11_765)
         XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 84), 12_500)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 101, systemHealth: 99), 107)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 99, systemHealth: 84), 124)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 0, systemHealth: 84), 0)
     }
 
     private func makeHash(_ firstByte: UInt8) -> UInt256 {
