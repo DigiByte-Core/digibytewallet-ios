@@ -415,6 +415,14 @@ protocol BRWalletListener {
     func txDeleted(_ txHash: UInt256, notifyUser: Bool, recommendRescan: Bool)
 }
 
+struct DigiDollarWalletUTXO: Equatable {
+    let txHash: UInt256
+    let index: UInt32
+    let amountCents: UInt64
+    let blockHeight: UInt32
+    let ownerXOnlyPubKey: [UInt8]
+}
+
 extension UnicodeScalar {
     var hexNibble:UInt8 {
         let value = self.value
@@ -487,6 +495,29 @@ class BRWallet {
 
     var digiDollarReceiveAddress: String {
         return BRWalletDigiDollarReceiveAddress(cPtr).description
+    }
+
+    var digiDollarBalanceCents: UInt64 {
+        return BRWalletDigiDollarBalance(cPtr)
+    }
+
+    var digiDollarUtxos: [DigiDollarWalletUTXO] {
+        var cUtxos = [BRDigiDollarUTXO](repeating: BRDigiDollarUTXO(),
+                                        count: BRWalletDigiDollarUTXOs(cPtr, nil, 0))
+        guard BRWalletDigiDollarUTXOs(cPtr, &cUtxos, cUtxos.count) == cUtxos.count else { return [] }
+
+        return cUtxos.map { cUtxo in
+            var mutableUtxo = cUtxo
+            let key = withUnsafeBytes(of: &mutableUtxo.ownerXOnlyPubKey) { rawKey in
+                Array(rawKey.bindMemory(to: UInt8.self).prefix(DigiDollarProtocol.outputKeyLength))
+            }
+
+            return DigiDollarWalletUTXO(txHash: cUtxo.hash,
+                                        index: cUtxo.n,
+                                        amountCents: cUtxo.amountCents,
+                                        blockHeight: cUtxo.blockHeight,
+                                        ownerXOnlyPubKey: key)
+        }
     }
     
     func getReceiveAddress(useSegwit: Bool) -> String {
@@ -632,10 +663,18 @@ class BRWallet {
     func amountReceivedFromTx(_ tx: BRTxRef) -> UInt64 {
         return BRWalletAmountReceivedFromTx(cPtr, tx)
     }
+
+    func digiDollarAmountReceivedFromTx(_ tx: BRTxRef) -> UInt64 {
+        return BRWalletDigiDollarAmountReceivedFromTx(cPtr, tx)
+    }
     
     // the amount sent from the wallet by the trasaction (total wallet outputs consumed, change and fee included)
     func amountSentByTx(_ tx: BRTxRef) -> UInt64 {
         return BRWalletAmountSentByTx(cPtr, tx)
+    }
+
+    func digiDollarAmountSentByTx(_ tx: BRTxRef) -> UInt64 {
+        return BRWalletDigiDollarAmountSentByTx(cPtr, tx)
     }
     
     // returns the fee for the given transaction if all its inputs are from wallet transactions
@@ -647,6 +686,10 @@ class BRWallet {
     // historical wallet balance after the given transaction, or current balance if tx is not registered in wallet
     func balanceAfterTx(_ tx: BRTxRef) -> UInt64 {
         return BRWalletBalanceAfterTx(cPtr, tx)
+    }
+
+    func digiDollarBalanceAfterTx(_ tx: BRTxRef) -> UInt64 {
+        return BRWalletDigiDollarBalanceAfterTx(cPtr, tx)
     }
     
     // fee that will be added for a transaction of the given size in bytes

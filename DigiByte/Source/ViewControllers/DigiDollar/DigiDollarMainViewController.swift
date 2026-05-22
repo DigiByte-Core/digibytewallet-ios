@@ -206,10 +206,14 @@ private final class DigiDollarOverviewViewController: DigiDollarBaseViewControll
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let balanceCents = walletManager.wallet?.digiDollarBalanceCents ?? 0
+        let outputCount = walletManager.wallet?.digiDollarUtxos.count ?? 0
+
         addCard(title: "DigiDollar Balances",
                 rows: [
-                    ("Available", "0.00 DD"),
-                    ("Pending", "0.00 DD"),
+                    ("Available", formatDigiDollar(cents: balanceCents)),
+                    ("Pending", formatDigiDollar(cents: 0)),
+                    ("Available Outputs", "\(outputCount)"),
                     ("Locked Collateral", "0.00000000 DGB"),
                     ("Network", DigiDollarProtocol.currentNetwork.displayName)
                 ])
@@ -307,6 +311,8 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let outputCount = walletManager.wallet?.digiDollarUtxos.count ?? 0
+
         addCard(title: "Mint",
                 rows: [
                     ("Minimum", "100.00 DD"),
@@ -328,6 +334,7 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
                 rows: [
                     ("Open", "0"),
                     ("Redeemable", "0"),
+                    ("Token Outputs", "\(outputCount)"),
                     ("Locked DGB", "0.00000000")
                 ])
         addCard(title: "Lock Tiers",
@@ -374,13 +381,37 @@ private final class DigiDollarTransactionsViewController: DigiDollarBaseViewCont
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let counts = walletManager.wallet?.digiDollarTransactionCounts ?? (mint: 0, transfer: 0, redeem: 0)
+
         addCard(title: "DigiDollar Transactions",
                 rows: [
-                    ("Mint", "0"),
-                    ("Transfer", "0"),
-                    ("Redeem", "0")
+                    ("Mint", "\(counts.mint)"),
+                    ("Transfer", "\(counts.transfer)"),
+                    ("Redeem", "\(counts.redeem)")
                 ])
     }
+}
+
+private extension BRWallet {
+    var digiDollarTransactionCounts: (mint: Int, transfer: Int, redeem: Int) {
+        var counts = (mint: 0, transfer: 0, redeem: 0)
+
+        transactions.forEach { tx in
+            guard let tx = tx else { return }
+            switch DigiDollarProtocol.type(forVersion: tx.pointee.version) {
+            case .mint: counts.mint += 1
+            case .transfer: counts.transfer += 1
+            case .redeem: counts.redeem += 1
+            case .none: break
+            }
+        }
+
+        return counts
+    }
+}
+
+private func formatDigiDollar(cents: UInt64) -> String {
+    return "\(cents / 100).\(String(format: "%02llu", cents % 100)) DD"
 }
 
 enum DigiDollarAmountParser {
