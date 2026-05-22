@@ -29,6 +29,7 @@ class DigiDollarMainViewController: UITabBarController {
         addSubviews()
         addConstraints()
         setStyle()
+        setAccessibilityIdentifiers()
 
         header.close.tap = { [unowned self] in
             self.dismiss(animated: true, completion: nil)
@@ -53,12 +54,39 @@ class DigiDollarMainViewController: UITabBarController {
         tabBar.tintColor = UIColor.dd.green
         tabBar.barTintColor = UIColor.dd.tabBar
         tabBar.isTranslucent = false
-        tabBar.layer.borderWidth = 1
-        tabBar.layer.borderColor = UIColor.dd.border.cgColor
+        tabBar.layer.borderWidth = 0
+        tabBar.layer.borderColor = UIColor.clear.cgColor
+        tabBar.layer.shadowColor = UIColor.black.cgColor
+        tabBar.layer.shadowOpacity = 0.32
+        tabBar.layer.shadowRadius = 16
+        tabBar.layer.shadowOffset = CGSize(width: 0, height: -4)
         if #available(iOS 10.0, *) {
             tabBar.unselectedItemTintColor = UIColor.dd.dim
         }
+        if #available(iOS 13.0, *) {
+            let appearance = UITabBarAppearance()
+            appearance.configureWithOpaqueBackground()
+            appearance.backgroundColor = UIColor.dd.tabBar
+            appearance.shadowColor = UIColor.dd.border.withAlphaComponent(0.45)
+            appearance.stackedLayoutAppearance.selected.iconColor = UIColor.dd.green
+            appearance.stackedLayoutAppearance.selected.titleTextAttributes = [.foregroundColor: UIColor.dd.green]
+            appearance.stackedLayoutAppearance.normal.iconColor = UIColor.dd.dim
+            appearance.stackedLayoutAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.dd.dim]
+            tabBar.standardAppearance = appearance
+            if #available(iOS 15.0, *) {
+                tabBar.scrollEdgeAppearance = appearance
+            }
+        }
         header.backgroundColor = UIColor.dd.background.withAlphaComponent(0.96)
+    }
+
+    private func setAccessibilityIdentifiers() {
+        tabBar.accessibilityIdentifier = "digidollar-tab-bar"
+        guard let items = tabBar.items, items.count == 4 else { return }
+        items[0].accessibilityIdentifier = "digidollar-tab-overview"
+        items[1].accessibilityIdentifier = "digidollar-tab-send"
+        items[2].accessibilityIdentifier = "digidollar-tab-receive"
+        items[3].accessibilityIdentifier = "digidollar-tab-vault"
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -88,8 +116,9 @@ private class DigiDollarBaseViewController: UIViewController {
         view.accessibilityIdentifier = "digidollar-\(tabBarItem.title?.lowercased() ?? "screen")-screen"
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 18, right: 0)
         stackView.axis = .vertical
-        stackView.spacing = 16
+        stackView.spacing = 18
         stackView.alignment = .fill
         stackView.distribution = .fill
 
@@ -115,17 +144,11 @@ private class DigiDollarBaseViewController: UIViewController {
         let hero = UIView()
         hero.accessibilityIdentifier = accessibilityIdentifier
         hero.backgroundColor = UIColor.dd.hero
-        hero.layer.cornerRadius = 8
-        hero.layer.borderWidth = 1
-        hero.layer.borderColor = UIColor.dd.green.withAlphaComponent(0.55).cgColor
-        hero.layer.shadowColor = UIColor.black.cgColor
-        hero.layer.shadowOpacity = 0.24
-        hero.layer.shadowRadius = 14
-        hero.layer.shadowOffset = CGSize(width: 0, height: 8)
+        applyCardChrome(to: hero, accent: UIColor.dd.green, emphasized: true)
 
         let inner = UIStackView()
         inner.axis = .vertical
-        inner.spacing = 10
+        inner.spacing = 12
         inner.alignment = .fill
 
         let topRow = UIStackView()
@@ -166,13 +189,14 @@ private class DigiDollarBaseViewController: UIViewController {
 
         hero.addSubview(inner)
         inner.addArrangedSubview(topRow)
+        inner.setCustomSpacing(14, after: topRow)
         inner.addArrangedSubview(balanceLabel)
         inner.addArrangedSubview(secondaryLabel)
         inner.constrain([
-            inner.topAnchor.constraint(equalTo: hero.topAnchor, constant: 18),
+            inner.topAnchor.constraint(equalTo: hero.topAnchor, constant: 20),
             inner.leadingAnchor.constraint(equalTo: hero.leadingAnchor, constant: 18),
             inner.trailingAnchor.constraint(equalTo: hero.trailingAnchor, constant: -18),
-            inner.bottomAnchor.constraint(equalTo: hero.bottomAnchor, constant: -18)
+            inner.bottomAnchor.constraint(equalTo: hero.bottomAnchor, constant: -20)
         ])
 
         stackView.addArrangedSubview(hero)
@@ -187,13 +211,7 @@ private class DigiDollarBaseViewController: UIViewController {
         let card = UIView()
         card.accessibilityIdentifier = accessibilityIdentifier
         card.backgroundColor = UIColor.dd.surface
-        card.layer.cornerRadius = 8
-        card.layer.borderWidth = 1
-        card.layer.borderColor = UIColor.dd.border.cgColor
-        card.layer.shadowColor = UIColor.black.cgColor
-        card.layer.shadowOpacity = 0.16
-        card.layer.shadowRadius = 10
-        card.layer.shadowOffset = CGSize(width: 0, height: 5)
+        applyCardChrome(to: card, accent: accent)
 
         let inner = UIStackView()
         inner.axis = .vertical
@@ -233,10 +251,10 @@ private class DigiDollarBaseViewController: UIViewController {
         if let action = action { inner.addArrangedSubview(action) }
 
         inner.constrain([
-            inner.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
+            inner.topAnchor.constraint(equalTo: card.topAnchor, constant: 18),
             inner.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
             inner.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
-            inner.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16)
+            inner.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -18)
         ])
 
         stackView.addArrangedSubview(card)
@@ -250,9 +268,7 @@ private class DigiDollarBaseViewController: UIViewController {
         let card = UIView()
         card.accessibilityIdentifier = accessibilityIdentifier
         card.backgroundColor = UIColor.dd.surface
-        card.layer.cornerRadius = 8
-        card.layer.borderWidth = 1
-        card.layer.borderColor = UIColor.dd.border.cgColor
+        applyCardChrome(to: card, accent: UIColor.dd.green, emphasized: true)
 
         let inner = UIStackView()
         inner.axis = .vertical
@@ -270,6 +286,8 @@ private class DigiDollarBaseViewController: UIViewController {
         let qrWrap = UIView()
         qrWrap.backgroundColor = .white
         qrWrap.layer.cornerRadius = 8
+        qrWrap.layer.borderWidth = 6
+        qrWrap.layer.borderColor = UIColor.dd.green.withAlphaComponent(0.26).cgColor
         qrWrap.layer.masksToBounds = true
         let qrImage = UIImageView()
         qrImage.accessibilityIdentifier = "digidollar-receive-qr-code"
@@ -332,6 +350,8 @@ private class DigiDollarBaseViewController: UIViewController {
         textField.attributedPlaceholder = NSAttributedString(string: placeholder,
                                                              attributes: [.foregroundColor: UIColor.dd.dim])
         textField.font = UIFont.da.customMedium(size: 17)
+        textField.clearButtonMode = .whileEditing
+        textField.returnKeyType = .done
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 14, height: 1))
         textField.leftViewMode = .always
         textField.heightAnchor.constraint(equalToConstant: 50).isActive = true
@@ -342,6 +362,10 @@ private class DigiDollarBaseViewController: UIViewController {
     func actionButton(title: String, color: UIColor = UIColor.dd.green, action: @escaping () -> Void) -> DAButton {
         let button = DAButton(title: title.uppercased(), backgroundColor: color, height: 50, radius: 8)
         button.label.font = UIFont.da.customBold(size: 16)
+        button.layer.shadowColor = color.cgColor
+        button.layer.shadowOpacity = 0.25
+        button.layer.shadowRadius = 10
+        button.layer.shadowOffset = CGSize(width: 0, height: 5)
         button.touchUpInside = action
         return button
     }
@@ -373,6 +397,27 @@ private class DigiDollarBaseViewController: UIViewController {
         row.addArrangedSubview(titleLabel)
         row.addArrangedSubview(valueLabel)
         return row
+    }
+
+    func applyCardChrome(to card: UIView, accent: UIColor, emphasized: Bool = false) {
+        card.layer.cornerRadius = 8
+        card.layer.borderWidth = 1
+        card.layer.borderColor = accent.withAlphaComponent(emphasized ? 0.56 : 0.32).cgColor
+        card.layer.shadowColor = UIColor.black.cgColor
+        card.layer.shadowOpacity = emphasized ? 0.26 : 0.17
+        card.layer.shadowRadius = emphasized ? 16 : 11
+        card.layer.shadowOffset = CGSize(width: 0, height: emphasized ? 8 : 5)
+
+        let topLine = UIView()
+        topLine.backgroundColor = accent.withAlphaComponent(emphasized ? 0.95 : 0.72)
+        topLine.layer.cornerRadius = 1.5
+        card.addSubview(topLine)
+        topLine.constrain([
+            topLine.topAnchor.constraint(equalTo: card.topAnchor),
+            topLine.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 12),
+            topLine.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -12),
+            topLine.heightAnchor.constraint(equalToConstant: 3)
+        ])
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -421,6 +466,7 @@ private final class DigiDollarOverviewViewController: DigiDollarBaseViewControll
                 subtitle: "RC41 DigiDollar transaction markers used by the mobile SPV builder.",
                 rows: [
                     ("DD Version", "0x0770"),
+                    ("Activation", activationStatusText(currentHeight: currentHeight)),
                     ("Mint", String(format: "0x%08x", DigiDollarProtocol.version(for: .mint))),
                     ("Transfer", String(format: "0x%08x", DigiDollarProtocol.version(for: .transfer))),
                     ("Redeem", String(format: "0x%08x", DigiDollarProtocol.version(for: .redeem)))
@@ -453,7 +499,7 @@ private final class DigiDollarSendViewController: DigiDollarBaseViewController {
     private var pendingTransfer: BRTxRef?
 
     init(store: BRStore, walletManager: WalletManager) {
-        super.init(store: store, walletManager: walletManager, title: "Send", imageName: "da-send")
+        super.init(store: store, walletManager: walletManager, title: "Send", imageName: "digidollar-send")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -486,6 +532,11 @@ private final class DigiDollarSendViewController: DigiDollarBaseViewController {
     }
 
     private func validateSend() {
+        guard let peerManager = walletManager.peerManager,
+              DigiDollarProtocol.isActivated(at: peerManager.lastBlockHeight) else {
+            showStatus("DigiDollar inactive", message: activationRequiredMessage(currentHeight: walletManager.peerManager?.lastBlockHeight ?? 0))
+            return
+        }
         guard let address = addressField.text, DigiDollarProtocol.isValidAddress(address, network: DigiDollarProtocol.currentNetwork) else {
             showStatus("Invalid address", message: "Use a DigiDollar address for \(DigiDollarProtocol.currentNetwork.displayName).")
             return
@@ -574,7 +625,7 @@ private final class DigiDollarSendViewController: DigiDollarBaseViewController {
 
 private final class DigiDollarReceiveViewController: DigiDollarBaseViewController {
     init(store: BRStore, walletManager: WalletManager) {
-        super.init(store: store, walletManager: walletManager, title: "Receive", imageName: "da-receive")
+        super.init(store: store, walletManager: walletManager, title: "Receive", imageName: "digidollar-receive")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -584,14 +635,16 @@ private final class DigiDollarReceiveViewController: DigiDollarBaseViewControlle
     override func viewDidLoad() {
         super.viewDidLoad()
         let receiveAddress = walletManager.wallet?.digiDollarReceiveAddress ?? "Unavailable"
+        let copyButton = actionButton(title: "Copy Address") { [weak self] in
+            UIPasteboard.general.string = receiveAddress
+            self?.showStatus("Address copied", message: receiveAddress)
+        }
+        copyButton.accessibilityIdentifier = "digidollar-copy-address-button"
         addAddressCard(title: "Receive DigiDollars",
                        subtitle: "\(DigiDollarProtocol.currentNetwork.displayName) / Taproot x-only address",
                        address: receiveAddress,
                        accessibilityIdentifier: "digidollar-receive-card",
-                       action: actionButton(title: "Copy Address") { [weak self] in
-                           UIPasteboard.general.string = receiveAddress
-                           self?.showStatus("Address copied", message: receiveAddress)
-                       })
+                       action: copyButton)
         addCard(title: "Address Details",
                 rows: [
                     ("Network", DigiDollarProtocol.currentNetwork.displayName),
@@ -609,16 +662,18 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
     private let oraclePriceField = UITextField()
     private let systemHealthField = UITextField()
     private let redeemVaultField = UITextField()
+    private let statusLabel = DigiDollarInsetLabel(insetFont: UIFont.da.customMedium(size: 14), color: UIColor.dd.softText)
     private let lockTierPicker = UIPickerView()
     private let vaultPicker = UIPickerView()
     private var selectedLockTierIndex = 0
     private var selectedVaultIndex = 0
     private var vaults: [DigiDollarWalletVault] = []
+    private var latestStatus: DigiDollarNetworkStatus?
     private var pendingMint: BRTxRef?
     private var pendingRedeem: BRTxRef?
 
     init(store: BRStore, walletManager: WalletManager) {
-        super.init(store: store, walletManager: walletManager, title: "Vault", imageName: "da-create")
+        super.init(store: store, walletManager: walletManager, title: "Vault", imageName: "digidollar-vault")
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -671,6 +726,8 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
         addTextField(lockTierField, placeholder: "Lock tier", label: "Collateral Tier")
         addTextField(oraclePriceField, placeholder: "DGB/USD price", label: "Oracle Price", keyboardType: .decimalPad)
         addTextField(systemHealthField, placeholder: "System health %", label: "System Health", keyboardType: .numberPad)
+        addStatusPanel()
+        refreshDigiDollarStatus()
         let mintButton = actionButton(title: "Mint DigiDollars") { [weak self] in self?.validateMint() }
         mintButton.accessibilityIdentifier = "digidollar-mint-button"
         stackView.addArrangedSubview(mintButton)
@@ -710,13 +767,21 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
             showStatus("Invalid amount", message: "Enter a DD amount.")
             return
         }
-        guard let priceText = oraclePriceField.text, let oraclePrice = DigiDollarAmountParser.microUSD(fromUSD: priceText), oraclePrice > 0 else {
+        guard let priceText = oraclePriceField.text, var oraclePrice = DigiDollarAmountParser.microUSD(fromUSD: priceText), oraclePrice > 0 else {
             showStatus("Invalid price", message: "Enter the current DGB/USD oracle price.")
             return
         }
-        guard let healthText = systemHealthField.text, let systemHealth = DigiDollarAmountParser.systemHealth(from: healthText) else {
+        guard let healthText = systemHealthField.text, var systemHealth = DigiDollarAmountParser.systemHealth(from: healthText) else {
             showStatus("Invalid health", message: "Enter the current system health percentage.")
             return
+        }
+        if let status = latestStatus {
+            guard status.mintingAvailable else {
+                showStatus("Minting unavailable", message: statusUnavailableMessage(status))
+                return
+            }
+            oraclePrice = status.oraclePriceMicroUSD
+            systemHealth = status.systemHealth
         }
         guard let wallet = walletManager.wallet else {
             showStatus("Wallet unavailable", message: "The wallet is still loading.")
@@ -724,6 +789,10 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
         }
         guard let peerManager = walletManager.peerManager, peerManager.lastBlockHeight > 0 else {
             showStatus("Sync required", message: "Connect to RC41 testnet before minting.")
+            return
+        }
+        guard DigiDollarProtocol.isActivated(at: peerManager.lastBlockHeight) else {
+            showStatus("DigiDollar inactive", message: activationRequiredMessage(currentHeight: peerManager.lastBlockHeight))
             return
         }
 
@@ -783,6 +852,10 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
             showStatus("Sync required", message: "Connect to RC41 testnet before redeeming.")
             return
         }
+        guard DigiDollarProtocol.isActivated(at: peerManager.lastBlockHeight) else {
+            showStatus("DigiDollar inactive", message: activationRequiredMessage(currentHeight: peerManager.lastBlockHeight))
+            return
+        }
         guard let healthText = systemHealthField.text, let systemHealth = DigiDollarAmountParser.systemHealth(from: healthText) else {
             showStatus("Invalid health", message: "Enter the current system health percentage.")
             return
@@ -829,6 +902,93 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
             self?.presentPinForPendingRedeem()
         })
         present(alert, animated: true, completion: nil)
+    }
+
+    private func addStatusPanel() {
+        let card = UIView()
+        card.accessibilityIdentifier = "digidollar-status-card"
+        card.backgroundColor = UIColor.dd.surface
+        applyCardChrome(to: card, accent: UIColor.dd.blue)
+
+        let inner = UIStackView()
+        inner.axis = .vertical
+        inner.spacing = 10
+        inner.alignment = .fill
+
+        let titleRow = UIStackView()
+        titleRow.axis = .horizontal
+        titleRow.alignment = .center
+        titleRow.spacing = 10
+
+        let pulse = UIView()
+        pulse.backgroundColor = UIColor.dd.green
+        pulse.layer.cornerRadius = 5
+        pulse.layer.shadowColor = UIColor.dd.green.cgColor
+        pulse.layer.shadowOpacity = 0.5
+        pulse.layer.shadowRadius = 6
+        pulse.layer.shadowOffset = .zero
+
+        let titleLabel = UILabel(font: UIFont.da.customBold(size: 16), color: UIColor.dd.text)
+        titleLabel.text = "RC41 Status"
+        titleLabel.numberOfLines = 0
+        let sourceLabel = UILabel(font: UIFont.da.customMedium(size: 12), color: UIColor.dd.green)
+        sourceLabel.text = "CORE ORACLE"
+        sourceLabel.textAlignment = .right
+        sourceLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        statusLabel.accessibilityIdentifier = "digidollar-status-summary"
+        statusLabel.text = "Manual status until a Core RPC bridge is configured."
+        statusLabel.numberOfLines = 0
+        statusLabel.backgroundColor = UIColor.dd.input.withAlphaComponent(0.72)
+        statusLabel.layer.cornerRadius = 8
+        statusLabel.layer.masksToBounds = true
+
+        card.addSubview(inner)
+        titleRow.addArrangedSubview(pulse)
+        pulse.constrain([
+            pulse.widthAnchor.constraint(equalToConstant: 10),
+            pulse.heightAnchor.constraint(equalToConstant: 10)
+        ])
+        titleRow.addArrangedSubview(titleLabel)
+        titleRow.addArrangedSubview(sourceLabel)
+        inner.addArrangedSubview(titleRow)
+        inner.addArrangedSubview(statusLabel)
+        inner.constrain([
+            inner.topAnchor.constraint(equalTo: card.topAnchor, constant: 16),
+            inner.leadingAnchor.constraint(equalTo: card.leadingAnchor, constant: 16),
+            inner.trailingAnchor.constraint(equalTo: card.trailingAnchor, constant: -16),
+            inner.bottomAnchor.constraint(equalTo: card.bottomAnchor, constant: -16)
+        ])
+
+        stackView.addArrangedSubview(card)
+    }
+
+    private func refreshDigiDollarStatus() {
+        DigiDollarStatusService.shared.load { [weak self] status in
+            DispatchQueue.main.async {
+                guard let self = self else { return }
+                guard let status = status else {
+                    self.statusLabel.text = "Manual status. Launch with DGB_DIGIDOLLAR_RPC_URL to auto-fill Core oracle health."
+                    return
+                }
+
+                self.latestStatus = status
+                self.oraclePriceField.text = status.priceUSDString
+                self.systemHealthField.text = "\(status.systemHealth)"
+
+                if status.mintingAvailable {
+                    self.statusLabel.text = "Core RPC: oracle \(status.oracleStatus), price $\(status.priceUSDString), health \(status.systemHealth)%."
+                } else {
+                    self.statusLabel.text = self.statusUnavailableMessage(status)
+                }
+            }
+        }
+    }
+
+    private func statusUnavailableMessage(_ status: DigiDollarNetworkStatus) -> String {
+        if let reason = status.mintingRestrictedReason, !reason.isEmpty {
+            return "Core RPC: minting restricted (\(reason)). Oracle \(status.oracleStatus), price $\(status.priceUSDString), health \(status.systemHealth)%."
+        }
+        return "Core RPC: oracle \(status.oracleStatus), price $\(status.priceUSDString), health \(status.systemHealth)%."
     }
 
     private func presentPinForPendingMint() {
@@ -1043,42 +1203,100 @@ private extension BRWallet {
 private enum DigiDollarTabIcon {
     static func image(named imageName: String?) -> UIImage? {
         guard let imageName = imageName else { return nil }
-        if imageName == "digidollar-overview" {
-            return overviewImage().withRenderingMode(.alwaysTemplate)
+        switch imageName {
+        case "digidollar-overview":
+            return render { drawCoin(in: $0); drawOverviewLines(in: $0) }.withRenderingMode(.alwaysTemplate)
+        case "digidollar-send":
+            return render { drawCoin(in: $0); drawArrow(in: $0, incoming: false) }.withRenderingMode(.alwaysTemplate)
+        case "digidollar-receive":
+            return render { drawCoin(in: $0); drawArrow(in: $0, incoming: true) }.withRenderingMode(.alwaysTemplate)
+        case "digidollar-vault":
+            return render { drawVault(in: $0) }.withRenderingMode(.alwaysTemplate)
+        default:
+            return UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
         }
-        return UIImage(named: imageName)?.withRenderingMode(.alwaysTemplate)
     }
 
-    private static func overviewImage() -> UIImage {
+    private static func render(_ draw: (CGRect) -> Void) -> UIImage {
         let size = CGSize(width: 28, height: 28)
         UIGraphicsBeginImageContextWithOptions(size, false, 0)
         defer { UIGraphicsEndImageContext() }
 
         UIColor.black.setStroke()
+        UIColor.black.setFill()
+        draw(CGRect(origin: .zero, size: size))
+        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+    }
+
+    private static func drawCoin(in rect: CGRect) {
         let dPath = UIBezierPath()
         dPath.lineWidth = 2.2
         dPath.lineCapStyle = .round
         dPath.lineJoinStyle = .round
-        dPath.move(to: CGPoint(x: 12, y: 6))
-        dPath.addLine(to: CGPoint(x: 12, y: 22))
-        dPath.addCurve(to: CGPoint(x: 24, y: 14),
+        dPath.move(to: CGPoint(x: rect.minX + 12, y: rect.minY + 6))
+        dPath.addLine(to: CGPoint(x: rect.minX + 12, y: rect.minY + 22))
+        dPath.addCurve(to: CGPoint(x: rect.minX + 24, y: rect.minY + 14),
                        controlPoint1: CGPoint(x: 22, y: 6),
                        controlPoint2: CGPoint(x: 22, y: 22))
-        dPath.addCurve(to: CGPoint(x: 12, y: 6),
+        dPath.addCurve(to: CGPoint(x: rect.minX + 12, y: rect.minY + 6),
                        controlPoint1: CGPoint(x: 22, y: 6),
                        controlPoint2: CGPoint(x: 18, y: 6))
         dPath.stroke()
+    }
 
+    private static func drawOverviewLines(in rect: CGRect) {
         for y in [8.0, 14.0, 20.0] {
             let line = UIBezierPath()
             line.lineWidth = 2.2
             line.lineCapStyle = .round
-            line.move(to: CGPoint(x: 4, y: y))
-            line.addLine(to: CGPoint(x: 9, y: y))
+            line.move(to: CGPoint(x: rect.minX + 4, y: rect.minY + CGFloat(y)))
+            line.addLine(to: CGPoint(x: rect.minX + 9, y: rect.minY + CGFloat(y)))
             line.stroke()
         }
+    }
 
-        return UIGraphicsGetImageFromCurrentImageContext() ?? UIImage()
+    private static func drawArrow(in rect: CGRect, incoming: Bool) {
+        let line = UIBezierPath()
+        line.lineWidth = 2.4
+        line.lineCapStyle = .round
+        line.lineJoinStyle = .round
+        if incoming {
+            line.move(to: CGPoint(x: rect.minX + 22, y: rect.minY + 7))
+            line.addLine(to: CGPoint(x: rect.minX + 8, y: rect.minY + 21))
+            line.move(to: CGPoint(x: rect.minX + 8, y: rect.minY + 21))
+            line.addLine(to: CGPoint(x: rect.minX + 8, y: rect.minY + 13))
+            line.move(to: CGPoint(x: rect.minX + 8, y: rect.minY + 21))
+            line.addLine(to: CGPoint(x: rect.minX + 16, y: rect.minY + 21))
+        } else {
+            line.move(to: CGPoint(x: rect.minX + 7, y: rect.minY + 21))
+            line.addLine(to: CGPoint(x: rect.minX + 21, y: rect.minY + 7))
+            line.move(to: CGPoint(x: rect.minX + 21, y: rect.minY + 7))
+            line.addLine(to: CGPoint(x: rect.minX + 21, y: rect.minY + 15))
+            line.move(to: CGPoint(x: rect.minX + 21, y: rect.minY + 7))
+            line.addLine(to: CGPoint(x: rect.minX + 13, y: rect.minY + 7))
+        }
+        line.stroke()
+    }
+
+    private static func drawVault(in rect: CGRect) {
+        let shackle = UIBezierPath()
+        shackle.lineWidth = 2.2
+        shackle.lineCapStyle = .round
+        shackle.addArc(withCenter: CGPoint(x: rect.minX + 14, y: rect.minY + 12),
+                       radius: 6,
+                       startAngle: CGFloat.pi,
+                       endAngle: 0,
+                       clockwise: true)
+        shackle.stroke()
+
+        let body = UIBezierPath(roundedRect: CGRect(x: rect.minX + 5, y: rect.minY + 12, width: 18, height: 12),
+                                cornerRadius: 3)
+        body.lineWidth = 2.2
+        body.stroke()
+
+        let dial = UIBezierPath(ovalIn: CGRect(x: rect.minX + 11, y: rect.minY + 16, width: 6, height: 6))
+        dial.lineWidth = 2
+        dial.stroke()
     }
 }
 
@@ -1090,6 +1308,23 @@ private func formatDGB(satoshis: UInt64) -> String {
     let whole = satoshis / 100_000_000
     let fractional = satoshis % 100_000_000
     return "\(whole).\(String(format: "%08llu", fractional))"
+}
+
+private func activationStatusText(currentHeight: UInt32) -> String {
+    guard let activationHeight = DigiDollarProtocol.activationHeight() else { return "Unavailable" }
+    guard currentHeight > 0 else { return "Connect to check \(activationHeight)" }
+    if DigiDollarProtocol.isActivated(at: currentHeight) { return "Active at \(activationHeight)" }
+    return "Waiting \(currentHeight)/\(activationHeight)"
+}
+
+private func activationRequiredMessage(currentHeight: UInt32) -> String {
+    guard let activationHeight = DigiDollarProtocol.activationHeight() else {
+        return "DigiDollar is currently enabled only for RC41 Testnet25."
+    }
+    guard currentHeight > 0 else {
+        return "Connect to RC41 Testnet25 to check DigiDollar activation at height \(activationHeight)."
+    }
+    return "Sync to RC41 Testnet25 height \(activationHeight) before building DigiDollar transactions. Current SPV height \(currentHeight)."
 }
 
 enum DigiDollarAmountParser {
@@ -1182,6 +1417,39 @@ private final class DigiDollarMarkView: UIView {
         super.layoutSubviews()
         coin.layer.cornerRadius = min(coin.bounds.width, coin.bounds.height) / 2
         ring.layer.cornerRadius = min(ring.bounds.width, ring.bounds.height) / 2
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+private final class DigiDollarInsetLabel: UILabel {
+    private let insets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+
+    init(insetFont: UIFont, color: UIColor) {
+        super.init(frame: .zero)
+        self.font = insetFont
+        self.textColor = color
+    }
+
+    override func drawText(in rect: CGRect) {
+        super.drawText(in: rect.inset(by: insets))
+    }
+
+    override func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int) -> CGRect {
+        let insetBounds = bounds.inset(by: insets)
+        let textRect = super.textRect(forBounds: insetBounds, limitedToNumberOfLines: numberOfLines)
+        return textRect.inset(by: UIEdgeInsets(top: -insets.top,
+                                               left: -insets.left,
+                                               bottom: -insets.bottom,
+                                               right: -insets.right))
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let size = super.intrinsicContentSize
+        return CGSize(width: size.width + insets.left + insets.right,
+                      height: size.height + insets.top + insets.bottom)
     }
 
     required init?(coder aDecoder: NSCoder) {

@@ -35,7 +35,7 @@ struct E {
         #endif
     }()
     static let isDebug: Bool = {
-        #if Debug
+        #if DEBUG
             return true
         #else
             return false

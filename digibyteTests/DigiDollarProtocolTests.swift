@@ -13,6 +13,22 @@ class DigiDollarProtocolTests: XCTestCase {
 
     private let outputKey = Array(UInt8(0)..<UInt8(32))
 
+    func testTestnetSchemeTargetsRC41Network() {
+        XCTAssertTrue(E.isTestnet)
+        XCTAssertEqual(DigiDollarProtocol.currentNetwork, .testnet)
+        XCTAssertEqual(DigiDollarProtocol.currentNetwork.displayName, "RC41 Testnet25")
+    }
+
+    func testRC41ActivationGate() {
+        XCTAssertEqual(DigiDollarProtocol.activationHeight(for: .testnet), 600)
+        XCTAssertFalse(DigiDollarProtocol.isActivated(at: 0, network: .testnet))
+        XCTAssertFalse(DigiDollarProtocol.isActivated(at: 599, network: .testnet))
+        XCTAssertTrue(DigiDollarProtocol.isActivated(at: 600, network: .testnet))
+        XCTAssertFalse(DigiDollarProtocol.isActivated(at: 0, network: .mainnet))
+        XCTAssertFalse(DigiDollarProtocol.isActivated(at: 23_000_000, network: .mainnet))
+        XCTAssertTrue(DigiDollarProtocol.isActivated(at: 0, network: .regtest))
+    }
+
     func testAddressVectorsRoundTrip() {
         let mainnetAddress = DigiDollarProtocol.address(forOutputKey: outputKey, network: .mainnet)
         let testnetAddress = DigiDollarProtocol.address(forOutputKey: outputKey, network: .testnet)
@@ -199,6 +215,95 @@ class DigiDollarProtocolTests: XCTestCase {
         XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 101, systemHealth: 99), 107)
         XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 99, systemHealth: 84), 124)
         XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 0, systemHealth: 84), 0)
+    }
+
+    func testDynamicCollateralAdjustmentAndMintMathVectors() {
+        XCTAssertEqual(DigiDollarProtocol.dcaMultiplierBps(systemHealth: 150), 10_000)
+        XCTAssertEqual(DigiDollarProtocol.dcaMultiplierBps(systemHealth: 149), 12_500)
+        XCTAssertEqual(DigiDollarProtocol.dcaMultiplierBps(systemHealth: 119), 15_000)
+        XCTAssertEqual(DigiDollarProtocol.dcaMultiplierBps(systemHealth: 109), 20_000)
+
+        XCTAssertEqual(DigiDollarProtocol.effectiveCollateralRatio(baseRatio: 1_000, systemHealth: 150), 1_000)
+        XCTAssertEqual(DigiDollarProtocol.effectiveCollateralRatio(baseRatio: 1_000, systemHealth: 149), 1_250)
+        XCTAssertEqual(DigiDollarProtocol.effectiveCollateralRatio(baseRatio: 1_000, systemHealth: 119), 1_500)
+        XCTAssertEqual(DigiDollarProtocol.effectiveCollateralRatio(baseRatio: 1_000, systemHealth: 109), 2_000)
+
+        XCTAssertEqual(DigiDollarProtocol.requiredCollateral(amountCents: 10_000,
+                                                             lockTier: 0,
+                                                             oraclePriceMicroUSD: 6_310,
+                                                             systemHealth: 150,
+                                                             includeSafetyMargin: false),
+                       15_847_860_538_828)
+        XCTAssertEqual(DigiDollarProtocol.requiredCollateral(amountCents: 10_000,
+                                                             lockTier: 0,
+                                                             oraclePriceMicroUSD: 6_310,
+                                                             systemHealth: 150),
+                       16_006_339_144_216)
+        XCTAssertEqual(DigiDollarProtocol.mintLockHeight(currentBlockHeight: 500, lockTier: 0), 840)
+    }
+
+    func testNetworkStatusParsesCoreRpcResultWrapper() {
+        let json = """
+        {
+          "result": {
+            "health_percentage": 835,
+            "oracle_price_micro_usd": 3623,
+            "oracle_available": true,
+            "oracle_status": "available",
+            "minting_restricted_reason": "none"
+          },
+          "error": null,
+          "id": "digibytewallet-ios"
+        }
+        """.data(using: .utf8)!
+
+        let status = DigiDollarNetworkStatus.parse(json: json)
+        XCTAssertEqual(status?.oraclePriceMicroUSD, 3_623)
+        XCTAssertEqual(status?.priceUSDString, "0.003623")
+        XCTAssertEqual(status?.systemHealth, 835)
+        XCTAssertTrue(status?.oracleAvailable == true)
+        XCTAssertTrue(status?.mintingAvailable == true)
+        XCTAssertNil(status?.mintingRestrictedReason)
+    }
+
+    func testNetworkStatusParsesOracleUnavailableStats() {
+        let json = """
+        {
+          "health_percentage": 0,
+          "system_collateral_ratio": 0,
+          "oracle_price_micro_usd": 0,
+          "oracle_available": false,
+          "oracle_status": "unavailable",
+          "minting_restricted_reason": "oracle_unavailable"
+        }
+        """.data(using: .utf8)!
+
+        let status = DigiDollarNetworkStatus.parse(json: json)
+        XCTAssertEqual(status?.oraclePriceMicroUSD, 0)
+        XCTAssertEqual(status?.priceUSDString, "0.000000")
+        XCTAssertEqual(status?.systemHealth, 0)
+        XCTAssertFalse(status?.mintingAvailable ?? true)
+        XCTAssertEqual(status?.mintingRestrictedReason, "oracle_unavailable")
+    }
+
+    func testNetworkStatusParsesRatioFallbackAndStringValues() {
+        let json = """
+        {
+          "system_collateral_ratio": "149",
+          "oracle_price_micro_usd": "6310",
+          "oracle_available": "yes",
+          "status": "available"
+        }
+        """.data(using: .utf8)!
+
+        let status = DigiDollarNetworkStatus.parse(json: json, source: "fixture")
+        XCTAssertEqual(status?.oraclePriceMicroUSD, 6_310)
+        XCTAssertEqual(status?.priceUSDString, "0.006310")
+        XCTAssertEqual(status?.systemHealth, 149)
+        XCTAssertTrue(status?.oracleAvailable == true)
+        XCTAssertEqual(status?.oracleStatus, "available")
+        XCTAssertEqual(status?.source, "fixture")
+        XCTAssertTrue(status?.mintingAvailable == true)
     }
 
     private func makeHash(_ firstByte: UInt8) -> UInt256 {

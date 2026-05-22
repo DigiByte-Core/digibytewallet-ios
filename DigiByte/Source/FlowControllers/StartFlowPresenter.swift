@@ -208,6 +208,23 @@ class StartFlowPresenter : Subscriber {
             autoreleasepool {
                 guard self?.walletManager.setRandomSeedPhrase() != nil else { self?.handleWalletCreationError(); return }
             }
+
+            if E.isTestnet {
+                self?.store.perform(action: WalletChange.setWalletCreationDate(Date()))
+
+                DispatchQueue.main.async {
+                    self?.store.perform(action: WalletChange.setSyncingState(.connecting))
+                }
+
+                DispatchQueue.walletQueue.async {
+                    self?.walletManager.peerManager?.connect()
+                    DispatchQueue.main.async {
+                        self?.pushStartPaperPhraseCreationViewController(pin: pin)
+                        self?.store.trigger(name: .didCreateOrRecoverWallet)
+                    }
+                }
+                return
+            }
             
             // Determine the best block of the blockchain
             self?.blockReq = BestBlockRequest(completion: { (success, blockHash, blockHeight, blockDate) in

@@ -18,6 +18,9 @@ class breadwalletUITests: XCTestCase {
         app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
         app.launchEnvironment["TESTNET"] = "1"
         app.launchEnvironment["DGB_FIXED_PEER"] = ProcessInfo.processInfo.environment["DGB_FIXED_PEER"] ?? ""
+        app.launchEnvironment["DGB_DIGIDOLLAR_RPC_URL"] = ProcessInfo.processInfo.environment["DGB_DIGIDOLLAR_RPC_URL"] ?? ""
+        app.launchEnvironment["DGB_DIGIDOLLAR_RPC_USER"] = ProcessInfo.processInfo.environment["DGB_DIGIDOLLAR_RPC_USER"] ?? ""
+        app.launchEnvironment["DGB_DIGIDOLLAR_RPC_PASSWORD"] = ProcessInfo.processInfo.environment["DGB_DIGIDOLLAR_RPC_PASSWORD"] ?? ""
         app.launch()
     }
 
@@ -45,6 +48,7 @@ class breadwalletUITests: XCTestCase {
 
     func testDigiDollarMenuOpens() {
         XCTAssert(prepareWalletForMainScreen(timeout: 30), app.debugDescription)
+        unlockSecurityCheckIfNeeded()
         XCTAssert(isMainWalletScreenVisible(timeout: 10), app.debugDescription)
 
         let menuButton = app.descendants(matching: .any)["footer-hamburger-menu"].firstMatch
@@ -53,8 +57,7 @@ class breadwalletUITests: XCTestCase {
 
         let digiDollarButton = app.descendants(matching: .any)["navigation-menu-digidollar"].firstMatch
         XCTAssert(digiDollarButton.waitForExistence(timeout: 10), app.debugDescription)
-        XCTAssert(waitUntilHittable(digiDollarButton, timeout: 10), app.debugDescription)
-        digiDollarButton.tap()
+        tapVisibleDigiDollarDrawerRow()
 
         let overviewTab = app.tabBars.buttons["Overview"].firstMatch
         XCTAssert(overviewTab.waitForExistence(timeout: 10), app.debugDescription)
@@ -63,8 +66,13 @@ class breadwalletUITests: XCTestCase {
 
         overviewTab.tap()
         assertExists(identifier: "digidollar-overview-card", timeout: 5)
+        assertExists(identifier: "digidollar-protocol-card")
+        assertExists(identifier: "digidollar-network-card")
         assertExists(identifier: "digidollar-transactions-card")
-        XCTAssert(waitForAnyText(["DigiDollar", "Overview", "Protocol"], timeout: 3), app.debugDescription)
+        XCTAssert(waitForAnyText(["DigiDollar"], timeout: 3), app.debugDescription)
+        XCTAssert(waitForAnyText(["RC41 Testnet25"], timeout: 3), app.debugDescription)
+        assertTextsExist(["Activation", "Connect to check 600"])
+        assertTextsExist(["Network Status", "SPV Height", "Connecting", "Peer Tip", "Pending", "Fixed Peer", expectedFixedPeerText])
 
         let sendTab = app.tabBars.buttons["Send"].firstMatch
         XCTAssert(sendTab.waitForExistence(timeout: 3), app.debugDescription)
@@ -90,12 +98,20 @@ class breadwalletUITests: XCTestCase {
         assertExists(identifier: "digidollar-lock-tier")
         assertExists(identifier: "digidollar-oracle-price")
         assertExists(identifier: "digidollar-system-health")
+        assertExists(identifier: "digidollar-status-card")
+        assertExists(identifier: "digidollar-status-summary")
+        assertLabeledElementNotEmpty(identifier: "digidollar-status-summary")
+        XCTAssert(waitForAnyText(["RC41 Status", "Manual status", "Core RPC"], timeout: 3), app.debugDescription)
         assertExists(identifier: "digidollar-redeem-vault")
         assertExists(identifier: "digidollar-mint-button")
         assertExists(identifier: "digidollar-redeem-button")
     }
 
     private func assertDigiDollarTabsExist() {
+        let tabBar = app.tabBars.firstMatch
+        XCTAssert(tabBar.waitForExistence(timeout: 3), app.debugDescription)
+        XCTAssertEqual(tabBar.buttons.count, 4, "Expected exactly 4 DigiDollar tabs.\n\(app.debugDescription)")
+
         for tabTitle in ["Overview", "Send", "Receive", "Vault"] {
             XCTAssert(app.tabBars.buttons[tabTitle].waitForExistence(timeout: 3), "\(tabTitle) tab missing.\n\(app.debugDescription)")
         }
@@ -104,6 +120,32 @@ class breadwalletUITests: XCTestCase {
     private func assertExists(identifier: String, timeout: TimeInterval = 3) {
         let element = app.descendants(matching: .any)[identifier].firstMatch
         XCTAssert(element.waitForExistence(timeout: timeout), "\(identifier) missing.\n\(app.debugDescription)")
+    }
+
+    private func assertLabeledElementNotEmpty(identifier: String, timeout: TimeInterval = 3) {
+        let element = app.descendants(matching: .any)[identifier].firstMatch
+        XCTAssert(element.waitForExistence(timeout: timeout), "\(identifier) missing.\n\(app.debugDescription)")
+        XCTAssertFalse(element.label.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty,
+                       "\(identifier) should expose visible status text.\n\(app.debugDescription)")
+    }
+
+    private func assertTextsExist(_ labels: [String], timeout: TimeInterval = 3) {
+        for label in labels {
+            XCTAssert(waitForAnyText([label], timeout: timeout), "\(label) missing.\n\(app.debugDescription)")
+        }
+    }
+
+    private var expectedFixedPeerText: String {
+        let fixedPeer = ProcessInfo.processInfo.environment["DGB_FIXED_PEER"] ?? ""
+        return fixedPeer.isEmpty ? "Off" : fixedPeer
+    }
+
+    private func tapVisibleDigiDollarDrawerRow() {
+        RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.5))
+
+        let windowHeight = max(app.windows.firstMatch.frame.height, 1)
+        let drawerRowCenterY = min(0.7, 455 / windowHeight)
+        app.coordinate(withNormalizedOffset: CGVector(dx: 0.45, dy: drawerRowCenterY)).tap()
     }
 
     private func prepareWalletForMainScreen(timeout: TimeInterval) -> Bool {
@@ -117,10 +159,7 @@ class breadwalletUITests: XCTestCase {
 
         if tapButton(titles: ["CREATE NEW WALLET", "Create New Wallet"], timeout: 8) {
             createWallet(pin: "111111")
-        } else if app.staticTexts["Enter PIN"].waitForExistence(timeout: 3) ||
-                    app.staticTexts["Security Check"].exists ||
-                    app.staticTexts["SECURITY CHECK"].exists ||
-                    app.staticTexts["SECURITYNCHECK"].exists {
+        } else if isPinKeypadVisible(timeout: 3) {
             enterPin("111111")
             return isMainWalletScreenVisible(timeout: 15) || isRecoveryKeyScreenVisible(timeout: 1)
         } else {
@@ -149,6 +188,17 @@ class breadwalletUITests: XCTestCase {
         for digit in pin.map(String.init) {
             tapPinDigit(digit)
         }
+    }
+
+    private func unlockSecurityCheckIfNeeded() {
+        if isPinKeypadVisible(timeout: 1) {
+            enterPin("111111")
+            XCTAssert(isMainWalletScreenVisible(timeout: 15), app.debugDescription)
+        }
+    }
+
+    private func isPinKeypadVisible(timeout: TimeInterval) -> Bool {
+        app.descendants(matching: .any)["pin-1"].firstMatch.waitForExistence(timeout: timeout)
     }
 
     private func tapPinDigit(_ digit: String) {

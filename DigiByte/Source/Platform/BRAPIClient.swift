@@ -67,7 +67,7 @@ open class BRAPIClient : NSObject, URLSessionDelegate, URLSessionTaskDelegate, B
     
     // whether or not to emit log messages from this instance of the client
     private var logEnabled: Bool = {
-        #if Debug
+        #if DEBUG
             return true
         #else
             return false
@@ -78,7 +78,7 @@ open class BRAPIClient : NSObject, URLSessionDelegate, URLSessionTaskDelegate, B
     var proto = "https"
     
     // host is the server(s) on which the API is hosted
-    #if Testflight || Debug
+    #if Testflight || DEBUG
     var host = "stage.breadwallet.com"
     #else
     var host = "api.breadwallet.com"

@@ -8,6 +8,134 @@
 import Foundation
 import BRCore
 
+struct DigiDollarNetworkStatus: Equatable {
+    let oraclePriceMicroUSD: UInt64
+    let systemHealth: Int32
+    let oracleAvailable: Bool
+    let oracleStatus: String
+    let mintingRestrictedReason: String?
+    let source: String
+
+    var priceUSDString: String {
+        let whole = oraclePriceMicroUSD / 1_000_000
+        let fraction = oraclePriceMicroUSD % 1_000_000
+        return "\(whole).\(String(format: "%06llu", fraction))"
+    }
+
+    var mintingAvailable: Bool {
+        return oracleAvailable && oraclePriceMicroUSD > 0 && mintingRestrictedReason == nil
+    }
+
+    static func parse(json data: Data, source: String = "DigiByte Core RPC") -> DigiDollarNetworkStatus? {
+        guard let object = try? JSONSerialization.jsonObject(with: data, options: []),
+              let dictionary = object as? [String: Any] else { return nil }
+
+        let result = (dictionary["result"] as? [String: Any]) ?? dictionary
+        guard let oraclePrice = uint64Value(result["oracle_price_micro_usd"]),
+              let health = int32Value(result["health_percentage"] ?? result["system_collateral_ratio"]) else { return nil }
+
+        return DigiDollarNetworkStatus(oraclePriceMicroUSD: oraclePrice,
+                                       systemHealth: health,
+                                       oracleAvailable: boolValue(result["oracle_available"]) ?? (oraclePrice > 0),
+                                       oracleStatus: stringValue(result["oracle_status"]) ?? stringValue(result["status"]) ?? "unknown",
+                                       mintingRestrictedReason: restrictionValue(result["minting_restricted_reason"]),
+                                       source: source)
+    }
+
+    private static func stringValue(_ value: Any?) -> String? {
+        if let value = value as? String, !value.isEmpty { return value }
+        return nil
+    }
+
+    private static func restrictionValue(_ value: Any?) -> String? {
+        guard let value = stringValue(value)?.trimmingCharacters(in: .whitespacesAndNewlines),
+              !value.isEmpty else { return nil }
+
+        switch value.lowercased() {
+        case "none", "null", "no", "false", "0":
+            return nil
+        default:
+            return value
+        }
+    }
+
+    private static func uint64Value(_ value: Any?) -> UInt64? {
+        if let value = value as? UInt64 { return value }
+        if let value = value as? Int, value >= 0 { return UInt64(value) }
+        if let value = value as? NSNumber, value.int64Value >= 0 { return UInt64(value.int64Value) }
+        if let value = value as? String { return UInt64(value) }
+        return nil
+    }
+
+    private static func int32Value(_ value: Any?) -> Int32? {
+        if let value = value as? Int, value >= Int(Int32.min), value <= Int(Int32.max) { return Int32(value) }
+        if let value = value as? NSNumber, value.int64Value >= Int64(Int32.min), value.int64Value <= Int64(Int32.max) {
+            return Int32(value.int64Value)
+        }
+        if let value = value as? String { return Int32(value) }
+        return nil
+    }
+
+    private static func boolValue(_ value: Any?) -> Bool? {
+        if let value = value as? Bool { return value }
+        if let value = value as? NSNumber { return value.boolValue }
+        if let value = value as? String {
+            switch value.lowercased() {
+            case "true", "yes", "1": return true
+            case "false", "no", "0": return false
+            default: return nil
+            }
+        }
+        return nil
+    }
+}
+
+final class DigiDollarStatusService {
+    static let shared = DigiDollarStatusService()
+
+    private let session: URLSession
+    private let environment: [String: String]
+
+    init(session: URLSession = .shared, environment: [String: String] = ProcessInfo.processInfo.environment) {
+        self.session = session
+        self.environment = environment
+    }
+
+    func load(completion: @escaping (DigiDollarNetworkStatus?) -> Void) {
+        guard let request = rpcRequest(method: "getdigidollarstats") else {
+            completion(nil)
+            return
+        }
+
+        session.dataTask(with: request) { data, _, _ in
+            guard let data = data else {
+                completion(nil)
+                return
+            }
+            completion(DigiDollarNetworkStatus.parse(json: data))
+        }.resume()
+    }
+
+    private func rpcRequest(method: String) -> URLRequest? {
+        guard E.isDebug,
+              let urlString = environment["DGB_DIGIDOLLAR_RPC_URL"],
+              let url = URL(string: urlString) else { return nil }
+
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 8.0
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        if let user = environment["DGB_DIGIDOLLAR_RPC_USER"],
+           let password = environment["DGB_DIGIDOLLAR_RPC_PASSWORD"],
+           let credentials = "\(user):\(password)".data(using: .utf8)?.base64EncodedString() {
+            request.setValue("Basic \(credentials)", forHTTPHeaderField: "Authorization")
+        }
+        let body: [String: Any] = ["jsonrpc": "1.0", "id": "digibytewallet-ios", "method": method, "params": []]
+        request.httpBody = try? JSONSerialization.data(withJSONObject: body, options: [])
+        return request
+    }
+}
+
 enum DigiDollarNetwork: Equatable {
     case mainnet
     case testnet
@@ -81,9 +209,23 @@ struct DigiDollarLockTier: Equatable {
 enum DigiDollarProtocol {
     static let outputKeyLength = 32
     static let currentNetwork: DigiDollarNetwork = E.isTestnet ? .testnet : .mainnet
+    static let testnet25ActivationHeight: UInt32 = 600
 
     static func version(for type: DigiDollarTransactionType, flags: UInt8 = 0) -> UInt32 {
         return BRDigiDollarMakeVersion(type.cValue, flags)
+    }
+
+    static func activationHeight(for network: DigiDollarNetwork = currentNetwork) -> UInt32? {
+        switch network {
+        case .testnet: return testnet25ActivationHeight
+        case .regtest: return 0
+        case .mainnet: return nil
+        }
+    }
+
+    static func isActivated(at height: UInt32, network: DigiDollarNetwork = currentNetwork) -> Bool {
+        guard let activationHeight = activationHeight(for: network) else { return false }
+        return height >= activationHeight
     }
 
     static func type(forVersion version: UInt32) -> DigiDollarTransactionType {

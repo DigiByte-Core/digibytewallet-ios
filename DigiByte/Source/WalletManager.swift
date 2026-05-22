@@ -78,7 +78,7 @@ class WalletManager : BRWalletListener, BRPeerManagerListener {
         guard self.masterPubKey != BRMasterPubKey() else { return nil }
         guard let wallet = lazyWallet else {
             // stored transactions don't match masterPubKey
-            #if !Debug
+            #if !DEBUG
                 do { try FileManager.default.removeItem(atPath: self.dbPath) } catch { }
             #endif
             return nil

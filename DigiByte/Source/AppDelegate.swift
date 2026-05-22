@@ -53,7 +53,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     let applicationController = ApplicationController()
     
-#if Debug
+#if DEBUG
     func resetKeychain() {
         deleteAllKeysForSecClass(kSecClassGenericPassword)
         deleteAllKeysForSecClass(kSecClassInternetPassword)
@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         ImageCache.default.diskStorage.config.expiration = .never
         
-#if Debug
+#if DEBUG
         if false {
             UserDefaults.hasShownWelcome = false
             resetKeychain()

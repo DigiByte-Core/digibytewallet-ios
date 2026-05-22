@@ -115,7 +115,7 @@ class ApplicationController : Subscriber, Trackable {
             }
         }
         
-        if firstInit, UserDefaults.fastSyncEnabled {
+        if firstInit, UserDefaults.fastSyncEnabled, !E.isTestnet {
             firstBlockSyncInit(wallet!)
         }
         // Do not block app launch on the legacy fast-sync API. SPV can start
@@ -155,7 +155,7 @@ class ApplicationController : Subscriber, Trackable {
         listenForPushNotificationRequest()
         offMainInitialization()
         
-        #if Debug
+        #if DEBUG
         if (false) {
             DispatchQueue.main.async {
                 self.modalPresenter?.presentAlert(AlertType.pinSet(callback: {
