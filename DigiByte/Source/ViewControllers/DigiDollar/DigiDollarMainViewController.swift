@@ -374,10 +374,14 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
     private let lockTierField = UITextField()
     private let oraclePriceField = UITextField()
     private let systemHealthField = UITextField()
-    private let redeemAmountField = UITextField()
+    private let redeemVaultField = UITextField()
     private let lockTierPicker = UIPickerView()
+    private let vaultPicker = UIPickerView()
     private var selectedLockTierIndex = 0
+    private var selectedVaultIndex = 0
+    private var vaults: [DigiDollarWalletVault] = []
     private var pendingMint: BRTxRef?
+    private var pendingRedeem: BRTxRef?
 
     init(store: BRStore, walletManager: WalletManager) {
         super.init(store: store, walletManager: walletManager, title: "Vault", imageName: "da-create")
@@ -390,16 +394,24 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         let outputCount = walletManager.wallet?.digiDollarUtxos.count ?? 0
+        vaults = walletManager.wallet?.digiDollarVaults ?? []
         lockTierPicker.dataSource = self
         lockTierPicker.delegate = self
+        vaultPicker.dataSource = self
+        vaultPicker.delegate = self
         lockTierField.inputView = lockTierPicker
         lockTierField.inputAccessoryView = pickerAccessory()
+        redeemVaultField.inputView = vaultPicker
+        redeemVaultField.inputAccessoryView = pickerAccessory()
         lockTierField.tintColor = .clear
+        redeemVaultField.tintColor = .clear
         lockTierField.text = tierTitle(for: selectedLockTierIndex)
+        redeemVaultField.text = vaultTitle(for: selectedVaultIndex)
         mintAmountField.accessibilityIdentifier = "digidollar-mint-amount"
         lockTierField.accessibilityIdentifier = "digidollar-lock-tier"
         oraclePriceField.accessibilityIdentifier = "digidollar-oracle-price"
         systemHealthField.accessibilityIdentifier = "digidollar-system-health"
+        redeemVaultField.accessibilityIdentifier = "digidollar-redeem-vault"
         oraclePriceField.text = UserDefaults.standard.string(forKey: "DigiDollarOraclePriceUSD") ?? "0.003623"
         systemHealthField.text = UserDefaults.standard.string(forKey: "DigiDollarSystemHealth") ?? "150"
 
@@ -420,18 +432,23 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
 
         addCard(title: "Redeem",
                 rows: [
-                    ("Mode", "Timelock"),
-                    ("ERR", "Extra DD burn")
+                    ("Mode", "Full vault"),
+                    ("ERR", "Extra DD burn below 100% health")
                 ])
-        addTextField(redeemAmountField, placeholder: "DD change", keyboardType: .decimalPad)
-        stackView.addArrangedSubview(actionButton(title: "Validate Redeem", color: UIColor.dd.green) { [weak self] in self?.validateRedeem() })
+        addTextField(redeemVaultField, placeholder: "Vault")
+        let redeemButton = actionButton(title: "Redeem Vault", color: UIColor.dd.green) { [weak self] in self?.validateRedeem() }
+        redeemButton.accessibilityIdentifier = "digidollar-redeem-button"
+        stackView.addArrangedSubview(redeemButton)
         
+        let currentHeight = walletManager.peerManager?.lastBlockHeight ?? 0
+        let redeemableCount = vaults.filter { currentHeight > 0 && UInt64(currentHeight) >= $0.lockHeight }.count
+        let lockedDGB = vaults.reduce(UInt64(0)) { $0 + $1.collateralSatoshis }
         addCard(title: "Vaults",
                 rows: [
-                    ("Open", "0"),
-                    ("Redeemable", "0"),
+                    ("Open", "\(vaults.count)"),
+                    ("Redeemable", "\(redeemableCount)"),
                     ("Token Outputs", "\(outputCount)"),
-                    ("Locked DGB", "0.00000000")
+                    ("Locked DGB", "\(formatDGB(satoshis: lockedDGB)) DGB")
                 ])
         addCard(title: "Lock Tiers",
                 rows: DigiDollarProtocol.lockTiers.map {
@@ -505,15 +522,64 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
     }
 
     private func validateRedeem() {
-        guard let amountText = redeemAmountField.text, let cents = DigiDollarAmountParser.cents(from: amountText) else {
-            showStatus("Invalid amount", message: "Enter a DD change amount.")
+        guard let wallet = walletManager.wallet else {
+            showStatus("Wallet unavailable", message: "The wallet is still loading.")
             return
         }
-        guard DigiDollarProtocol.buildRedeemOpReturn(ddChange: cents) != nil else {
-            showStatus("No change", message: "Exact-burn redeems do not carry a redeem OP_RETURN.")
+        guard !vaults.isEmpty, vaults.indices.contains(selectedVaultIndex) else {
+            showStatus("No vaults", message: "Minted DigiDollar collateral vaults will appear here after they confirm.")
             return
         }
-        showStatus("Redeem metadata ready", message: "Redeem OP_RETURN is valid. Vault spend signing is the next wallet-core step.")
+        guard let peerManager = walletManager.peerManager, peerManager.lastBlockHeight > 0 else {
+            showStatus("Sync required", message: "Connect to RC41 testnet before redeeming.")
+            return
+        }
+        guard let healthText = systemHealthField.text, let systemHealth = DigiDollarAmountParser.systemHealth(from: healthText) else {
+            showStatus("Invalid health", message: "Enter the current system health percentage.")
+            return
+        }
+
+        let vault = vaults[selectedVaultIndex]
+        let currentHeight = peerManager.lastBlockHeight
+        guard UInt64(currentHeight) >= vault.lockHeight else {
+            showStatus("Vault locked", message: "Unlock height \(vault.lockHeight). Current height \(currentHeight).")
+            return
+        }
+
+        UserDefaults.standard.set(healthText, forKey: "DigiDollarSystemHealth")
+        let burnCents = DigiDollarProtocol.errRequiredBurn(originalAmountCents: vault.amountCents, systemHealth: systemHealth)
+        guard burnCents > 0 else {
+            showStatus("Redeem unavailable", message: "System health is outside DigiDollar protocol limits.")
+            return
+        }
+
+        guard let tx = wallet.createDigiDollarRedeem(collateralHash: vault.txHash,
+                                                    collateralIndex: vault.index,
+                                                    currentBlockHeight: currentHeight,
+                                                    systemHealth: systemHealth) else {
+            let required = formatDigiDollar(cents: burnCents)
+            showStatus("Redeem unavailable", message: "Need \(required) in confirmed DD outputs plus enough DGB for the fee.")
+            return
+        }
+
+        pendingRedeem = tx
+        let fee = wallet.feeForTx(tx) ?? 0
+        let mode = systemHealth >= 100 ? "Normal" : "ERR \(DigiDollarProtocol.errRatioBps(systemHealth: systemHealth)) bps"
+        let message = [
+            "Vault \(selectedVaultIndex + 1) of \(vaults.count)",
+            "Mode \(mode)",
+            "Burn \(formatDigiDollar(cents: burnCents))",
+            "Return \(formatDGB(satoshis: vault.collateralSatoshis)) DGB",
+            "Fee \(formatDGB(satoshis: fee)) DGB"
+        ].joined(separator: "\n")
+        let alert = UIAlertController(title: "Redeem DigiDollar Vault", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: S.Button.cancel, style: .cancel) { [weak self] _ in
+            self?.releasePendingRedeem()
+        })
+        alert.addAction(UIAlertAction(title: "Redeem", style: .default) { [weak self] _ in
+            self?.presentPinForPendingRedeem()
+        })
+        present(alert, animated: true, completion: nil)
     }
 
     private func presentPinForPendingMint() {
@@ -562,9 +628,60 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
         }
     }
 
+    private func presentPinForPendingRedeem() {
+        guard pendingRedeem != nil else { return }
+
+        let verify = VerifyPinViewController(bodyText: S.VerifyPin.authorize,
+                                             pinLength: store.state.pinLength) { [weak self] pin, vc in
+            guard let self = self, let tx = self.pendingRedeem else { return false }
+            var success = false
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.walletQueue.async {
+                success = self.walletManager.signTransaction(tx, pin: pin)
+                group.leave()
+            }
+            guard group.wait(timeout: .now() + 30.0) != .timedOut, success else { return false }
+            vc.dismiss(animated: true) {
+                self.publishPendingRedeem()
+            }
+            return true
+        }
+
+        verify.modalPresentationStyle = .overFullScreen
+        verify.modalPresentationCapturesStatusBarAppearance = true
+        present(verify, animated: true, completion: nil)
+    }
+
+    private func publishPendingRedeem() {
+        guard let tx = pendingRedeem else { return }
+        pendingRedeem = nil
+        let txHash = tx.pointee.txHash.description
+        guard let peerManager = walletManager.peerManager else {
+            BRTransactionFree(tx)
+            showStatus("Network unavailable", message: "Peer manager is not ready.")
+            return
+        }
+
+        peerManager.publishTx(tx) { [weak self] success, error in
+            DispatchQueue.main.async {
+                if success {
+                    self?.showStatus("DigiDollar vault redeemed", message: txHash)
+                } else {
+                    self?.showStatus("Broadcast failed", message: error?.localizedDescription ?? "Peer broadcast failed.")
+                }
+            }
+        }
+    }
+
     private func releasePendingMint() {
         if let tx = pendingMint { BRTransactionFree(tx) }
         pendingMint = nil
+    }
+
+    private func releasePendingRedeem() {
+        if let tx = pendingRedeem { BRTransactionFree(tx) }
+        pendingRedeem = nil
     }
 
     private func pickerAccessory() -> UIToolbar {
@@ -594,25 +711,43 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
         return "\(duration) / \(tier.collateralRatioPercent)%"
     }
 
+    private func vaultTitle(for index: Int) -> String {
+        guard vaults.indices.contains(index) else { return "No vaults" }
+        let vault = vaults[index]
+        return "\(formatDigiDollar(cents: vault.amountCents)) / unlock \(vault.lockHeight)"
+    }
+
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
         return 1
     }
 
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        if pickerView === vaultPicker {
+            return max(vaults.count, 1)
+        }
         return DigiDollarProtocol.lockTiers.count
     }
 
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        if pickerView === vaultPicker {
+            return vaultTitle(for: row)
+        }
         return "Tier \(row): \(tierTitle(for: row))"
     }
 
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        if pickerView === vaultPicker {
+            selectedVaultIndex = min(row, max(vaults.count - 1, 0))
+            redeemVaultField.text = vaultTitle(for: selectedVaultIndex)
+            return
+        }
         selectedLockTierIndex = row
         lockTierField.text = tierTitle(for: row)
     }
 
     deinit {
         releasePendingMint()
+        releasePendingRedeem()
     }
 }
 

@@ -424,6 +424,17 @@ struct DigiDollarWalletUTXO: Equatable {
     let ownerXOnlyPubKey: [UInt8]
 }
 
+struct DigiDollarWalletVault: Equatable {
+    let txHash: UInt256
+    let index: UInt32
+    let amountCents: UInt64
+    let collateralSatoshis: UInt64
+    let lockHeight: UInt64
+    let lockTier: UInt32
+    let blockHeight: UInt32
+    let ownerXOnlyPubKey: [UInt8]
+}
+
 extension UnicodeScalar {
     var hexNibble:UInt8 {
         let value = self.value
@@ -520,6 +531,28 @@ class BRWallet {
                                         ownerXOnlyPubKey: key)
         }
     }
+
+    var digiDollarVaults: [DigiDollarWalletVault] {
+        var cVaults = [BRDigiDollarVault](repeating: BRDigiDollarVault(),
+                                          count: BRWalletDigiDollarVaults(cPtr, nil, 0))
+        guard BRWalletDigiDollarVaults(cPtr, &cVaults, cVaults.count) == cVaults.count else { return [] }
+
+        return cVaults.map { cVault in
+            var mutableVault = cVault
+            let key = withUnsafeBytes(of: &mutableVault.ownerXOnlyPubKey) { rawKey in
+                Array(rawKey.bindMemory(to: UInt8.self).prefix(DigiDollarProtocol.outputKeyLength))
+            }
+
+            return DigiDollarWalletVault(txHash: cVault.hash,
+                                         index: cVault.n,
+                                         amountCents: cVault.amountCents,
+                                         collateralSatoshis: cVault.collateralSatoshis,
+                                         lockHeight: cVault.lockHeight,
+                                         lockTier: cVault.lockTier,
+                                         blockHeight: cVault.blockHeight,
+                                         ownerXOnlyPubKey: key)
+        }
+    }
     
     func getReceiveAddress(useSegwit: Bool) -> String {
         return BRWalletReceiveAddress(cPtr, useSegwit ? 1 : 0).description
@@ -609,6 +642,17 @@ class BRWallet {
                                             currentBlockHeight,
                                             oraclePriceMicroUSD,
                                             systemHealth)
+    }
+
+    func createDigiDollarRedeem(collateralHash: UInt256,
+                                collateralIndex: UInt32,
+                                currentBlockHeight: UInt32,
+                                systemHealth: Int32) -> BRTxRef? {
+        return BRWalletCreateDigiDollarRedeem(cPtr,
+                                              collateralHash,
+                                              collateralIndex,
+                                              currentBlockHeight,
+                                              systemHealth)
     }
     
     // returns an unsigned transaction that satisifes the given transaction outputs

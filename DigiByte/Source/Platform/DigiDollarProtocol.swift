@@ -219,6 +219,14 @@ enum DigiDollarProtocol {
         return BRDigiDollarDCAMultiplierBps(systemHealth)
     }
 
+    static func errRatioBps(systemHealth: Int32) -> UInt32 {
+        return BRDigiDollarERRRatioBps(systemHealth)
+    }
+
+    static func errRequiredBurn(originalAmountCents: UInt64, systemHealth: Int32) -> UInt64 {
+        return BRDigiDollarERRRequiredBurn(originalAmountCents, systemHealth)
+    }
+
     static func effectiveCollateralRatio(baseRatio: UInt32, systemHealth: Int32) -> UInt32 {
         return BRDigiDollarEffectiveCollateralRatio(baseRatio, systemHealth)
     }

@@ -86,11 +86,10 @@ class DigiDollarProtocolTests: XCTestCase {
 
         let address = BRWalletDigiDollarReceiveAddress(wallet).description
         let decoded = DigiDollarProtocol.decodeAddress(address)
-        var pubKey = [UInt8](repeating: 0, count: Int(BRBIP32PubKey(nil, 0, mpk, UInt32(SEQUENCE_EXTERNAL_CHAIN), 0)))
-        BRBIP32PubKey(&pubKey, pubKey.count, mpk, UInt32(SEQUENCE_EXTERNAL_CHAIN), 0)
+        let outputKey = derivedOutputKey(mpk: mpk, chain: UInt32(SEQUENCE_EXTERNAL_CHAIN), index: 0)
 
         XCTAssertEqual(decoded?.network, DigiDollarProtocol.currentNetwork)
-        XCTAssertEqual(decoded?.outputKey, Array(pubKey.dropFirst()))
+        XCTAssertEqual(decoded?.outputKey, outputKey)
         XCTAssertTrue(address.hasPrefix(E.isTestnet ? "TD" : "DD"))
     }
 
@@ -99,12 +98,13 @@ class DigiDollarProtocolTests: XCTestCase {
         let mpk = withUnsafePointer(to: &seed) {
             BRBIP32MasterPubKey($0, MemoryLayout<UInt128>.stride)
         }
+        let receiveOwnerKey = derivedXOnlyPubKey(mpk: mpk, chain: UInt32(SEQUENCE_EXTERNAL_CHAIN), index: 0)
         let receiveKey = derivedOutputKey(mpk: mpk, chain: UInt32(SEQUENCE_EXTERNAL_CHAIN), index: 0)
         let changeKey = derivedOutputKey(mpk: mpk, chain: UInt32(SEQUENCE_INTERNAL_CHAIN), index: 0)
         let externalKey = Array(UInt8(0xa0)..<UInt8(0xc0))
         let mintHash = makeHash(0x20)
         let transferHash = makeHash(0x30)
-        guard let mintTx = makeMintTx(txHash: mintHash, outputKey: receiveKey),
+        guard let mintTx = makeMintTx(txHash: mintHash, ownerKey: receiveOwnerKey, outputKey: receiveKey),
               let transferTx = makeTransferTx(txHash: transferHash,
                                               inputHash: mintHash,
                                               externalKey: externalKey,
@@ -143,6 +143,16 @@ class DigiDollarProtocolTests: XCTestCase {
         XCTAssertEqual(DigiDollarProtocol.lockTiers[9].collateralRatioPercent, 200)
     }
 
+    func testEmergencyRedemptionBurnSchedule() {
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 150), 10_000)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 99), 9_500)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 94), 9_000)
+        XCTAssertEqual(DigiDollarProtocol.errRatioBps(systemHealth: 84), 8_000)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 150), 10_000)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 99), 10_527)
+        XCTAssertEqual(DigiDollarProtocol.errRequiredBurn(originalAmountCents: 10_000, systemHealth: 84), 12_500)
+    }
+
     private func makeHash(_ firstByte: UInt8) -> UInt256 {
         var hash = UInt256()
         withUnsafeMutableBytes(of: &hash) { rawHash in
@@ -151,10 +161,21 @@ class DigiDollarProtocolTests: XCTestCase {
         return hash
     }
 
-    private func derivedOutputKey(mpk: BRMasterPubKey, chain: UInt32, index: UInt32) -> [UInt8] {
+    private func derivedXOnlyPubKey(mpk: BRMasterPubKey, chain: UInt32, index: UInt32) -> [UInt8] {
         var pubKey = [UInt8](repeating: 0, count: Int(BRBIP32PubKey(nil, 0, mpk, chain, index)))
         BRBIP32PubKey(&pubKey, pubKey.count, mpk, chain, index)
         return Array(pubKey.dropFirst())
+    }
+
+    private func derivedOutputKey(mpk: BRMasterPubKey, chain: UInt32, index: UInt32) -> [UInt8] {
+        var pubKey = [UInt8](repeating: 0, count: Int(BRBIP32PubKey(nil, 0, mpk, chain, index)))
+        BRBIP32PubKey(&pubKey, pubKey.count, mpk, chain, index)
+
+        var key = BRKey()
+        XCTAssertTrue(BRKeySetPubKey(&key, pubKey, pubKey.count) != 0)
+        var outputKey = [UInt8](repeating: 0, count: DigiDollarProtocol.outputKeyLength)
+        XCTAssertEqual(BRKeyTaprootOutputKey(&key, &outputKey, outputKey.count), outputKey.count)
+        return outputKey
     }
 
     private func addSignedInput(to tx: BRTxRef, hash: UInt256, index: UInt32) {
@@ -174,20 +195,34 @@ class DigiDollarProtocolTests: XCTestCase {
         }
     }
 
-    private func makeMintTx(txHash: UInt256, outputKey: [UInt8]) -> BRTxRef? {
+    private func makeMintTx(txHash: UInt256, ownerKey: [UInt8], outputKey: [UInt8]) -> BRTxRef? {
+        let amount: UInt64 = 10_000
+        let lockHeight: UInt64 = 340
+        var collateralOutputKey = [UInt8](repeating: 0, count: DigiDollarProtocol.outputKeyLength)
+        var collateralScript = [UInt8](repeating: 0, count: 96)
+        let collateralScriptLength = ownerKey.withUnsafeBufferPointer { ownerPtr -> Int in
+            guard let ownerBase = ownerPtr.baseAddress else { return 0 }
+            return BRDigiDollarCollateralScriptPubKey(&collateralScript,
+                                                      collateralScript.count,
+                                                      amount,
+                                                      lockHeight,
+                                                      ownerBase,
+                                                      &collateralOutputKey)
+        }
+
         guard let tx = BRTransactionNew(),
-              let collateralScript = DigiDollarProtocol.p2trScriptPubKey(forOutputKey: Array(repeating: 0x42, count: 32)),
               let tokenScript = DigiDollarProtocol.p2trScriptPubKey(forOutputKey: outputKey),
-              let opReturn = DigiDollarProtocol.buildMintOpReturn(amount: 10_000,
-                                                                   lockHeight: 340,
+              let opReturn = DigiDollarProtocol.buildMintOpReturn(amount: amount,
+                                                                   lockHeight: lockHeight,
                                                                    lockTier: 0,
-                                                                   ownerXOnlyPubKey: outputKey) else { return nil }
+                                                                   ownerXOnlyPubKey: ownerKey),
+              collateralScriptLength > 0 else { return nil }
         tx.pointee.txHash = txHash
         tx.pointee.version = DigiDollarProtocol.version(for: .mint)
         tx.pointee.blockHeight = 100
         tx.pointee.timestamp = 1
         addSignedInput(to: tx, hash: makeHash(0x10), index: 0)
-        tx.addOutput(amount: UInt64(SATOSHIS), script: Array(collateralScript))
+        tx.addOutput(amount: UInt64(SATOSHIS), script: Array(collateralScript.prefix(collateralScriptLength)))
         tx.addOutput(amount: 0, script: Array(tokenScript))
         tx.addOutput(amount: 0, script: Array(opReturn))
         return tx
