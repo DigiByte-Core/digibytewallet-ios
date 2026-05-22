@@ -50,6 +50,17 @@ class DigiDollarProtocolTests: XCTestCase {
         XCTAssertEqual(DigiDollarProtocol.type(forVersion: 0x0D1D0770), .none)
         XCTAssertEqual(DigiDollarProtocol.type(forVersion: 0x02030770), .transfer)
         XCTAssertEqual(DigiDollarProtocol.flags(forVersion: 0x02030770), 3)
+        XCTAssertEqual(DigiDollarTransactionType.mint.displayName, "DigiDollar Mint")
+        XCTAssertEqual(DigiDollarTransactionType.transfer.displayName, "DigiDollar Transfer")
+        XCTAssertEqual(DigiDollarTransactionType.redeem.displayName, "DigiDollar Redeem")
+    }
+
+    func testTransactionTimelineAmountFormatting() {
+        XCTAssertEqual(DigiDollarProtocol.formattedAmount(cents: 10_000), "100.00 DD")
+        XCTAssertEqual(DigiDollarProtocol.formattedAmount(cents: 1), "0.01 DD")
+        XCTAssertEqual(DigiDollarProtocol.netAmountText(receivedCents: 10_000, sentCents: 0), "+100.00 DD")
+        XCTAssertEqual(DigiDollarProtocol.netAmountText(receivedCents: 4_000, sentCents: 10_000), "-60.00 DD")
+        XCTAssertEqual(DigiDollarProtocol.netAmountText(receivedCents: 0, sentCents: 12_500), "-125.00 DD")
     }
 
     func testMintOpReturnRoundTrip() {

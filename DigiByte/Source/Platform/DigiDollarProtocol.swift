@@ -190,6 +190,15 @@ enum DigiDollarTransactionType: Equatable {
         default: self = .none
         }
     }
+
+    var displayName: String {
+        switch self {
+        case .none: return "DigiDollar"
+        case .mint: return "DigiDollar Mint"
+        case .transfer: return "DigiDollar Transfer"
+        case .redeem: return "DigiDollar Redeem"
+        }
+    }
 }
 
 struct DigiDollarOpReturnMetadata: Equatable {
@@ -234,6 +243,18 @@ enum DigiDollarProtocol {
 
     static func flags(forVersion version: UInt32) -> UInt8 {
         return BRDigiDollarFlagsForVersion(version)
+    }
+
+    static func formattedAmount(cents: UInt64) -> String {
+        return "\(cents / 100).\(String(format: "%02llu", cents % 100)) DD"
+    }
+
+    static func netAmountText(receivedCents: UInt64, sentCents: UInt64) -> String {
+        if sentCents > receivedCents {
+            return "-\(formattedAmount(cents: sentCents - receivedCents))"
+        }
+
+        return "+\(formattedAmount(cents: receivedCents - sentCents))"
     }
 
     static func address(forOutputKey outputKey: [UInt8], network: DigiDollarNetwork = currentNetwork) -> String? {

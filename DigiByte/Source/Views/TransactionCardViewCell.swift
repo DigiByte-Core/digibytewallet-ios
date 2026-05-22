@@ -91,7 +91,10 @@ class TransactionCardViewCell: UITableViewCell, Subscriber {
     func setTransaction(_ transaction: Transaction, isBtcSwapped: Bool, rate: Rate, maxDigits: Int, isSyncing: Bool) {
         self.transaction = transaction
         
-        if
+        if transaction.isDigiDollarTx {
+            transactionLabel.text = transaction.digiDollarAmountDescription
+            comment.text = transaction.digiDollarTitle
+        } else if
             !UserDefaults.showRawTransactionsOnly,
             let assetTitle = transaction.assetTitle
         {
@@ -125,7 +128,13 @@ class TransactionCardViewCell: UITableViewCell, Subscriber {
         }
         timestamp.isHidden = !transaction.isValid
         
-        if !UserDefaults.showRawTransactionsOnly, transaction.isAssetTx {
+        if transaction.isDigiDollarTx {
+            transactionLabel.textColor = transaction.isDigiDollarIncoming ? UIColor.da.greenApple : UIColor.da.burnColor
+            glyphContainer.isHidden = false
+            arrow.isHidden = true
+            glyph.image = transaction.isDigiDollarIncoming ? assetReceivedImage : assetSentImage
+            glyphContainer.backgroundColor = transaction.isDigiDollarIncoming ? UIColor.da.greenApple : UIColor.da.burnColor
+        } else if !UserDefaults.showRawTransactionsOnly, transaction.isAssetTx {
             // Choose image by asset direction type
             transactionLabel.textColor = UIColor.da.darkSkyBlue
             glyphContainer.isHidden = false

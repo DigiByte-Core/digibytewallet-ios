@@ -53,7 +53,9 @@ class TransactionTableViewCell : UITableViewCell, Subscriber {
     func setTransaction(_ transaction: Transaction, isBtcSwapped: Bool, rate: Rate, maxDigits: Int, isSyncing: Bool) {
         self.transaction = transaction
         //transactionLabel.attributedText = transaction.descriptionString(isBtcSwapped: isBtcSwapped, rate: rate, maxDigits: maxDigits)
-        transactionLabel.text = transaction.amountDescription(isBtcSwapped: isBtcSwapped, rate: rate, maxDigits: maxDigits)
+        transactionLabel.text = transaction.isDigiDollarTx
+            ? transaction.digiDollarAmountDescription
+            : transaction.amountDescription(isBtcSwapped: isBtcSwapped, rate: rate, maxDigits: maxDigits)
         address.text = String(format: transaction.direction.addressTextFormat, transaction.toAddress ?? "")
         status.text = transaction.status
         comment.text = transaction.comment
@@ -74,7 +76,10 @@ class TransactionTableViewCell : UITableViewCell, Subscriber {
         }
         timestamp.isHidden = !transaction.isValid
 
-        if transaction.direction == .received {
+        if transaction.isDigiDollarTx {
+            arrow.image = transaction.isDigiDollarIncoming ? receivedImage : sentImage
+            transactionLabel.textColor = transaction.isDigiDollarIncoming ? UIColor.da.greenApple : UIColor.da.burnColor
+        } else if transaction.direction == .received {
             arrow.image = receivedImage
             transactionLabel.textColor = C.Colors.weirdGreen
         } else {

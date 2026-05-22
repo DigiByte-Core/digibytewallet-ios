@@ -41,6 +41,9 @@ class Transaction {
 
         let amountReceived = wallet.amountReceivedFromTx(tx)
         let amountSent = wallet.amountSentByTx(tx)
+        self.digiDollarType = DigiDollarProtocol.type(forVersion: tx.pointee.version)
+        self.digiDollarReceivedCents = wallet.digiDollarAmountReceivedFromTx(tx)
+        self.digiDollarSentCents = wallet.digiDollarAmountSentByTx(tx)
 
 //        if fee > 100000 {
 //        // comment out to bugfix (fee overflow
@@ -140,12 +143,32 @@ class Transaction {
     let blockHeight: String
     let confirms: Int
     private let metaDataKey: String
+    let digiDollarType: DigiDollarTransactionType
+    let digiDollarReceivedCents: UInt64
+    let digiDollarSentCents: UInt64
 
     //MARK: - Private
     private let tx: BRTxRef
     private let wallet: BRWallet
     fileprivate let satoshis: UInt64
     var kvStore: BRReplicatedKVStore?
+
+    var isDigiDollarTx: Bool {
+        return digiDollarType != .none
+    }
+
+    var isDigiDollarIncoming: Bool {
+        return digiDollarReceivedCents >= digiDollarSentCents
+    }
+
+    var digiDollarAmountDescription: String {
+        return DigiDollarProtocol.netAmountText(receivedCents: digiDollarReceivedCents,
+                                                sentCents: digiDollarSentCents)
+    }
+
+    var digiDollarTitle: String {
+        return digiDollarType.displayName
+    }
     
     lazy var toAddress: String? = {
         switch self.direction {
