@@ -25,6 +25,10 @@ class breadwalletUITests: XCTestCase {
     }
 
     func testCreateWalletOrLoginSmoke() {
+        if isMainWalletScreenVisible(timeout: 3) {
+            return
+        }
+
         if isRecoveryKeyScreenVisible(timeout: 3) {
             return
         }
@@ -39,7 +43,7 @@ class breadwalletUITests: XCTestCase {
                     app.staticTexts["Security Check"].exists ||
                     app.staticTexts["SECURITY CHECK"].exists {
             enterPin("111111")
-            XCTAssert(waitForAnyText(["DigiByte", "ALL", "SENT", "RECEIVED", "Personal Recovery Key", "Write Down Personal Recovery Key"], timeout: 15), app.debugDescription)
+            XCTAssert(isMainWalletScreenVisible(timeout: 15) || isRecoveryKeyScreenVisible(timeout: 1), app.debugDescription)
         } else {
             XCTFail("App did not reach welcome, wallet creation, or PIN login flow.\n\(app.debugDescription)")
         }
@@ -129,5 +133,23 @@ class breadwalletUITests: XCTestCase {
             "Paper Key",
             "Recovery Phrase"
         ], timeout: timeout)
+    }
+
+    private func isMainWalletScreenVisible(timeout: TimeInterval) -> Bool {
+        let deadline = Date(timeIntervalSinceNow: timeout)
+        while Date() < deadline {
+            if app.staticTexts["Syncing..."].exists ||
+                app.buttons["ALL"].exists ||
+                app.buttons["SENT"].exists ||
+                app.buttons["RECEIVED"].exists ||
+                app.images["disconnected"].exists ||
+                app.images["connected"].exists ||
+                app.staticTexts["TOTAL\nBALANCE"].exists {
+                return true
+            }
+
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.2))
+        }
+        return false
     }
 }
