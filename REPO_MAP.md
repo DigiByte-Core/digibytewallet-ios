@@ -1,7 +1,7 @@
 # DigiByte Wallet iOS Repo Map
 
-Last refreshed: 2026-05-21
-Compatibility target: DigiByte Core `v8.26.2` public stable behavior.
+Last refreshed: 2026-05-22
+Compatibility target: DigiByte Core `v8.26.2` public stable behavior for DGB SPV, plus RC41/testnet25 DigiDollar bring-up on P2P port `12032`.
 
 ## Root
 
@@ -30,7 +30,7 @@ Compatibility target: DigiByte Core `v8.26.2` public stable behavior.
 - `AppDelegate.swift`, `main.swift` - App entrypoint.
 - `ApplicationController.swift`, `WalletCoordinator.swift`, `ModalPresenter.swift`, `URLController.swift` - Application composition, routing, modal presentation, URL handling.
 - `WalletManager.swift` - SQLite wallet store, BRWallet/BRPeerManager ownership, block/peer/transaction persistence, sync callbacks.
-- `BRCore.swift` - Swift wrapper over the C `BRCore` module.
+- `BRCore.swift` - Swift wrapper over the C `BRCore` module, including DigiDollar TD/DD address, balance, mint, vault, and redeem bridge APIs.
 - `Sender.swift`, `PaymentRequest.swift`, `PaymentProtocol.swift`, `FeeUpdater.swift`, `FirstBlockWithWalletTxRequest.swift`, `AssetSender.swift` - Payment, fee, explorer/bootstrap, and send flows.
 - `Environment.swift`, `Utils.swift`, `RetryTimer.swift`, `ReachabilityMonitor.swift`, `KVStoreCoordinator.swift`, `UserDefaultsUpdater.swift`, `SimpleRedux.swift` - App utilities and state support.
 - `DigiIDRequest.swift` - Digi-ID request handling.
@@ -45,6 +45,7 @@ Compatibility target: DigiByte Core `v8.26.2` public stable behavior.
 - `BRAPIClient*.swift`, `BRAPIProxy.swift` - API client and API extensions for assets, events, features, KV, and wallet requests.
 - `BRHTTPServer.swift`, `BRHTTPRouter.swift`, `BRHTTP*Middleware.swift`, `BRWebSocket.swift`, `BRWalletPlugin.swift`, `BRKVStorePlugin.swift`, `BRCameraPlugin.swift`, `BRGeoLocationPlugin.swift`, `BRLinkPlugin.swift`, `BRWebViewController.swift`, `BRBrowserViewController.swift` - Local web/plugin stack.
 - `BRDigiID.swift`, `BRDigiIDLegacy.swift` - Digi-ID implementations.
+- `DigiDollarProtocol.swift` - Swift helpers for TD/DD address validation, transaction metadata, lock/DCA/ERR policy display, and tests that mirror the C core helpers.
 - `BRReplicatedKVStore.swift`, `TxMetaData.swift`, `WalletInfo.swift` - Metadata/KV persistence.
 - `BRSocketHelpers.c/.h`, `module.modulemap` - Socket C helper exposed to Swift.
 - `BRCoding.swift`, `BRBSPatch.swift`, `BRTar.swift`, `Extensions.swift`, `BRActivityView.swift` - Support utilities.
@@ -54,7 +55,8 @@ Compatibility target: DigiByte Core `v8.26.2` public stable behavior.
 - `SimpleRedux/` - App actions and state.
 - `Models/` - Rates, settings, assets, keyboard info, simple UTXO model, typed model helpers.
 - `ViewModels/` - Amount and transaction presentation models.
-- `ViewControllers/` - Main UIKit screens including onboarding, send/receive, settings, security, DigiAssets, scan, sync, transaction detail, and root modals.
+- `ViewControllers/` - Main UIKit screens including onboarding, send/receive, settings, security, DigiAssets, DigiDollar, scan, sync, transaction detail, and root modals.
+- `ViewControllers/DigiDollar/DigiDollarMainViewController.swift` - DigiDollar sub-wallet UI with Overview, Send, Receive, Vault, and Transactions tabs; backs transfer, mint, and full-vault redeem flows.
 - `Views/` - Reusable views, transaction cards, drawers, DigiAssets views, loading/progress/wave views.
 - `Controls/` - Haptic/menu/segmented controls.
 - `Extensions/` - UIKit/Foundation/UserDefaults/WalletManager extensions.
@@ -73,8 +75,8 @@ Compatibility target: DigiByte Core `v8.26.2` public stable behavior.
 
 ## Tests
 
-- `digibyteTests/` - Unit tests for API client, BSPatch, coding, HTTP server, KV store, payment request, phrase, spending limits, wallet auth/creation/info, and helper utilities.
-- `digibyteUITests/` - UI test target.
+- `digibyteTests/` - Unit tests for API client, BSPatch, coding, HTTP server, KV store, payment request, phrase, spending limits, wallet auth/creation/info, DigiDollar protocol vectors, and helper utilities.
+- `digibyteUITests/` - UI test target, including login smoke coverage and DigiDollar menu/tab smoke coverage.
 - `Screenshots/` - Screenshot automation target and helpers.
 
 ## Submodules And Dependencies
@@ -96,13 +98,17 @@ Key files in `Modules/digibytewallet-core`:
 - `BRPeer.c/.h`, `BRPeerManager.c/.h` - P2P protocol, peer discovery, socket connections, SPV sync.
 - `BRMerkleBlock.c/.h` - Merkle block parsing, proof-of-work/difficulty checks, multi-algo block fields.
 - `BRWallet.c/.h` - Address generation, UTXO tracking, balance, transaction creation/signing.
-- `BRTransaction.c/.h` - Transaction serialization, signing, fees, standardness checks.
-- `BRAddress.c/.h`, `BRBase58.c/.h`, `BRBech32.c/.h` - Address/script encoding.
-- `BRKey.c/.h`, `BRBIP32Sequence.c/.h`, `BRBIP38Key.c/.h`, `BRBIP39Mnemonic.c/.h`, `BRBIP39WordsEn.h` - Keys, HD derivation, encrypted keys, mnemonic handling.
+- `BRTransaction.c/.h` - Transaction serialization, witness serialization, txid/wtxid, fees, ECDSA signing, Taproot key-path sighash, and Taproot script-path sighash.
+- `BRAddress.c/.h`, `BRBase58.c/.h`, `BRBech32.c/.h` - Address/script encoding, including SegWit/Taproot address handling.
+- `BRKey.c/.h`, `BRBIP32Sequence.c/.h`, `BRBIP38Key.c/.h`, `BRBIP39Mnemonic.c/.h`, `BRBIP39WordsEn.h` - Keys, HD derivation, encrypted keys, mnemonic handling, x-only keys, Schnorr signatures, and Taproot output-key helpers.
 - `BRCrypto.c/.h`, `crypto/`, `crypto/sha3/` - Hashes, HMAC/PBKDF2/scrypt, multi-algo PoW crypto.
 - `BRBloomFilter.c/.h` - BIP37 bloom filters.
 - `BRPaymentProtocol.c/.h` - BIP70/BIP75-style payment protocol.
 - `BRDigiAsset.c/.h`, `BRAssetData.c/.h` - DigiAsset helpers.
+- `BRDigiDollar.c/.h` - DigiDollar TD/DD addresses, token scripts, OP_RETURN metadata, lock-tier/DCA/ERR helpers, collateral Taproot trees, and control blocks.
+- `BRWalletCreateDigiDollarTransfer()` - Builds wallet-owned DD transfer transactions with DGB fee inputs.
+- `BRWalletCreateDigiDollarMint()` - Builds mint transactions with DGB collateral, DD token output, and mint metadata.
+- `BRWalletDigiDollarVaults()` and `BRWalletCreateDigiDollarRedeem()` - Track wallet-owned vaults and build full-position redeem transactions with normal/ERR burn policy.
 - `module.modulemap` - Clang module exported to Swift as `BRCore`.
 
 ## Build/Audit Findings
@@ -117,15 +123,19 @@ Key files in `Modules/digibytewallet-core`:
 - The iOS 26.5 simulator runtime is now installed locally and `iPhone 17 (F24B7821-AF76-460E-8687-ABEFA542146D)` is booted.
 - Legacy deployment targets in the app and embedded module projects were raised to iOS 12.0 to satisfy Xcode 26's simulator toolchain.
 - `DigiByte/Source/ViewControllers/DigiAssets/DAMainViewController.swift` was adjusted for newer UIKit by renaming the private `tabs` property to `assetTabs`.
-- `xcodebuild -project DigiByte.xcodeproj -scheme DigiByte -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,OS=26.5,name=iPhone 17' CODE_SIGNING_ALLOWED=NO build` succeeds.
+- `env DGB_FIXED_PEER=127.0.0.1:12032 xcodebuild build -project DigiByte.xcodeproj -scheme Testnet -configuration Testnet -destination 'platform=iOS Simulator,id=F24B7821-AF76-460E-8687-ABEFA542146D'` succeeds.
 - The built app installs on the iOS 26.5 simulator with bundle id `org.digibytefoundation.DigiByte`.
-- Current runtime blocker: `simctl launch` starts the app process, but it exits immediately and the simulator remains on the Home Screen. Crash reports point to a Debug assertion in `ApplicationController.didInitWalletManager()` at `ApplicationController.swift:249` because `walletManager` is nil during startup.
-- Remaining non-fatal warnings include parent/app-extension `CFBundleVersion` mismatch and duplicate implicit dependency warnings around `Storez.framework`.
+- Focused `DigiDollarProtocolTests`, `testCreateWalletOrLoginSmoke`, and `testDigiDollarMenuOpens` pass on the iPhone 17 iOS 26.5 simulator.
+- The app launches to the PIN/main-wallet path on the simulator. The current simulator wallet PIN is `111111`.
+- A local RC41 bridge node is running on `127.0.0.1:12032` with bloom filters enabled and connected to public RC41 peers.
+- Remaining live-network blocker: the local bridge node has no funded wallet loaded, so live funded mint/redeem broadcast has not yet been proven.
+- Remaining non-fatal warnings include duplicate implicit dependency warnings around `Storez.framework`.
 
 ## Compatibility Notes For DigiByte Core v8.26.2
 
 - The app is an SPV wallet and does not embed DigiByte Core consensus code.
 - Current audited paths use mainnet `12024`, mainnet magic `0xdab6c3fa`, testnet magic `0xddbdc8fd`, legacy embedded DNS seeds, checkpoints, protocol `70019`, bloom filters, `getheaders/getblocks`, `merkleblock`, and transaction relay.
+- DigiDollar RC41/testnet25 validation uses P2P port `12032` through a local bloom-capable bridge peer.
 - DigiByte Core `v8.26.2` uses a newer DNS seed set than this embedded iOS core; seed refresh is the next protocol follow-up.
-- No DigiDollar-specific address, oracle, mint, transfer, redeem, or consensus assumptions were found in the iOS app or embedded core.
+- DigiDollar wallet-side address, transfer, mint, vault, and redeem builders are present in the embedded core and surfaced through Swift/iOS UI. The mobile wallet does not run DigiDollar oracle or full-node consensus logic.
 - Checkpoint freshness and DNS seed liveness still need runtime verification against public `v8.26.2` peers.

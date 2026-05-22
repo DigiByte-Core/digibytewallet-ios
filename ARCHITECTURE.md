@@ -1,14 +1,14 @@
 # DigiByte Wallet iOS Architecture
 
-Last refreshed: 2026-05-21
+Last refreshed: 2026-05-22
 
-Compatibility target: DigiByte Core `v8.26.2` public stable behavior. This wallet is an SPV mobile wallet and intentionally does not target DigiDollar or `v9.26.0-rc` behavior.
+Compatibility target: DigiByte Core `v8.26.2` public stable behavior for DGB SPV, plus RC41/testnet25 DigiDollar bring-up on P2P port `12032`.
 
 ## Executive Summary
 
-`digibytewallet-ios` is a Swift/UIKit DigiByte wallet derived from breadwallet. It preserves the original mobile SPV model: a native C `BRCore` static library handles keys, transactions, merkle blocks, bloom filters, peer messages, and DigiByte proof-of-work checks, while Swift owns app lifecycle, persistence, onboarding, send/receive UI, Digi-ID, DigiAssets screens, and service/API integration.
+`digibytewallet-ios` is a Swift/UIKit DigiByte wallet derived from breadwallet. It preserves the original mobile SPV model: a native C `BRCore` static library handles keys, transactions, merkle blocks, bloom filters, peer messages, and DigiByte proof-of-work checks, while Swift owns app lifecycle, persistence, onboarding, send/receive UI, Digi-ID, DigiAssets screens, DigiDollar screens, and service/API integration.
 
-The runtime boundary is intentionally smaller than a full DigiByte Core node. The app validates wallet-relevant filtered block data and transactions against checkpoints, peer headers, merkle proofs, bloom filters, and transaction rules. It does not maintain a full UTXO set, expose RPC, mine blocks, or implement DigiDollar consensus/oracle features.
+The runtime boundary is intentionally smaller than a full DigiByte Core node. The app validates wallet-relevant filtered block data and transactions against checkpoints, peer headers, merkle proofs, bloom filters, and transaction rules. It does not maintain a full UTXO set, expose RPC, mine blocks, run a DigiDollar oracle, or replace full-node DigiDollar consensus validation. Mobile DigiDollar support is implemented as wallet-side transaction construction, signing, local accounting, and broadcast against the RC41 testnet.
 
 ## System Boundaries
 
@@ -19,11 +19,12 @@ In scope:
 - SQLite wallet database, peer/block/transaction persistence, and app-group defaults.
 - Public DigiByte P2P SPV behavior compatible with DigiByte Core `v8.26.2`.
 - Breadwallet-era local web/plugin stack, Digi-ID, payment request, and DigiAssets app flows.
+- DigiDollar RC41/testnet25 wallet flows for TD/DD addresses, transfer, receive, mint, vault tracking, full-position redeem, and SPV publish attempts.
 
 Out of scope:
 
 - DigiByte Core full-node validation, mempool policy enforcement, RPC, mining, and wallet.dat behavior.
-- DigiDollar `v9.26.0-rc` mint/transfer/redeem/oracle behavior.
+- DigiDollar oracle operation, full-node consensus validation, liquidation/oracle production, or unattended vault management.
 - Server-side rate, feature, metadata, broadcast helper, or support-service availability guarantees.
 
 ## Upstream Breadwallet Reference
@@ -45,7 +46,7 @@ UIKit app and extensions
         v
 Swift wallet/application layer
   AppDelegate, ApplicationController, WalletManager, Sender,
-  PaymentRequest, BRAPIClient, view controllers, Redux store
+  PaymentRequest, DigiDollarProtocol, BRAPIClient, view controllers, Redux store
         |
         v
 Swift BRCore wrapper
@@ -92,8 +93,24 @@ DigiByte P2P network
 - `BRWallet` for key-derived addresses, UTXO state, balance, transaction creation, and signing.
 - `BRPeerManager` for peer selection, bloom-filter SPV sync, block/transaction callbacks, and publish status.
 - `BRTransaction`, `BRMerkleBlock`, `BRPaymentProtocol`, `BRKey`, and address helpers.
+- DigiDollar helpers for Taproot TD/DD addresses, token outputs, mint/redeem metadata, vault accounting, and Taproot key/script-path signing.
 - `WalletManager.lazyPeerManager`, which hydrates persisted blocks/peers and creates the Swift peer manager.
 - `NodeSelectorViewController` and `BRPeerManager.setFixedPeer`, which allow an operator-selected peer/port.
+
+### DigiDollar Wallet
+
+DigiDollar is exposed as a sub-wallet inside the existing mobile wallet shell rather than as a separate seed or account. `DigiDollarMainViewController` presents Overview, Send, Receive, Vault, and Transactions tabs from the app menu. The mobile model keeps DGB and DD clearly separated while sharing the same BIP39 seed, local database, peer manager, and SPV publish path.
+
+The Swift facade in `DigiByte/Source/Platform/DigiDollarProtocol.swift` and `DigiByte/Source/BRCore.swift` bridges to `Modules/digibytewallet-core/BRDigiDollar.*` and `BRWallet.*`. Implemented wallet-side flows include:
+
+- TD/DD address derivation and validation from DigiByte Taproot output keys.
+- DigiDollar token balance accounting from wallet-owned Taproot token outputs.
+- DD transfer transaction creation, signing, and peer broadcast.
+- Mint transaction creation using DGB collateral, lock tiers, DCA level, and RC41 oracle price inputs supplied by the operator/UI.
+- Vault discovery from wallet-owned collateral outputs and DD token outputs.
+- Full-position redeem transaction creation using normal/ERR burn policy, lock-height checks, Taproot script-path collateral signing, and peer broadcast.
+
+The app does not run a DigiDollar oracle. Price, collateralization/system-health inputs, and testnet faucet funding are external operational inputs during RC41 testing.
 
 ### Platform And Services
 
@@ -125,6 +142,13 @@ DigiByte P2P network
 3. `BRPeerManager` publishes the transaction to connected peers.
 4. Swift records publish status and updates UI/persistence.
 
+### DigiDollar Transfer, Mint, And Redeem
+
+1. Swift validates TD/DD addresses, operator-supplied mint/redeem parameters, and wallet balances.
+2. Native core selects DGB/DD UTXOs, builds the DigiDollar OP_RETURN metadata, and creates the Taproot token/collateral outputs.
+3. Native core signs DD token inputs with Taproot key-path Schnorr signatures and collateral redeems with the normal or ERR Taproot script-path branch.
+4. Swift confirms with PIN authentication, publishes through the same `BRPeerManager`, and refreshes the DigiDollar overview/vault state from wallet transactions.
+
 ## DigiByte Protocol Constants
 
 The embedded core has been audited against DigiByte Core `v8.26.2`:
@@ -143,6 +167,8 @@ The embedded core has been audited against DigiByte Core `v8.26.2`:
 | Bech32 HRP | `dgb` / `dgbt` | Matches audited constants |
 
 The embedded iOS core currently uses legacy mainnet DNS seeds: `seed.digibyteservers.io`, `seed2.hashdragon.com`, `dgb.cryptoservices.net`, `digiexplorer.info`, `seed1.digibyte.io`, `seed2.digibyte.io`, `seed3.digibyte.io`, and `digihash.co`. DigiByte Core `v8.26.2` uses a newer maintained seed set including `seed.digibyte.io`, `seed.diginode.tools`, `seed.digibyteblockchain.org`, `eu.digibyteseed.com`, `seed.digibyte.link`, `seed.quakeguy.com`, `seed.aroundtheblock.app`, and `seed.digibyte.services`; the iOS seed strategy should be refreshed next. Mainnet checkpoints are hardcoded through height `6309234` and still need freshness review against the current public chain.
+
+RC41 DigiDollar testnet uses testnet25 P2P port `12032`. Current mobile validation uses a local DigiByte Core bridge node on `127.0.0.1:12032` with bloom filters enabled because the observed public RC41 peers did not advertise bloom service bits directly to the SPV wallet.
 
 ## Configuration And Build Notes
 
@@ -170,22 +196,25 @@ xcodebuild -project DigiByte.xcodeproj -scheme BRCore -configuration Debug -sdk 
 Current iOS app status:
 
 - The iOS 26.5 simulator runtime is installed locally and `xcrun simctl list devices booted` shows `iPhone 17 (F24B7821-AF76-460E-8687-ABEFA542146D)` booted on iOS 26.5.
-- The full `DigiByte` app scheme builds successfully for the iOS 26.5 simulator with:
+- The `Testnet` app scheme builds successfully for the iOS 26.5 simulator with:
 
 ```sh
-xcodebuild -project DigiByte.xcodeproj -scheme DigiByte -configuration Debug -sdk iphonesimulator -destination 'platform=iOS Simulator,OS=26.5,name=iPhone 17' CODE_SIGNING_ALLOWED=NO build
+env DGB_FIXED_PEER=127.0.0.1:12032 xcodebuild build -project DigiByte.xcodeproj -scheme Testnet -configuration Testnet -destination 'platform=iOS Simulator,id=F24B7821-AF76-460E-8687-ABEFA542146D'
 ```
 
 - The app installs on that simulator with bundle id `org.digibytefoundation.DigiByte`.
-- Current runtime blocker: `simctl launch` starts the process, but the app exits immediately and remains on the Home Screen. Crash reports show a Debug assertion in `ApplicationController.didInitWalletManager()` at `ApplicationController.swift:249` because `walletManager` is nil during startup.
-- Non-fatal build warnings remain, including a parent/app-extension `CFBundleVersion` mismatch and duplicate implicit dependency warnings around `Storez.framework`.
+- The app launches and reaches the PIN/main-wallet path on that simulator. The current local simulator wallet PIN is `111111`.
+- Focused `DigiDollarProtocolTests`, `testCreateWalletOrLoginSmoke`, and `testDigiDollarMenuOpens` pass against the `Testnet` scheme.
+- A local RC41 bridge node is running with `-testnet -listen=1 -peerbloomfilters=1 -addnode=oracle1.digibyte.io:12032`; it connects to RC41 peers and exposes a bloom-capable local peer for the simulator.
+- Live funded mint/redeem broadcast still requires a funded RC41 wallet/DD test outputs. The local bridge node currently has no wallet loaded.
+- Non-fatal build warnings remain, including duplicate implicit dependency warnings around `Storez.framework`.
 
 ## Design Patterns
 
 - C wallet core remains platform-neutral and is exposed to Swift through a Clang module rather than rewritten in Swift.
 - Swift owns app orchestration and persistence; C owns deterministic wallet math, signing, transaction serialization, bloom filters, and peer/SPV state.
 - Long-running network/database work is separated from UIKit state through managers, callbacks, Redux-style state, and notification/listener patterns.
-- Legacy Breadwallet naming remains in some APIs (`bitcoinAmount`, `BITCOIN_TESTNET`, payment protocol names), but audited runtime constants select DigiByte network parameters.
+- Legacy Breadwallet naming remains in some APIs (`bitcoinAmount`, `BITCOIN_TESTNET`, payment protocol names), but audited runtime constants select DigiByte network parameters and DigiDollar RC41 testnet settings where explicitly configured.
 - Service/API calls are treated as app metadata/support dependencies, separate from SPV peer validation.
 
 ## Practical Module Map
@@ -200,9 +229,9 @@ xcodebuild -project DigiByte.xcodeproj -scheme DigiByte -configuration Debug -sd
 
 ## Known Risks
 
-- Wallet creation/restore and live SPV peer sync have not yet been walked through in the simulator; current validation proves build and install, but app launch currently crashes before onboarding.
-- The launch crash must be fixed before SPV network behavior can be validated.
+- Wallet creation/login and DigiDollar menu navigation have been walked through by UI tests on the simulator; full live-funded DigiDollar mint/redeem broadcast still needs confirmed RC41 DGB/DD test funds.
 - Deployment targets were raised to iOS 12.0 for the app and embedded module projects, but release signing and physical-device deployment still need explicit validation.
 - App-group entitlements are currently empty while code still references `group.org.digibytefoundation.DigiByte`; extension/shared-default behavior needs validation once signing is settled.
 - Checkpoints and DNS seed liveness still need runtime verification against public DigiByte Core `v8.26.2` peers.
 - DigiByte Core `v8.26.2` has bloom filters disabled by default unless nodes opt into `NODE_BLOOM`; SPV peer availability must be validated on live peers.
+- DigiDollar oracle inputs are manual/operator supplied in the current mobile UI; production automation around price/system-health feeds is not implemented in the mobile wallet.
