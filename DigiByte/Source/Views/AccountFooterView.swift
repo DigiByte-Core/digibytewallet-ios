@@ -413,6 +413,9 @@ fileprivate class RadialGradientMenu: UIView {
     
     func addMenuItem(img: UIImage?, text: String, onTap: @escaping () -> Void) {
         let view = RadialGradientViewButton()
+        view.isAccessibilityElement = true
+        view.accessibilityIdentifier = "footer-menu-\(text.lowercased())"
+        view.accessibilityLabel = text
         let image = UIImageView(image: img)
         //image.tintColor = C.Colors.text
         image.contentMode = .scaleAspectFit

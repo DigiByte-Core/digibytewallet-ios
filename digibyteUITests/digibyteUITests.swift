@@ -25,15 +25,28 @@ class breadwalletUITests: XCTestCase {
     }
 
     func testCreateWalletOrLoginSmoke() {
-        if isMainWalletScreenVisible(timeout: 3) {
-            return
-        }
+        XCTAssert(prepareWalletForMainScreen(timeout: 30), app.debugDescription)
+    }
 
+    func testReceiveScreenOpens() {
+        XCTAssert(prepareWalletForMainScreen(timeout: 30), app.debugDescription)
+        let addButton = app.buttons["+"].firstMatch
+        XCTAssert(addButton.waitForExistence(timeout: 10), app.debugDescription)
+        addButton.tap()
+
+        let receiveButton = app.descendants(matching: .any)["footer-menu-receive"].firstMatch
+        XCTAssert(receiveButton.waitForExistence(timeout: 10), app.debugDescription)
+        receiveButton.tap()
+
+        XCTAssert(isReceiveScreenVisible(timeout: 10), app.debugDescription)
+    }
+
+    private func prepareWalletForMainScreen(timeout: TimeInterval) -> Bool {
         if isRecoveryKeyScreenVisible(timeout: 3) {
-            return
+            return true
         }
 
-        if app.staticTexts["Welcome to the DigiByte wallet."].waitForExistence(timeout: 8) {
+        if app.staticTexts["Welcome to the DigiByte wallet."].waitForExistence(timeout: min(timeout, 8)) {
             advanceWelcomeFlow()
         }
 
@@ -41,12 +54,15 @@ class breadwalletUITests: XCTestCase {
             createWallet(pin: "111111")
         } else if app.staticTexts["Enter PIN"].waitForExistence(timeout: 3) ||
                     app.staticTexts["Security Check"].exists ||
-                    app.staticTexts["SECURITY CHECK"].exists {
+                    app.staticTexts["SECURITY CHECK"].exists ||
+                    app.staticTexts["SECURITYNCHECK"].exists {
             enterPin("111111")
-            XCTAssert(isMainWalletScreenVisible(timeout: 15) || isRecoveryKeyScreenVisible(timeout: 1), app.debugDescription)
+            return isMainWalletScreenVisible(timeout: 15) || isRecoveryKeyScreenVisible(timeout: 1)
         } else {
-            XCTFail("App did not reach welcome, wallet creation, or PIN login flow.\n\(app.debugDescription)")
+            return isMainWalletScreenVisible(timeout: 3)
         }
+
+        return isMainWalletScreenVisible(timeout: 3) || isRecoveryKeyScreenVisible(timeout: 3)
     }
 
     private func advanceWelcomeFlow() {
@@ -145,6 +161,21 @@ class breadwalletUITests: XCTestCase {
                 app.images["disconnected"].exists ||
                 app.images["connected"].exists ||
                 app.staticTexts["TOTAL\nBALANCE"].exists {
+                return true
+            }
+
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.2))
+        }
+        return false
+    }
+
+    private func isReceiveScreenVisible(timeout: TimeInterval) -> Bool {
+        let deadline = Date(timeIntervalSinceNow: timeout)
+        while Date() < deadline {
+            if app.images["receive-qr-code"].exists ||
+                app.buttons["receive-address-button"].exists ||
+                app.buttons["receive-alternative-address-button"].exists ||
+                waitForAnyText(["Receive to", "Show a Legacy Address instead", "Show a Segwit Address instead"], timeout: 0.1) {
                 return true
             }
 

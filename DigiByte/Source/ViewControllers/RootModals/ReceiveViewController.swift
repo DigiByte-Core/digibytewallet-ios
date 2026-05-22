@@ -221,6 +221,9 @@ class ReceiveViewController : UIViewController, Subscriber, Trackable {
 
     private func setStyle() {
         view.backgroundColor = .clear
+        qrCode.accessibilityIdentifier = "receive-qr-code"
+        addressButton.accessibilityIdentifier = "receive-address-button"
+        requestLegacyAddressButton.accessibilityIdentifier = "receive-alternative-address-button"
         requestString.textColor = C.Colors.text
         requestString.numberOfLines = 3
         requestString.text = "\n\n"

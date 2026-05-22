@@ -109,9 +109,12 @@ extension BRAddress: CustomStringConvertible, Hashable {
     }
     
     public var description: String {
-        let addressBytes = UnsafeMutablePointer<CChar>.allocate(capacity: 100)
-        addressBytes.initialize(from: UnsafeRawPointer([self.s]).assumingMemoryBound(to: CChar.self), count: 100)
-        return String(cString: addressBytes)
+        var address = self
+        return withUnsafeBytes(of: &address.s) { rawBuffer in
+            let bytes = rawBuffer.map { $0 }
+            let terminator = bytes.firstIndex(of: 0) ?? bytes.count
+            return String(decoding: bytes[..<terminator], as: UTF8.self)
+        }
     }
     
     public func hash(into hasher: inout Hasher) {
