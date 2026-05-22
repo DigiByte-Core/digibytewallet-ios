@@ -313,6 +313,7 @@
 		39A4EB232393E3B500B5664F /* AssetHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4EB222393E3B500B5664F /* AssetHelper.swift */; };
 		39A4EB712393E70400B5664F /* DGBConfirmAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39A4EB702393E70400B5664F /* DGBConfirmAlert.swift */; };
 		39A4EB7323940D5400B5664F /* BRDigiAsset.c in Sources */ = {isa = PBXBuildFile; fileRef = 39DEDAC023490B5B005F648B /* BRDigiAsset.c */; };
+		DDBE000123490B5B005F648B /* BRDigiDollar.c in Sources */ = {isa = PBXBuildFile; fileRef = DDBE000323490B5B005F648B /* BRDigiDollar.c */; };
 		39C2F8AE247007970053518A /* Sequence+Unique.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39C2F8AD247007970053518A /* Sequence+Unique.swift */; };
 		39C4A7762339104A00D84AF6 /* Lato-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 398124BA233281030019D5E6 /* Lato-Italic.ttf */; };
 		39C4A7772339104A00D84AF6 /* Rubik-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 398124C4233281030019D5E6 /* Rubik-Bold.ttf */; };
@@ -1181,6 +1182,8 @@
 		39D868E122E64A170035FAF7 /* odocrypt.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = odocrypt.c; sourceTree = "<group>"; };
 		39DEDABF23490B5B005F648B /* BRDigiAsset.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRDigiAsset.h; sourceTree = "<group>"; };
 		39DEDAC023490B5B005F648B /* BRDigiAsset.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BRDigiAsset.c; sourceTree = "<group>"; };
+		DDBE000223490B5B005F648B /* BRDigiDollar.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRDigiDollar.h; sourceTree = "<group>"; };
+		DDBE000323490B5B005F648B /* BRDigiDollar.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BRDigiDollar.c; sourceTree = "<group>"; };
 		39DEDAC223490F0F005F648B /* BRAssetData.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BRAssetData.h; sourceTree = "<group>"; };
 		39DEDAC323490F0F005F648B /* BRAssetData.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = BRAssetData.c; sourceTree = "<group>"; };
 		39F76DBC247C528800BF3241 /* Symbols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Symbols.swift; sourceTree = "<group>"; };
@@ -3586,6 +3589,8 @@
 				75DC783C1DAA05B500932D9A /* test.c */,
 				39DEDABF23490B5B005F648B /* BRDigiAsset.h */,
 				39DEDAC023490B5B005F648B /* BRDigiAsset.c */,
+				DDBE000223490B5B005F648B /* BRDigiDollar.h */,
+				DDBE000323490B5B005F648B /* BRDigiDollar.c */,
 				39DEDAC223490F0F005F648B /* BRAssetData.h */,
 				39DEDAC323490F0F005F648B /* BRAssetData.c */,
 			);
@@ -4557,6 +4562,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				39A4EB7323940D5400B5664F /* BRDigiAsset.c in Sources */,
+				DDBE000123490B5B005F648B /* BRDigiDollar.c in Sources */,
 				AA85B8171FEAF84B008EB914 /* sph_shavite.c in Sources */,
 				AA85B8131FEAF84B008EB914 /* keccak.c in Sources */,
 				AA85B80F1FEAF84B008EB914 /* blake.c in Sources */,
