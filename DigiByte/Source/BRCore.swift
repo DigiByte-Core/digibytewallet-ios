@@ -23,6 +23,7 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
+import Darwin
 import Foundation
 import BRCore
 
@@ -592,6 +593,10 @@ class BRWallet {
     func createTransaction(forAmount: UInt64, toAddress: String) -> BRTxRef? {
         return BRWalletCreateTransaction(cPtr, forAmount, toAddress)
     }
+
+    func createDigiDollarTransfer(amountCents: UInt64, toAddress: String) -> BRTxRef? {
+        return BRWalletCreateDigiDollarTransfer(cPtr, amountCents, toAddress)
+    }
     
     // returns an unsigned transaction that satisifes the given transaction outputs
     func createTxForOutputs(_ outputs: [BRTxOutput]) -> BRTxRef {
@@ -854,7 +859,9 @@ class BRPeerManager {
     
     // connect to bitcoin peer-to-peer network (also call this whenever networkIsReachable() status changes)
     func connect() {
-        if let fixedAddress = UserDefaults.customNodeIP {
+        if let fixedPeer = Self.fixedPeerFromEnvironment() {
+            setFixedPeer(address: fixedPeer.address, port: fixedPeer.port)
+        } else if let fixedAddress = UserDefaults.customNodeIP {
             setFixedPeer(address: fixedAddress, port: UserDefaults.customNodePort ?? C.standardPort)
         }
         
@@ -947,6 +954,18 @@ class BRPeerManager {
             BRPeerManagerSetFixedPeer(cPtr, UInt128(), 0)
         }
 
+    }
+
+    private static func fixedPeerFromEnvironment() -> (address: Int, port: UInt16)? {
+        guard E.isDebug, let value = ProcessInfo.processInfo.environment["DGB_FIXED_PEER"], !value.isEmpty else { return nil }
+        let parts = value.split(separator: ":", maxSplits: 1).map(String.init)
+        guard let host = parts.first else { return nil }
+        let port = parts.count > 1 ? UInt16(parts[1]) : C.standardPort
+        guard let fixedPort = port else { return nil }
+
+        var address = in_addr()
+        guard inet_pton(AF_INET, host, &address) == 1 else { return nil }
+        return (Int(address.s_addr), fixedPort)
     }
     
     deinit {

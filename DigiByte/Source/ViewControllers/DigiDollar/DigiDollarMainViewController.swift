@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import BRCore
 
 class DigiDollarMainViewController: UITabBarController {
     private let header = ModalHeaderView(title: S.MenuButton.digiDollar, style: .light)
@@ -236,6 +237,7 @@ private final class DigiDollarOverviewViewController: DigiDollarBaseViewControll
 private final class DigiDollarSendViewController: DigiDollarBaseViewController {
     private let addressField = UITextField()
     private let amountField = UITextField()
+    private var pendingTransfer: BRTxRef?
 
     init(store: BRStore, walletManager: WalletManager) {
         super.init(store: store, walletManager: walletManager, title: "Send", imageName: "da-send")
@@ -251,7 +253,7 @@ private final class DigiDollarSendViewController: DigiDollarBaseViewController {
                 rows: [("Network", DigiDollarProtocol.currentNetwork.displayName)])
         addTextField(addressField, placeholder: "TD address")
         addTextField(amountField, placeholder: "Amount DD", keyboardType: .decimalPad)
-        stackView.addArrangedSubview(actionButton(title: "Validate Send") { [weak self] in self?.validateSend() })
+        stackView.addArrangedSubview(actionButton(title: "Send DigiDollars") { [weak self] in self?.validateSend() })
     }
 
     private func validateSend() {
@@ -263,11 +265,81 @@ private final class DigiDollarSendViewController: DigiDollarBaseViewController {
             showStatus("Invalid amount", message: "Minimum output is 1.00 DD.")
             return
         }
-        guard DigiDollarProtocol.buildTransferOpReturn(amounts: [cents]) != nil else {
-            showStatus("Draft failed", message: "Unable to build transfer metadata.")
+        guard let wallet = walletManager.wallet else {
+            showStatus("Wallet unavailable", message: "The wallet is still loading.")
             return
         }
-        showStatus("Draft ready", message: "Transfer metadata is valid. Taproot input selection and signing are the next wallet-core step.")
+        guard let tx = wallet.createDigiDollarTransfer(amountCents: cents, toAddress: address) else {
+            showStatus("Transfer unavailable", message: "Insufficient DD, confirmed DD outputs, or DGB fee balance.")
+            return
+        }
+
+        pendingTransfer = tx
+        let fee = wallet.feeForTx(tx) ?? 0
+        let message = "\(formatDigiDollar(cents: cents))\nFee \(formatDGB(satoshis: fee)) DGB"
+        let alert = UIAlertController(title: "Send DigiDollars", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: S.Button.cancel, style: .cancel) { [weak self] _ in
+            self?.releasePendingTransfer()
+        })
+        alert.addAction(UIAlertAction(title: S.Confirmation.send, style: .default) { [weak self] _ in
+            self?.presentPinForPendingTransfer()
+        })
+        present(alert, animated: true, completion: nil)
+    }
+
+    private func presentPinForPendingTransfer() {
+        guard pendingTransfer != nil else { return }
+
+        let verify = VerifyPinViewController(bodyText: S.VerifyPin.authorize,
+                                             pinLength: store.state.pinLength) { [weak self] pin, vc in
+            guard let self = self, let tx = self.pendingTransfer else { return false }
+            var success = false
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.walletQueue.async {
+                success = self.walletManager.signTransaction(tx, pin: pin)
+                group.leave()
+            }
+            guard group.wait(timeout: .now() + 30.0) != .timedOut, success else { return false }
+            vc.dismiss(animated: true) {
+                self.publishPendingTransfer()
+            }
+            return true
+        }
+
+        verify.modalPresentationStyle = .overFullScreen
+        verify.modalPresentationCapturesStatusBarAppearance = true
+        present(verify, animated: true, completion: nil)
+    }
+
+    private func publishPendingTransfer() {
+        guard let tx = pendingTransfer else { return }
+        pendingTransfer = nil
+        let txHash = tx.pointee.txHash.description
+        guard let peerManager = walletManager.peerManager else {
+            BRTransactionFree(tx)
+            showStatus("Network unavailable", message: "Peer manager is not ready.")
+            return
+        }
+
+        peerManager.publishTx(tx) { [weak self] success, error in
+            DispatchQueue.main.async {
+                if success {
+                    self?.showStatus("DigiDollars sent", message: txHash)
+                } else {
+                    self?.showStatus("Broadcast failed", message: error?.localizedDescription ?? "Peer broadcast failed.")
+                }
+            }
+        }
+    }
+
+    private func releasePendingTransfer() {
+        if let tx = pendingTransfer { BRTransactionFree(tx) }
+        pendingTransfer = nil
+    }
+
+    deinit {
+        releasePendingTransfer()
     }
 }
 
@@ -412,6 +484,12 @@ private extension BRWallet {
 
 private func formatDigiDollar(cents: UInt64) -> String {
     return "\(cents / 100).\(String(format: "%02llu", cents % 100)) DD"
+}
+
+private func formatDGB(satoshis: UInt64) -> String {
+    let whole = satoshis / 100_000_000
+    let fractional = satoshis % 100_000_000
+    return "\(whole).\(String(format: "%08llu", fractional))"
 }
 
 enum DigiDollarAmountParser {

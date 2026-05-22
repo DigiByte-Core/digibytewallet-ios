@@ -16,6 +16,8 @@ class breadwalletUITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launchArguments += ["-AppleLanguages", "(en)", "-AppleLocale", "en_US"]
+        app.launchEnvironment["TESTNET"] = "1"
+        app.launchEnvironment["DGB_FIXED_PEER"] = ProcessInfo.processInfo.environment["DGB_FIXED_PEER"] ?? ""
         app.launch()
     }
 
