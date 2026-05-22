@@ -602,6 +602,7 @@ enum S {
         static let support = NSLocalizedString("MenuButton.support", value:"Support", comment: "Menu button title")
         static let settings = NSLocalizedString("MenuButton.settings", value:"Settings", comment: "Menu button title")
         static let digiAssets = NSLocalizedString("MenuButton.digiAssets", value: "DigiAssets", comment: "Menu button title for DigiAssets")
+        static let digiDollar = NSLocalizedString("MenuButton.digiDollar", value: "DigiDollar", comment: "Menu button title for DigiDollar")
         static let lock = NSLocalizedString("MenuButton.lock", value:"Lock Wallet", comment: "Menu button title")
         static let digiid = "DigiID"
     }

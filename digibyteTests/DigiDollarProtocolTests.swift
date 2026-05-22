@@ -61,6 +61,24 @@ class DigiDollarProtocolTests: XCTestCase {
         XCTAssertNil(DigiDollarProtocol.buildRedeemOpReturn(ddChange: 0))
     }
 
+    func testP2TRScriptPubKeyVector() {
+        guard let script = DigiDollarProtocol.p2trScriptPubKey(forOutputKey: outputKey) else {
+            XCTFail("Expected P2TR script")
+            return
+        }
+
+        XCTAssertEqual(script.count, 34)
+        XCTAssertEqual(Array(script.prefix(2)), [0x51, 0x20])
+        XCTAssertEqual(Array(script.dropFirst(2)), outputKey)
+    }
+
+    func testAmountParserRejectsOverflow() {
+        XCTAssertEqual(DigiDollarAmountParser.cents(from: "1"), 100)
+        XCTAssertEqual(DigiDollarAmountParser.cents(from: "1.05"), 105)
+        XCTAssertNil(DigiDollarAmountParser.cents(from: "18446744073709551615"))
+        XCTAssertNil(DigiDollarAmountParser.cents(from: "1.234"))
+    }
+
     func testLockTierSchedule() {
         XCTAssertEqual(DigiDollarProtocol.lockTiers.count, 10)
         XCTAssertEqual(DigiDollarProtocol.lockTiers[0].blocks, 240)

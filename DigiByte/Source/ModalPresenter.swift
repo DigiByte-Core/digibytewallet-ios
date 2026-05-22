@@ -235,6 +235,8 @@ class ModalPresenter : Subscriber, Trackable {
                 return makeSecurityCenter()
             case .digiAssets(let action):
                 return makeDigiAssets(action)
+            case .digiDollar:
+                return makeDigiDollar()
             case .support:
                 return makeFaq()
             case .settings:
@@ -733,6 +735,18 @@ class ModalPresenter : Subscriber, Trackable {
         nc.setWhiteStyle()
         nc.isNavigationBarHidden = true
         
+        window.rootViewController?.present(nc, animated: true, completion: nil)
+    }
+
+    private func makeDigiDollar() {
+        guard let walletManager = walletManager else { return }
+
+        let digiDollarViewController = DigiDollarMainViewController(store: store, walletManager: walletManager)
+        let nc = ModalNavigationController(rootViewController: digiDollarViewController)
+        nc.setDefaultStyle()
+        nc.setWhiteStyle()
+        nc.isNavigationBarHidden = true
+
         window.rootViewController?.present(nc, animated: true, completion: nil)
     }
 

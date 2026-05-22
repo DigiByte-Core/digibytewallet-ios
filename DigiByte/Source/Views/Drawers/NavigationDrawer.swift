@@ -159,6 +159,10 @@ class NavigationDrawer: UIView {
         
         let buttonContainer = DAHapticControl()
         buttonContainer.isUserInteractionEnabled = true
+        buttonContainer.isAccessibilityElement = true
+        buttonContainer.accessibilityIdentifier = "navigation-menu-\(NavigationDrawer.accessibilitySuffix(for: title))"
+        buttonContainer.accessibilityLabel = title
+        buttonContainer.accessibilityTraits = UIAccessibilityTraits.button
         buttonContainer.addSubview(buttonImage)
         buttonContainer.addSubview(buttonText)
         
@@ -188,5 +192,12 @@ class NavigationDrawer: UIView {
         
         buttons.append(SideMenuButton(view: buttonContainer, callback: callback))
         y += buttonHeight
+    }
+
+    private static func accessibilitySuffix(for title: String) -> String {
+        return title.lowercased()
+            .components(separatedBy: CharacterSet.alphanumerics.inverted)
+            .filter { !$0.isEmpty }
+            .joined(separator: "-")
     }
 }

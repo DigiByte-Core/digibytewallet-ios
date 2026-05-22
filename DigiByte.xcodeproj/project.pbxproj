@@ -171,6 +171,7 @@
 		3981272C233281050019D5E6 /* DASendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125DF233281040019D5E6 /* DASendViewController.swift */; };
 		3981272D233281050019D5E6 /* DAAssetsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125E0233281040019D5E6 /* DAAssetsViewController.swift */; };
 		3981272E233281050019D5E6 /* DAMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125E1233281040019D5E6 /* DAMainViewController.swift */; };
+		DD1D1022234A0001005F648B /* DigiDollarMainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1D1021234A0001005F648B /* DigiDollarMainViewController.swift */; };
 		3981272F233281050019D5E6 /* NodeSelectorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125E2233281040019D5E6 /* NodeSelectorViewController.swift */; };
 		39812730233281050019D5E6 /* StartPaperPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125E3233281040019D5E6 /* StartPaperPhraseViewController.swift */; };
 		39812731233281050019D5E6 /* PushNotificationsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398125E4233281040019D5E6 /* PushNotificationsViewController.swift */; };
@@ -771,6 +772,7 @@
 		398124A8233281030019D5E6 /* NSDataExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDataExtensionTests.swift; sourceTree = "<group>"; };
 		DD1D1001234A0001005F648B /* DigiDollarProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigiDollarProtocolTests.swift; sourceTree = "<group>"; };
 		DD1D1011234A0001005F648B /* DigiDollarProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigiDollarProtocol.swift; sourceTree = "<group>"; };
+		DD1D1021234A0001005F648B /* DigiDollarMainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigiDollarMainViewController.swift; sourceTree = "<group>"; };
 		398124AA233281030019D5E6 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		398124AB233281030019D5E6 /* SharedConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
 		398124AC233281030019D5E6 /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
@@ -2363,6 +2365,7 @@
 				398125D7233281040019D5E6 /* ConfirmationViewController.swift */,
 				398125D8233281040019D5E6 /* EnterPhraseCollectionViewController.swift */,
 				398125D9233281040019D5E6 /* DigiAssets */,
+				DD1D1023234A0001005F648B /* DigiDollar */,
 				398125E2233281040019D5E6 /* NodeSelectorViewController.swift */,
 				398125E3233281040019D5E6 /* StartPaperPhraseViewController.swift */,
 				398125E4233281040019D5E6 /* PushNotificationsViewController.swift */,
@@ -2418,6 +2421,14 @@
 				39FFD17F239D563A00CFB302 /* DADetailViewController.swift */,
 			);
 			path = DigiAssets;
+			sourceTree = "<group>";
+		};
+		DD1D1023234A0001005F648B /* DigiDollar */ = {
+			isa = PBXGroup;
+			children = (
+				DD1D1021234A0001005F648B /* DigiDollarMainViewController.swift */,
+			);
+			path = DigiDollar;
 			sourceTree = "<group>";
 		};
 		398125E8233281040019D5E6 /* Import */ = {
@@ -4675,6 +4686,7 @@
 				3981274E233281050019D5E6 /* SendAmountCell.swift in Sources */,
 				39812757233281050019D5E6 /* AnimatableIcon.swift in Sources */,
 				3981272E233281050019D5E6 /* DAMainViewController.swift in Sources */,
+				DD1D1022234A0001005F648B /* DigiDollarMainViewController.swift in Sources */,
 				39812774233281050019D5E6 /* CameraGuideView.swift in Sources */,
 				398127E22332B76E0019D5E6 /* SharedConstants.swift in Sources */,
 				398126AB233281050019D5E6 /* WalletManager+Auth.swift in Sources */,

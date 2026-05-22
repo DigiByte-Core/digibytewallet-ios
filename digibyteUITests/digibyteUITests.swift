@@ -41,6 +41,24 @@ class breadwalletUITests: XCTestCase {
         XCTAssert(isReceiveScreenVisible(timeout: 10), app.debugDescription)
     }
 
+    func testDigiDollarMenuOpens() {
+        XCTAssert(prepareWalletForMainScreen(timeout: 30), app.debugDescription)
+        XCTAssert(isMainWalletScreenVisible(timeout: 10), app.debugDescription)
+
+        let menuButton = app.descendants(matching: .any)["footer-hamburger-menu"].firstMatch
+        XCTAssert(menuButton.waitForExistence(timeout: 10), app.debugDescription)
+        menuButton.tap()
+
+        let digiDollarButton = app.descendants(matching: .any)["navigation-menu-digidollar"].firstMatch
+        XCTAssert(digiDollarButton.waitForExistence(timeout: 10), app.debugDescription)
+        digiDollarButton.tap()
+
+        XCTAssert(waitForAnyText(["DigiDollar", "DigiDollar Balances", "Protocol"], timeout: 10), app.debugDescription)
+        XCTAssert(app.tabBars.buttons["Overview"].waitForExistence(timeout: 3), app.debugDescription)
+        XCTAssert(app.tabBars.buttons["Vault"].exists, app.debugDescription)
+        XCTAssertFalse(app.tabBars.buttons["More"].exists, app.debugDescription)
+    }
+
     private func prepareWalletForMainScreen(timeout: TimeInterval) -> Bool {
         if isRecoveryKeyScreenVisible(timeout: 3) {
             return true

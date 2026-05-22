@@ -622,6 +622,8 @@ class AccountFooterView: UIView {
         hamburgerButton.setImage(UIImage(named: "hamburgerButton")?.withRenderingMode(.alwaysTemplate), for: .normal)
         hamburgerButton.tintColor = .white
         hamburgerButton.contentMode = .center
+        hamburgerButton.accessibilityIdentifier = "footer-hamburger-menu"
+        hamburgerButton.accessibilityLabel = "Menu"
         
         // right button (qr code scanner)
         let qrButton = DGBHapticButton(type: .system)

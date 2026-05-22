@@ -90,6 +90,7 @@ enum HamburgerMenuModal: Equatable {
     case support
     case settings
     case digiAssets(AssetMenuAction? = nil)
+    case digiDollar
     case lockWallet
     
     static func ==(lhs: HamburgerMenuModal, rhs: HamburgerMenuModal) -> Bool {
@@ -98,6 +99,7 @@ enum HamburgerMenuModal: Equatable {
         case (.securityCenter, .securityCenter): return true
         case (.support, .support): return true
         case (.settings, .settings): return true
+        case (.digiDollar, .digiDollar): return true
         case (.lockWallet, .lockWallet): return true
         case (let .digiAssets(a1), let .digiAssets(a2)):
             return a1 == a2
