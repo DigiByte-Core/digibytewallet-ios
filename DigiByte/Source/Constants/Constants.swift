@@ -63,10 +63,11 @@ struct C {
     static let feedbackEmail = "info@digibyte.io"
 	static let reviewLink = "https://itunes.apple.com/us/app/digibyte-wallet/id1328006562?action=write-review"
     static var standardPort: UInt16 {
-		return E.isTestnet ? 12026 : 12024
+		return E.isTestnet ? 12032 : 12024
     }
-	//FIXME: Before shipping to production, change this to DigiByte.sqlite
-	static let sqliteFileName = "DigiByte.sqlite"
+    static var sqliteFileName: String {
+        return E.isTestnet ? "DigiByte-testnet25.sqlite" : "DigiByte.sqlite"
+    }
     
     static let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? ""
     static let applicationTitle = Bundle.main.infoDictionary?["CFBundleDisplayName"] as? String ?? "DigiByte"
