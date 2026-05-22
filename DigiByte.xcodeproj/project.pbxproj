@@ -259,6 +259,7 @@
 		3981278A233281050019D5E6 /* FirstBlockWithWalletTxRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812647233281040019D5E6 /* FirstBlockWithWalletTxRequest.swift */; };
 		3981278B233281050019D5E6 /* PaymentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812648233281040019D5E6 /* PaymentRequest.swift */; };
 		3981278C233281050019D5E6 /* ApplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 39812649233281040019D5E6 /* ApplicationController.swift */; };
+		DD1D1012234A0001005F648B /* DigiDollarProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1D1011234A0001005F648B /* DigiDollarProtocol.swift */; };
 		3981278D233281050019D5E6 /* Interface.strings in Resources */ = {isa = PBXBuildFile; fileRef = 3981264B233281040019D5E6 /* Interface.strings */; };
 		3981278E233281050019D5E6 /* LoadingIndicator.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39812650233281040019D5E6 /* LoadingIndicator.xcassets */; };
 		3981278F233281050019D5E6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 39812655233281040019D5E6 /* Assets.xcassets */; };
@@ -279,6 +280,7 @@
 		398127C3233287280019D5E6 /* BRTarTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398124A5233281030019D5E6 /* BRTarTests.swift */; };
 		398127C5233287280019D5E6 /* BRHTTPServerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398124A7233281030019D5E6 /* BRHTTPServerTests.swift */; };
 		398127C6233287280019D5E6 /* NSDataExtensionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398124A8233281030019D5E6 /* NSDataExtensionTests.swift */; };
+		DD1D1002234A0001005F648B /* DigiDollarProtocolTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1D1001234A0001005F648B /* DigiDollarProtocolTests.swift */; };
 		398127C9233287B20019D5E6 /* PushNotificationPayload.apns in Resources */ = {isa = PBXBuildFile; fileRef = 398124AA233281030019D5E6 /* PushNotificationPayload.apns */; };
 		398127CA233287B60019D5E6 /* SharedConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398124AB233281030019D5E6 /* SharedConstants.swift */; };
 		398127CB233287BF0019D5E6 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 398124AC233281030019D5E6 /* ComplicationController.swift */; };
@@ -767,6 +769,8 @@
 		398124A6233281030019D5E6 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		398124A7233281030019D5E6 /* BRHTTPServerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BRHTTPServerTests.swift; sourceTree = "<group>"; };
 		398124A8233281030019D5E6 /* NSDataExtensionTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSDataExtensionTests.swift; sourceTree = "<group>"; };
+		DD1D1001234A0001005F648B /* DigiDollarProtocolTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigiDollarProtocolTests.swift; sourceTree = "<group>"; };
+		DD1D1011234A0001005F648B /* DigiDollarProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigiDollarProtocol.swift; sourceTree = "<group>"; };
 		398124AA233281030019D5E6 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
 		398124AB233281030019D5E6 /* SharedConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SharedConstants.swift; sourceTree = "<group>"; };
 		398124AC233281030019D5E6 /* ComplicationController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
@@ -2070,6 +2074,7 @@
 				398124A2233281030019D5E6 /* BRBSPatchTests.swift */,
 				398124A3233281030019D5E6 /* WalletAuthenticationTests.swift */,
 				398124A4233281030019D5E6 /* TestHelpers.swift */,
+				DD1D1001234A0001005F648B /* DigiDollarProtocolTests.swift */,
 				398124A5233281030019D5E6 /* BRTarTests.swift */,
 				398124A6233281030019D5E6 /* Info.plist */,
 				398124A7233281030019D5E6 /* BRHTTPServerTests.swift */,
@@ -2250,6 +2255,7 @@
 				3981257A233281040019D5E6 /* BRTar.swift */,
 				3981257B233281040019D5E6 /* module.modulemap */,
 				3981257C233281040019D5E6 /* BRReplicatedKVStore.swift */,
+				DD1D1011234A0001005F648B /* DigiDollarProtocol.swift */,
 				3981257D233281040019D5E6 /* BRWebViewController.swift */,
 			);
 			path = Platform;
@@ -4679,6 +4685,7 @@
 				3981277B233281050019D5E6 /* WalletOverlayView.swift in Sources */,
 				398126FC233281050019D5E6 /* UserDefaults+Shared.swift in Sources */,
 				3981278C233281050019D5E6 /* ApplicationController.swift in Sources */,
+				DD1D1012234A0001005F648B /* DigiDollarProtocol.swift in Sources */,
 				39812699233281050019D5E6 /* URLController.swift in Sources */,
 				39812711233281050019D5E6 /* ReceiveViewController.swift in Sources */,
 				39A4EB712393E70400B5664F /* DGBConfirmAlert.swift in Sources */,
@@ -4874,6 +4881,7 @@
 				398127C1233287280019D5E6 /* WalletAuthenticationTests.swift in Sources */,
 				398127B8233287280019D5E6 /* BRReplicatedKVStoreTests.swift in Sources */,
 				398127B9233287280019D5E6 /* SpendingLimitTests.swift in Sources */,
+				DD1D1002234A0001005F648B /* DigiDollarProtocolTests.swift in Sources */,
 				398127C0233287280019D5E6 /* BRBSPatchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5757,6 +5765,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = G49J8N7X2F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = digibyteTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -5778,6 +5791,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = G49J8N7X2F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = digibyteTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6419,6 +6437,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = G49J8N7X2F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = digibyteTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -6723,6 +6746,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = G49J8N7X2F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = digibyteTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -7013,6 +7041,11 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = G49J8N7X2F;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)",
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = digibyteTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
