@@ -116,7 +116,8 @@ private class DigiDollarBaseViewController: UIViewController {
         view.accessibilityIdentifier = "digidollar-\(tabBarItem.title?.lowercased() ?? "screen")-screen"
         scrollView.alwaysBounceVertical = true
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 18, right: 0)
+        scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 34, right: 0)
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
         stackView.axis = .vertical
         stackView.spacing = 18
         stackView.alignment = .fill
@@ -129,7 +130,7 @@ private class DigiDollarBaseViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.topAnchor, constant: 106),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -112)
         ])
 
         stackView.constrain([
@@ -385,14 +386,17 @@ private class DigiDollarBaseViewController: UIViewController {
         let titleLabel = UILabel(font: UIFont.da.customMedium(size: 13), color: UIColor.dd.muted)
         titleLabel.text = title
         titleLabel.numberOfLines = 0
+        titleLabel.setContentHuggingPriority(.required, for: .horizontal)
+        titleLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         let valueLabel = UILabel(font: UIFont.da.customBold(size: 16), color: UIColor.dd.text)
         valueLabel.text = value
         valueLabel.textAlignment = .right
         valueLabel.numberOfLines = 0
+        valueLabel.lineBreakMode = .byCharWrapping
         valueLabel.adjustsFontSizeToFitWidth = true
         valueLabel.minimumScaleFactor = 0.7
-        valueLabel.setContentCompressionResistancePriority(.required, for: .horizontal)
+        valueLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
 
         row.addArrangedSubview(titleLabel)
         row.addArrangedSubview(valueLabel)
@@ -436,6 +440,8 @@ private final class DigiDollarOverviewViewController: DigiDollarBaseViewControll
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let dgbBalance = walletManager.wallet?.balance ?? 0
+        let dgbReceiveAddress = walletManager.wallet?.receiveAddress ?? "Unavailable"
         let balanceCents = walletManager.wallet?.digiDollarBalanceCents ?? 0
         let outputCount = walletManager.wallet?.digiDollarUtxos.count ?? 0
         let vaults = walletManager.wallet?.digiDollarVaults ?? []
@@ -462,6 +468,20 @@ private final class DigiDollarOverviewViewController: DigiDollarBaseViewControll
                     ("Network", DigiDollarProtocol.currentNetwork.displayName)
                 ],
                 accessibilityIdentifier: "digidollar-balance-card")
+        let feeAddressButton = actionButton(title: "Copy DGB Fee Address") { [weak self] in
+            UIPasteboard.general.string = dgbReceiveAddress
+            self?.showStatus("DGB address copied", message: dgbReceiveAddress)
+        }
+        feeAddressButton.accessibilityIdentifier = "digidollar-copy-dgb-fee-address-button"
+        addCard(title: "DGB Fee Balance",
+                subtitle: "DD transfers and redemptions need normal DGB for network fees. Minting also locks DGB collateral.",
+                rows: [
+                    ("Available", "\(formatDGB(satoshis: dgbBalance)) DGB"),
+                    ("Receive", dgbReceiveAddress)
+                ],
+                accessibilityIdentifier: "digidollar-fee-balance-card",
+                accent: UIColor.dd.gold,
+                action: feeAddressButton)
         addCard(title: "Protocol",
                 subtitle: "RC41 DigiDollar transaction markers used by the mobile SPV builder.",
                 rows: [
@@ -520,7 +540,8 @@ private final class DigiDollarSendViewController: DigiDollarBaseViewController {
                 subtitle: "DD uses TD testnet addresses. Normal DGB addresses will be rejected.",
                 rows: [
                     ("Network", DigiDollarProtocol.currentNetwork.displayName),
-                    ("Minimum Output", "1.00 DD")
+                    ("Minimum Output", "1.00 DD"),
+                    ("DGB Fee Balance", "\(formatDGB(satoshis: walletManager.wallet?.balance ?? 0)) DGB")
                 ],
                 accessibilityIdentifier: "digidollar-send-rules-card",
                 accent: UIColor.dd.blue)
@@ -719,7 +740,8 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
                     ("Minimum", "100.00 DD"),
                     ("Maximum", "100,000.00 DD"),
                     ("Default Lock", "1 hour"),
-                    ("Network", DigiDollarProtocol.currentNetwork.displayName)
+                    ("Network", DigiDollarProtocol.currentNetwork.displayName),
+                    ("DGB Available", "\(formatDGB(satoshis: walletManager.wallet?.balance ?? 0)) DGB")
                 ],
                 accessibilityIdentifier: "digidollar-mint-card")
         addTextField(mintAmountField, placeholder: "Amount DD", label: "Mint Amount", keyboardType: .decimalPad)
