@@ -278,14 +278,17 @@ private final class DigiDollarReceiveViewController: DigiDollarBaseViewControlle
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        let receiveAddress = walletManager.wallet?.digiDollarReceiveAddress ?? "Unavailable"
         addCard(title: "Receive DigiDollars",
                 rows: [
                     ("Network", DigiDollarProtocol.currentNetwork.displayName),
                     ("Address Type", DigiDollarProtocol.currentNetwork == .testnet ? "TD" : "DD"),
-                    ("Key Type", "Taproot x-only")
+                    ("Key Type", "Taproot x-only"),
+                    ("Address", receiveAddress)
                 ],
-                action: actionButton(title: "Generate Address") { [weak self] in
-                    self?.showStatus("Taproot keys required", message: "DigiDollar receive addresses need wallet-derived P2TR output keys before this can issue a live address.")
+                action: actionButton(title: "Copy Address") { [weak self] in
+                    UIPasteboard.general.string = receiveAddress
+                    self?.showStatus("Address copied", message: receiveAddress)
                 })
     }
 }

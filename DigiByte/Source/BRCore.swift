@@ -484,6 +484,10 @@ class BRWallet {
     var receiveAddress: String {
         return BRWalletReceiveAddress(cPtr, 1).description
     }
+
+    var digiDollarReceiveAddress: String {
+        return BRWalletDigiDollarReceiveAddress(cPtr).description
+    }
     
     func getReceiveAddress(useSegwit: Bool) -> String {
         return BRWalletReceiveAddress(cPtr, useSegwit ? 1 : 0).description

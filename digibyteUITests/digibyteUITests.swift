@@ -57,6 +57,13 @@ class breadwalletUITests: XCTestCase {
         XCTAssert(app.tabBars.buttons["Overview"].waitForExistence(timeout: 3), app.debugDescription)
         XCTAssert(app.tabBars.buttons["Vault"].exists, app.debugDescription)
         XCTAssertFalse(app.tabBars.buttons["More"].exists, app.debugDescription)
+
+        let receiveTab = app.tabBars.buttons["Receive"].firstMatch
+        XCTAssert(receiveTab.waitForExistence(timeout: 3), app.debugDescription)
+        receiveTab.tap()
+
+        let tdAddress = app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "TD")).firstMatch
+        XCTAssert(tdAddress.waitForExistence(timeout: 5), app.debugDescription)
     }
 
     private func prepareWalletForMainScreen(timeout: TimeInterval) -> Bool {

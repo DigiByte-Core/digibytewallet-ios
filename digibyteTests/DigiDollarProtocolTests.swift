@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import BRCore
 @testable import DigiByte
 
 class DigiDollarProtocolTests: XCTestCase {
@@ -70,6 +71,27 @@ class DigiDollarProtocolTests: XCTestCase {
         XCTAssertEqual(script.count, 34)
         XCTAssertEqual(Array(script.prefix(2)), [0x51, 0x20])
         XCTAssertEqual(Array(script.dropFirst(2)), outputKey)
+    }
+
+    func testWalletReceiveAddressUsesExternalXOnlyKey() {
+        var seed = UInt128(u8: (0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15))
+        let mpk = withUnsafePointer(to: &seed) {
+            BRBIP32MasterPubKey($0, MemoryLayout<UInt128>.stride)
+        }
+        guard let wallet = BRWalletNew(nil, 0, mpk) else {
+            XCTFail("Expected wallet")
+            return
+        }
+        defer { BRWalletFree(wallet) }
+
+        let address = BRWalletDigiDollarReceiveAddress(wallet).description
+        let decoded = DigiDollarProtocol.decodeAddress(address)
+        var pubKey = [UInt8](repeating: 0, count: Int(BRBIP32PubKey(nil, 0, mpk, UInt32(SEQUENCE_EXTERNAL_CHAIN), 0)))
+        BRBIP32PubKey(&pubKey, pubKey.count, mpk, UInt32(SEQUENCE_EXTERNAL_CHAIN), 0)
+
+        XCTAssertEqual(decoded?.network, DigiDollarProtocol.currentNetwork)
+        XCTAssertEqual(decoded?.outputKey, Array(pubKey.dropFirst()))
+        XCTAssertTrue(address.hasPrefix(E.isTestnet ? "TD" : "DD"))
     }
 
     func testAmountParserRejectsOverflow() {
