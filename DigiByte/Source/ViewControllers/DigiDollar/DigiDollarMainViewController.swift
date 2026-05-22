@@ -369,9 +369,15 @@ private final class DigiDollarReceiveViewController: DigiDollarBaseViewControlle
     }
 }
 
-private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewController {
+private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewController, UIPickerViewDataSource, UIPickerViewDelegate {
     private let mintAmountField = UITextField()
+    private let lockTierField = UITextField()
+    private let oraclePriceField = UITextField()
+    private let systemHealthField = UITextField()
     private let redeemAmountField = UITextField()
+    private let lockTierPicker = UIPickerView()
+    private var selectedLockTierIndex = 0
+    private var pendingMint: BRTxRef?
 
     init(store: BRStore, walletManager: WalletManager) {
         super.init(store: store, walletManager: walletManager, title: "Vault", imageName: "da-create")
@@ -384,15 +390,33 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
     override func viewDidLoad() {
         super.viewDidLoad()
         let outputCount = walletManager.wallet?.digiDollarUtxos.count ?? 0
+        lockTierPicker.dataSource = self
+        lockTierPicker.delegate = self
+        lockTierField.inputView = lockTierPicker
+        lockTierField.inputAccessoryView = pickerAccessory()
+        lockTierField.tintColor = .clear
+        lockTierField.text = tierTitle(for: selectedLockTierIndex)
+        mintAmountField.accessibilityIdentifier = "digidollar-mint-amount"
+        lockTierField.accessibilityIdentifier = "digidollar-lock-tier"
+        oraclePriceField.accessibilityIdentifier = "digidollar-oracle-price"
+        systemHealthField.accessibilityIdentifier = "digidollar-system-health"
+        oraclePriceField.text = UserDefaults.standard.string(forKey: "DigiDollarOraclePriceUSD") ?? "0.003623"
+        systemHealthField.text = UserDefaults.standard.string(forKey: "DigiDollarSystemHealth") ?? "150"
 
         addCard(title: "Mint",
                 rows: [
                     ("Minimum", "100.00 DD"),
                     ("Maximum", "100,000.00 DD"),
-                    ("Default Lock", "1 hour")
+                    ("Default Lock", "1 hour"),
+                    ("Network", DigiDollarProtocol.currentNetwork.displayName)
                 ])
         addTextField(mintAmountField, placeholder: "Amount DD", keyboardType: .decimalPad)
-        stackView.addArrangedSubview(actionButton(title: "Validate Mint") { [weak self] in self?.validateMint() })
+        addTextField(lockTierField, placeholder: "Lock tier")
+        addTextField(oraclePriceField, placeholder: "DGB/USD price", keyboardType: .decimalPad)
+        addTextField(systemHealthField, placeholder: "System health %", keyboardType: .numberPad)
+        let mintButton = actionButton(title: "Mint DigiDollars") { [weak self] in self?.validateMint() }
+        mintButton.accessibilityIdentifier = "digidollar-mint-button"
+        stackView.addArrangedSubview(mintButton)
 
         addCard(title: "Redeem",
                 rows: [
@@ -420,13 +444,64 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
             showStatus("Invalid amount", message: "Enter a DD amount.")
             return
         }
-
-        let ownerKey = Array(UInt8(0)..<UInt8(32))
-        guard DigiDollarProtocol.buildMintOpReturn(amount: cents, lockHeight: 840, lockTier: 0, ownerXOnlyPubKey: ownerKey) != nil else {
-            showStatus("Invalid mint", message: "Mint amount must match DigiDollar protocol limits.")
+        guard let priceText = oraclePriceField.text, let oraclePrice = DigiDollarAmountParser.microUSD(fromUSD: priceText), oraclePrice > 0 else {
+            showStatus("Invalid price", message: "Enter the current DGB/USD oracle price.")
             return
         }
-        showStatus("Mint metadata ready", message: "Mint OP_RETURN is valid. Collateral vault building and Taproot signing are the next wallet-core step.")
+        guard let healthText = systemHealthField.text, let systemHealth = DigiDollarAmountParser.systemHealth(from: healthText) else {
+            showStatus("Invalid health", message: "Enter the current system health percentage.")
+            return
+        }
+        guard let wallet = walletManager.wallet else {
+            showStatus("Wallet unavailable", message: "The wallet is still loading.")
+            return
+        }
+        guard let peerManager = walletManager.peerManager, peerManager.lastBlockHeight > 0 else {
+            showStatus("Sync required", message: "Connect to RC41 testnet before minting.")
+            return
+        }
+
+        let lockTier = UInt32(selectedLockTierIndex)
+        let currentHeight = peerManager.lastBlockHeight
+        let collateral = DigiDollarProtocol.requiredCollateral(amountCents: cents,
+                                                               lockTier: lockTier,
+                                                               oraclePriceMicroUSD: oraclePrice,
+                                                               systemHealth: systemHealth)
+        let lockHeight = DigiDollarProtocol.mintLockHeight(currentBlockHeight: currentHeight, lockTier: lockTier)
+        guard collateral > 0, lockHeight > 0 else {
+            showStatus("Invalid mint", message: "Amount, price, health, or lock tier is outside DigiDollar protocol limits.")
+            return
+        }
+
+        UserDefaults.standard.set(priceText, forKey: "DigiDollarOraclePriceUSD")
+        UserDefaults.standard.set(healthText, forKey: "DigiDollarSystemHealth")
+
+        guard let tx = wallet.createDigiDollarMint(amountCents: cents,
+                                                   lockTier: lockTier,
+                                                   currentBlockHeight: currentHeight,
+                                                   oraclePriceMicroUSD: oraclePrice,
+                                                   systemHealth: systemHealth) else {
+            showStatus("Mint unavailable", message: "Need \(formatDGB(satoshis: collateral)) DGB collateral plus fees in confirmed spendable DGB outputs.")
+            return
+        }
+
+        pendingMint = tx
+        let fee = wallet.feeForTx(tx) ?? 0
+        let message = [
+            formatDigiDollar(cents: cents),
+            "Tier \(selectedLockTierIndex): \(tierTitle(for: selectedLockTierIndex))",
+            "Unlock height \(lockHeight)",
+            "Collateral \(formatDGB(satoshis: collateral)) DGB",
+            "Fee \(formatDGB(satoshis: fee)) DGB"
+        ].joined(separator: "\n")
+        let alert = UIAlertController(title: "Mint DigiDollars", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: S.Button.cancel, style: .cancel) { [weak self] _ in
+            self?.releasePendingMint()
+        })
+        alert.addAction(UIAlertAction(title: "Mint", style: .default) { [weak self] _ in
+            self?.presentPinForPendingMint()
+        })
+        present(alert, animated: true, completion: nil)
     }
 
     private func validateRedeem() {
@@ -439,6 +514,105 @@ private final class DigiDollarMintRedeemViewController: DigiDollarBaseViewContro
             return
         }
         showStatus("Redeem metadata ready", message: "Redeem OP_RETURN is valid. Vault spend signing is the next wallet-core step.")
+    }
+
+    private func presentPinForPendingMint() {
+        guard pendingMint != nil else { return }
+
+        let verify = VerifyPinViewController(bodyText: S.VerifyPin.authorize,
+                                             pinLength: store.state.pinLength) { [weak self] pin, vc in
+            guard let self = self, let tx = self.pendingMint else { return false }
+            var success = false
+            let group = DispatchGroup()
+            group.enter()
+            DispatchQueue.walletQueue.async {
+                success = self.walletManager.signTransaction(tx, pin: pin)
+                group.leave()
+            }
+            guard group.wait(timeout: .now() + 30.0) != .timedOut, success else { return false }
+            vc.dismiss(animated: true) {
+                self.publishPendingMint()
+            }
+            return true
+        }
+
+        verify.modalPresentationStyle = .overFullScreen
+        verify.modalPresentationCapturesStatusBarAppearance = true
+        present(verify, animated: true, completion: nil)
+    }
+
+    private func publishPendingMint() {
+        guard let tx = pendingMint else { return }
+        pendingMint = nil
+        let txHash = tx.pointee.txHash.description
+        guard let peerManager = walletManager.peerManager else {
+            BRTransactionFree(tx)
+            showStatus("Network unavailable", message: "Peer manager is not ready.")
+            return
+        }
+
+        peerManager.publishTx(tx) { [weak self] success, error in
+            DispatchQueue.main.async {
+                if success {
+                    self?.showStatus("DigiDollars minted", message: txHash)
+                } else {
+                    self?.showStatus("Broadcast failed", message: error?.localizedDescription ?? "Peer broadcast failed.")
+                }
+            }
+        }
+    }
+
+    private func releasePendingMint() {
+        if let tx = pendingMint { BRTransactionFree(tx) }
+        pendingMint = nil
+    }
+
+    private func pickerAccessory() -> UIToolbar {
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        toolbar.items = [
+            UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+            UIBarButtonItem(title: "Done", style: .done, target: self, action: #selector(donePickingTier))
+        ]
+        return toolbar
+    }
+
+    @objc private func donePickingTier() {
+        view.endEditing(true)
+    }
+
+    private func tierTitle(for index: Int) -> String {
+        guard DigiDollarProtocol.lockTiers.indices.contains(index) else { return "Unavailable" }
+        let tier = DigiDollarProtocol.lockTiers[index]
+        let duration: String
+        if tier.blocks == 240 {
+            duration = "1 hour"
+        } else {
+            let days = tier.blocks / 5_760
+            duration = days >= 365 ? "\(days / 365)y" : "\(days)d"
+        }
+        return "\(duration) / \(tier.collateralRatioPercent)%"
+    }
+
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return DigiDollarProtocol.lockTiers.count
+    }
+
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return "Tier \(row): \(tierTitle(for: row))"
+    }
+
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        selectedLockTierIndex = row
+        lockTierField.text = tierTitle(for: row)
+    }
+
+    deinit {
+        releasePendingMint()
     }
 }
 
@@ -511,6 +685,35 @@ enum DigiDollarAmountParser {
             cents = added.partialValue
         }
         return cents
+    }
+
+    static func microUSD(fromUSD string: String) -> UInt64? {
+        let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "$", with: "")
+        guard !trimmed.isEmpty else { return nil }
+
+        let parts = trimmed.split(separator: ".", omittingEmptySubsequences: false)
+        guard parts.count <= 2, let whole = UInt64(String(parts[0])) else { return nil }
+
+        let multiplied = whole.multipliedReportingOverflow(by: 1_000_000)
+        guard !multiplied.overflow else { return nil }
+        var microUSD = multiplied.partialValue
+        if parts.count == 2 {
+            let fraction = String(parts[1])
+            guard fraction.count <= 6,
+                  let fractionValue = UInt64(fraction.padding(toLength: 6, withPad: "0", startingAt: 0)) else { return nil }
+            let added = microUSD.addingReportingOverflow(fractionValue)
+            guard !added.overflow else { return nil }
+            microUSD = added.partialValue
+        }
+        return microUSD
+    }
+
+    static func systemHealth(from string: String) -> Int32? {
+        let trimmed = string.trimmingCharacters(in: .whitespacesAndNewlines)
+            .replacingOccurrences(of: "%", with: "")
+        guard let value = Int32(trimmed), value >= 0 else { return nil }
+        return value
     }
 }
 

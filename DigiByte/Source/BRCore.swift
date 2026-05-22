@@ -597,6 +597,19 @@ class BRWallet {
     func createDigiDollarTransfer(amountCents: UInt64, toAddress: String) -> BRTxRef? {
         return BRWalletCreateDigiDollarTransfer(cPtr, amountCents, toAddress)
     }
+
+    func createDigiDollarMint(amountCents: UInt64,
+                              lockTier: UInt32,
+                              currentBlockHeight: UInt32,
+                              oraclePriceMicroUSD: UInt64,
+                              systemHealth: Int32) -> BRTxRef? {
+        return BRWalletCreateDigiDollarMint(cPtr,
+                                            amountCents,
+                                            lockTier,
+                                            currentBlockHeight,
+                                            oraclePriceMicroUSD,
+                                            systemHealth)
+    }
     
     // returns an unsigned transaction that satisifes the given transaction outputs
     func createTxForOutputs(_ outputs: [BRTxOutput]) -> BRTxRef {

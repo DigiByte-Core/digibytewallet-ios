@@ -33,7 +33,7 @@ enum DigiDollarNetwork: Equatable {
     var displayName: String {
         switch self {
         case .mainnet: return "Mainnet"
-        case .testnet: return "Testnet25"
+        case .testnet: return "RC41 Testnet25"
         case .regtest: return "Regtest"
         }
     }
@@ -213,5 +213,35 @@ enum DigiDollarProtocol {
                                blocks: BRDigiDollarLockTierBlocks(index),
                                collateralRatioPercent: BRDigiDollarCollateralRatioForLockTier(index))
         }
+    }
+
+    static func dcaMultiplierBps(systemHealth: Int32) -> UInt32 {
+        return BRDigiDollarDCAMultiplierBps(systemHealth)
+    }
+
+    static func effectiveCollateralRatio(baseRatio: UInt32, systemHealth: Int32) -> UInt32 {
+        return BRDigiDollarEffectiveCollateralRatio(baseRatio, systemHealth)
+    }
+
+    static func requiredCollateral(amountCents: UInt64,
+                                   lockTier: UInt32,
+                                   oraclePriceMicroUSD: UInt64,
+                                   systemHealth: Int32,
+                                   includeSafetyMargin: Bool = true) -> UInt64 {
+        if includeSafetyMargin {
+            return BRDigiDollarRequiredCollateralWithSafetyMargin(amountCents,
+                                                                 lockTier,
+                                                                 oraclePriceMicroUSD,
+                                                                 systemHealth)
+        } else {
+            return BRDigiDollarRequiredCollateral(amountCents,
+                                                 lockTier,
+                                                 oraclePriceMicroUSD,
+                                                 systemHealth)
+        }
+    }
+
+    static func mintLockHeight(currentBlockHeight: UInt32, lockTier: UInt32) -> UInt64 {
+        return BRDigiDollarMintLockHeight(currentBlockHeight, lockTier)
     }
 }

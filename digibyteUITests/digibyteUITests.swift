@@ -61,6 +61,15 @@ class breadwalletUITests: XCTestCase {
         XCTAssert(app.tabBars.buttons["Vault"].exists, app.debugDescription)
         XCTAssertFalse(app.tabBars.buttons["More"].exists, app.debugDescription)
 
+        let vaultTab = app.tabBars.buttons["Vault"].firstMatch
+        XCTAssert(vaultTab.waitForExistence(timeout: 3), app.debugDescription)
+        vaultTab.tap()
+        XCTAssert(app.textFields["digidollar-mint-amount"].waitForExistence(timeout: 5), app.debugDescription)
+        XCTAssert(app.textFields["digidollar-lock-tier"].exists, app.debugDescription)
+        XCTAssert(app.textFields["digidollar-oracle-price"].exists, app.debugDescription)
+        XCTAssert(app.textFields["digidollar-system-health"].exists, app.debugDescription)
+        XCTAssert(app.descendants(matching: .any)["digidollar-mint-button"].exists, app.debugDescription)
+
         let receiveTab = app.tabBars.buttons["Receive"].firstMatch
         XCTAssert(receiveTab.waitForExistence(timeout: 3), app.debugDescription)
         receiveTab.tap()
