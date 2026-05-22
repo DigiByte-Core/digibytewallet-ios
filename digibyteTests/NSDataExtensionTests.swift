@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import breadwallet
+@testable import DigiByte
 
 class NSDataExtensionTests: XCTestCase {
     override func setUp() {

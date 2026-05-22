@@ -10,6 +10,10 @@ import XCTest
 @testable import DigiByte
 
 class PaymentRequestTests : XCTestCase {
+    private let legacyAddress = "D597kHXGdkwkryF9oGhz9Bp1ypTpD1u99Z"
+    private let segwitAddress = "dgb1qqqqsyqcyq5rqwzqfpg9scrgwpugpzysnzhtfd6"
+    private let taprootAddress = "dgb1pqqqsyqcyq5rqwzqfpg9scrgwpugpzysnzs23v9ccrydpk8qarc0s470eva"
+    private let invalidTaprootChecksum = "dgb1pqqqsyqcyq5rqwzqfpg9scrgwpugpzysnzs23v9ccrydpk8qarc0s470evq"
 
     func testEmptyString() {
         XCTAssertNil(PaymentRequest(string: ""))
@@ -20,39 +24,61 @@ class PaymentRequestTests : XCTestCase {
     }
 
     func testBasicExample() {
-        let uri = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu"
+        let uri = "digibyte:\(legacyAddress)"
         let request = PaymentRequest(string: uri)
         XCTAssertNotNil(request)
-        XCTAssertTrue(request?.toAddress == "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu")
+        XCTAssertTrue(request?.toAddress == legacyAddress)
     }
 
     func testAmountInUri() {
-        let uri = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2"
+        let uri = "digibyte:\(legacyAddress)?amount=1.2"
         let request = PaymentRequest(string: uri)
         XCTAssertNotNil(request)
-        XCTAssertTrue(request?.toAddress == "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu")
+        XCTAssertTrue(request?.toAddress == legacyAddress)
         XCTAssertTrue(request?.amount?.rawValue == 120000000)
     }
 
     func testRequestMetaData() {
-        let uri = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2&message=Payment&label=Satoshi"
+        let uri = "digibyte:\(legacyAddress)?amount=1.2&message=Payment&label=Satoshi"
         let request = PaymentRequest(string: uri)
-        XCTAssertTrue(request?.toAddress == "12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu")
+        XCTAssertTrue(request?.toAddress == legacyAddress)
         XCTAssertTrue(request?.amount?.rawValue == 120000000)
         XCTAssertTrue(request?.message == "Payment")
         XCTAssertTrue(request?.label == "Satoshi")
     }
 
     func testExtraEqualSign() {
-        let uri = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2&message=Payment=true&label=Satoshi"
+        let uri = "digibyte:\(legacyAddress)?amount=1.2&message=Payment=true&label=Satoshi"
         let request = PaymentRequest(string: uri)
         XCTAssertTrue(request?.message == "Payment=true")
     }
 
     func testMessageWithSpace() {
-        let uri = "bitcoin:12A1MyfXbW6RhdRAZEqofac5jCQQjwEPBu?amount=1.2&message=Payment message test&label=Satoshi"
+        let uri = "digibyte:\(legacyAddress)?amount=1.2&message=Payment message test&label=Satoshi"
         let request = PaymentRequest(string: uri)
         XCTAssertTrue(request?.message == "Payment message test")
+    }
+
+    func testTaprootAddressIsValid() {
+        XCTAssertTrue(taprootAddress.isValidAddress)
+    }
+
+    func testTaprootPaymentRequest() {
+        let request = PaymentRequest(string: "digibyte:\(taprootAddress)?amount=2.5")
+        XCTAssertNotNil(request)
+        XCTAssertEqual(request?.toAddress, taprootAddress)
+        XCTAssertEqual(request?.amount?.rawValue, 250000000)
+    }
+
+    func testTaprootInvalidChecksumRejected() {
+        XCTAssertFalse(invalidTaprootChecksum.isValidAddress)
+        XCTAssertNil(PaymentRequest(string: invalidTaprootChecksum))
+        XCTAssertNil(PaymentRequest(string: "digibyte:\(invalidTaprootChecksum)"))
+    }
+
+    func testLegacyAndSegwitStillValid() {
+        XCTAssertTrue(legacyAddress.isValidAddress)
+        XCTAssertTrue(segwitAddress.isValidAddress)
     }
 
     func testPaymentProtocol() {

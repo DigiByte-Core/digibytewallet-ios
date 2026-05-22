@@ -23,6 +23,7 @@ struct PaymentRequest {
                 let url = NSURL(string: "\(scheme)://\(resourceSpecifier)") {
 
                 if url.scheme == "digibyte", let host = url.host {
+                    guard host.isValidAddress else { return nil }
                     toAddress = host
                     guard let components = url.query?.components(separatedBy: "&") else { type = .local; return }
                     for component in components {

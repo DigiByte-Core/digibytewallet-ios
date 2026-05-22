@@ -7,11 +7,11 @@
 //
 
 import XCTest
-@testable import breadwallet
+@testable import DigiByte
 
 class SpendingLimitTests : XCTestCase {
 
-    private let walletManager: WalletManager = try! WalletManager(store: Store(), dbPath: nil)
+    private let walletManager: WalletManager = try! WalletManager(store: BRStore(), dbPath: nil)
 
     override func setUp() {
         super.setUp()

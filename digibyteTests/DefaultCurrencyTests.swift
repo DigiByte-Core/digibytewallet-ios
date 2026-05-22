@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import breadwallet
+@testable import DigiByte
 
 class DefaultCurrencyTests : XCTestCase {
 
@@ -30,7 +30,7 @@ class DefaultCurrencyTests : XCTestCase {
 
     func testAction() {
         UserDefaults.defaultCurrencyCode = "USD"
-        let store = Store()
+        let store = BRStore()
         store.perform(action: DefaultCurrency.setDefault("CAD"))
         XCTAssertTrue(UserDefaults.defaultCurrencyCode == "CAD", "Actions should persist new value")
     }

@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import breadwallet
+@testable import DigiByte
 
 class TouchIdEnabledTests : XCTestCase {
 
@@ -35,8 +35,8 @@ class TouchIdEnabledTests : XCTestCase {
 
     func testTouchIdAction() {
         UserDefaults.isBiometricsEnabled = true
-        let store = Store()
-        store.perform(action: TouchId.setIsEnabled(false))
+        let store = BRStore()
+        store.perform(action: Biometrics.setIsEnabled(false))
         XCTAssertFalse(UserDefaults.isBiometricsEnabled, "Actions should persist new value")
     }
 

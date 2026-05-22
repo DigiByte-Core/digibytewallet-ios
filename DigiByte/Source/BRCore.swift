@@ -244,7 +244,14 @@ extension BRKey {
 
 extension BRTxInput {
     var swiftAddress: String {
-        get { return String(cString: UnsafeRawPointer([self.address]).assumingMemoryBound(to: CChar.self)) }
+        get {
+            var input = self
+            return withUnsafeBytes(of: &input.address) { rawBuffer in
+                let bytes = rawBuffer.map { $0 }
+                let terminator = bytes.firstIndex(of: 0) ?? bytes.count
+                return String(decoding: bytes[..<terminator], as: UTF8.self)
+            }
+        }
         set { BRTxInputSetAddress(&self, newValue) }
     }
     
@@ -261,9 +268,14 @@ extension BRTxInput {
 
 extension BRTxOutput {
     var swiftAddress: String {
-        get { let addressBytes = UnsafeMutablePointer<CChar>.allocate(capacity: 44)
-              addressBytes.initialize(from: UnsafeRawPointer([self.address]).assumingMemoryBound(to: CChar.self), count: 44)
-              return String(cString: addressBytes) }
+        get {
+            var output = self
+            return withUnsafeBytes(of: &output.address) { rawBuffer in
+                let bytes = rawBuffer.map { $0 }
+                let terminator = bytes.firstIndex(of: 0) ?? bytes.count
+                return String(decoding: bytes[..<terminator], as: UTF8.self)
+            }
+        }
         set { BRTxOutputSetAddress(&self, newValue) }
     }
     

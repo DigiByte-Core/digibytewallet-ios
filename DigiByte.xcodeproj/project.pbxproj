@@ -5760,6 +5760,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.digibyte.digibytewalletTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SDK_DIR)/usr/include $(SRCROOT)/Modules/** $(SRCROOT)/DigiByte/Source/Platform";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiByte.app/DigiByte";
 			};
@@ -5780,6 +5781,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.digibyte.digibytewalletTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SDK_DIR)/usr/include $(SRCROOT)/Modules/** $(SRCROOT)/DigiByte/Source/Platform";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiByte.app/DigiByte";
 			};
@@ -6420,6 +6422,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.digibyte.digibytewalletTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SDK_DIR)/usr/include $(SRCROOT)/Modules/** $(SRCROOT)/DigiByte/Source/Platform";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiByte.app/DigiByte";
 			};
@@ -6719,6 +6722,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.digibyte.digibytewalletTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SDK_DIR)/usr/include $(SRCROOT)/Modules/** $(SRCROOT)/DigiByte/Source/Platform";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiByte.app/DigiByte";
 			};
@@ -7007,6 +7011,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = io.digibyte.digibytewalletTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_INCLUDE_PATHS = "$(SDK_DIR)/usr/include $(SRCROOT)/Modules/** $(SRCROOT)/DigiByte/Source/Platform";
 				SWIFT_VERSION = 5.0;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/DigiByte.app/DigiByte";
 			};
