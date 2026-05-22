@@ -15,7 +15,7 @@ class DAMainViewController: UITabBarController {
     private let header = ModalHeaderView(title: S.MenuButton.digiAssets, style: ModalHeaderViewStyle.light)
     private let store: BRStore
     private let walletManager: WalletManager
-    private var tabs: [UIViewController]
+    private var assetTabs: [UIViewController]
     
     private let assetOverview: DAAssetsViewController
     private let assetSend: DASendViewController
@@ -33,7 +33,7 @@ class DAMainViewController: UITabBarController {
         assetCreate = DACreateViewController(store: store, walletManager: walletManager)
         assetReceive = DAReceiveViewController(store: store, walletManager: walletManager)
         
-        self.tabs = [
+        self.assetTabs = [
             assetOverview,
             assetCreate,
             assetSend,
@@ -46,7 +46,7 @@ class DAMainViewController: UITabBarController {
         addConstraints()
         setStyle()
         
-        viewControllers = tabs
+        viewControllers = assetTabs
         tabBar.tintColor = UIColor(red: 38 / 255, green: 152 / 255, blue: 237 / 255, alpha: 1.0) //  38 152 237
         tabBar.barTintColor = UIColor(red: 35 / 255, green: 35 / 255, blue: 60 / 255, alpha: 1.0) //  35 35 60
         tabBar.isTranslucent = false
@@ -69,7 +69,7 @@ class DAMainViewController: UITabBarController {
     func actionHandler(_ action: AssetMenuAction? = nil) {
         switch (action) {
         case .showTx(let assetId, let tx):
-            guard let idx = self.tabs.firstIndex(of: assetOverview) else { return }
+            guard let idx = self.assetTabs.firstIndex(of: assetOverview) else { return }
             self.selectedIndex = idx
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
@@ -78,13 +78,13 @@ class DAMainViewController: UITabBarController {
             break
             
         case .send(let assetId):
-            guard let idx = self.tabs.firstIndex(of: assetSend) else { return }
+            guard let idx = self.assetTabs.firstIndex(of: assetSend) else { return }
             self.selectedIndex = idx
             assetSend.selectedModel = AssetHelper.getAssetModel(assetID: assetId)
             break
             
         case .burn(let assetId):
-            guard let idx = self.tabs.firstIndex(of: assetBurn) else { return }
+            guard let idx = self.assetTabs.firstIndex(of: assetBurn) else { return }
             assetBurn.selectedModel = AssetHelper.getAssetModel(assetID: assetId)
             self.selectedIndex = idx
             break

@@ -22,6 +22,11 @@ class GenericPinPadCell : UICollectionViewCell {
                 topLabel.text = text
                 centerLabel.text = text
             }
+            if let text = text, !text.isEmpty {
+                accessibilityIdentifier = text == deleteKeyIdentifier ? "pin-delete" : "pin-\(text)"
+            } else {
+                accessibilityIdentifier = nil
+            }
             setAppearance()
             setSublabel()
         }
@@ -81,13 +86,16 @@ class GenericPinPadCell : UICollectionViewCell {
 
     override var isAccessibilityElement: Bool {
         get {
-            return true
+            return text?.isEmpty == false
         }
         set { }
     }
 
     override var accessibilityLabel: String? {
         get {
+            if text == deleteKeyIdentifier {
+                return "Delete"
+            }
             return topLabel.text
         }
         set { }
@@ -95,7 +103,7 @@ class GenericPinPadCell : UICollectionViewCell {
 
     override var accessibilityTraits: UIAccessibilityTraits {
         get {
-            return UIAccessibilityTraits.staticText
+            return UIAccessibilityTraits.button
         }
         set { }
     }

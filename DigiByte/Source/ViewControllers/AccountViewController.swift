@@ -643,28 +643,8 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
                 return hasUtxo && isSpendable
             }
             
-            if !walletManager.noWallet {
-                loginView.walletManager = walletManager
-                loginView.transitioningDelegate = loginTransitionDelegate
-                loginView.modalPresentationStyle = .overFullScreen
-                loginView.modalPresentationCapturesStatusBarAppearance = true
-                loginView.shouldSelfDismiss = true
-                
-                self.present(self.loginView, animated: false, completion: {
-                    self.tempView.removeFromSuperview()
-                    self.tempLoginView.remove()
-                    //self.attemptShowWelcomeView()
-                })
-
-//                let pin = UpdatePinViewController(store: store, walletManager: walletManager, type: .update, showsBackButton: false, phrase: "Enter your PIN")
-//                pin.view.backgroundColor = UIColor.txListGreen // DDDDD
-//                pin.transitioningDelegate = loginTransitionDelegate
-//                pin.modalPresentationStyle = .overFullScreen
-//                pin.modalPresentationCapturesStatusBarAppearance = true
-//                self.present(pin, animated: false, completion: {
-//                    self.tempView.removeFromSuperview()
-//                    self.tempLoginView.remove()
-//                })
+            DispatchQueue.main.async {
+                self.presentStartupLoginIfNeeded()
             }
             transactionsTableView.walletManager = walletManager
             transactionsTableViewForSentTransactions.walletManager = walletManager
@@ -714,7 +694,6 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         self.syncViewController = SyncViewController(store: store)
         
         self.loginView = LoginViewController(store: store, isPresentedForLock: false)
-        self.tempLoginView = LoginViewController(store: store, isPresentedForLock: false)
         self.balanceView = BalanceView(store: store)
         
         self.didSelectTransaction = didSelectTransaction
@@ -813,7 +792,6 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .light))
     private var isLoginRequired = false
     private let loginView: LoginViewController
-    private let tempLoginView: LoginViewController
     private let loginTransitionDelegate = LoginTransitionDelegate()
     private let welcomeTransitingDelegate = PinTransitioningDelegate()
     
@@ -1229,6 +1207,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         if let walletState = walletManager?.store.state.walletState {
             balanceView.updateSyncIcon(syncState: walletState.syncState, isConnected: walletState.isConnected)
         }
+        presentStartupLoginIfNeeded()
     }
     
     private func addSubviews() {
@@ -1473,9 +1452,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         
         guardProtected(queue: DispatchQueue.main) {
             if !WalletManager.staticNoWallet {
-                self.addChildViewController(self.tempLoginView, layout: {
-                    self.tempLoginView.view.constrain(toSuperviewEdges: nil)
-                })
+                return
             } else {
                 self.tempView.removeFromSuperview()
                 
@@ -1492,6 +1469,24 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
                     startView.remove()
                 })
             }
+        }
+    }
+
+    private func presentStartupLoginIfNeeded() {
+        guard let walletManager = walletManager else { return }
+        guard !walletManager.noWallet else { return }
+        guard isViewLoaded, view.window != nil else { return }
+        guard presentedViewController == nil else { return }
+        guard !loginView.authenticated else { return }
+
+        loginView.walletManager = walletManager
+        loginView.transitioningDelegate = loginTransitionDelegate
+        loginView.modalPresentationStyle = .overFullScreen
+        loginView.modalPresentationCapturesStatusBarAppearance = true
+        loginView.shouldSelfDismiss = true
+
+        present(loginView, animated: false) {
+            self.tempView.removeFromSuperview()
         }
     }
 
@@ -1627,4 +1622,3 @@ extension UIPageViewController {
 //        return false
 //    }
 //}
-

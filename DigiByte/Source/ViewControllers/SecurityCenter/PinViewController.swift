@@ -279,13 +279,7 @@ class LoginViewController: PINViewController, Trackable {
     
     var walletManager: WalletManager? {
         didSet {
-            guard walletManager != nil else {
-                hidePinView = true
-                hideActivityView = false
-                return
-            }
-            hidePinView = false
-            hideActivityView = true
+            updateWalletManagerLoadingState()
         }
     }
     var shouldSelfDismiss = false
@@ -408,6 +402,20 @@ class LoginViewController: PINViewController, Trackable {
         store.subscribe(self, name: .loginFromSend, callback: {_ in
             self.authenticationSucceded()
         })
+        updateWalletManagerLoadingState()
+    }
+
+    private func updateWalletManagerLoadingState() {
+        let hasWalletManager = walletManager != nil
+        hidePinView = !hasWalletManager
+        hideActivityView = hasWalletManager
+        pinPad.view.isHidden = !hasWalletManager
+        pinPad.view.isUserInteractionEnabled = hasWalletManager
+        if hasWalletManager {
+            activityView.stopAnimating()
+        } else {
+            activityView.startAnimating()
+        }
     }
     
     private func addDigiIDButton() {
@@ -457,22 +465,16 @@ class LoginViewController: PINViewController, Trackable {
     }
 
     private func addSubviews() {
-        if walletManager == nil {
-            view.addSubview(activityView)
-        }
-        
+        view.addSubview(activityView)
         view.addSubview(securityCheckLabel)
         view.addSubview(digiIdButton)
     }
     
     private func addConstraints() {
-        if walletManager == nil {
-            activityView.constrain([
-                activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-                activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20.0)
-            ])
-            activityView.startAnimating()
-        }
+        activityView.constrain([
+            activityView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            activityView.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -20.0)
+        ])
         
         securityCheckLabel.constrain([
             securityCheckLabel.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 16),
@@ -524,7 +526,11 @@ class LoginViewController: PINViewController, Trackable {
     }
     
     private func authenticate(pin: String) {
-        guard let walletManager = walletManager else { return }
+        guard let walletManager = walletManager else {
+            pinPad.clear()
+            pinView.fill(0)
+            return
+        }
         guard !E.isScreenshots else { return authenticationSucceded() }
         guard walletManager.authenticate(pin: pin) else { return authenticationFailed() }
         authenticationSucceded()

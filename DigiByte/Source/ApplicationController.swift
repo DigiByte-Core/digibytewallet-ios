@@ -40,10 +40,11 @@ class ApplicationController : Subscriber, Trackable {
 
     init() {
         transitionDelegate = ModalTransitionDelegate(type: .transactionDetail, store: store)
-        DispatchQueue.walletQueue.async {
-            guardProtected(queue: DispatchQueue.walletQueue) {
-                self.initWallet()
-            }
+    }
+
+    private func startWalletInitialization() {
+        guardProtected(queue: DispatchQueue.walletQueue) {
+            self.initWallet()
         }
     }
     
@@ -74,14 +75,21 @@ class ApplicationController : Subscriber, Trackable {
             
             self?.blockReq = nil
             
-            self?.defaultInitWallet()
+            if self?.didInitWallet == false {
+                self?.defaultInitWallet()
+            }
         })
         
         blockReq!.start()
     }
     
     private func initWallet() {
-        self.walletManager = try? WalletManager(store: self.store, dbPath: nil)
+        do {
+            self.walletManager = try WalletManager(store: self.store, dbPath: nil)
+        } catch {
+            print("Error creating WalletManager: \(error)")
+            return
+        }
         
 //        walletManager!.wipeWallet(pin: "forceWipe")
 //        exit(0)
@@ -100,10 +108,10 @@ class ApplicationController : Subscriber, Trackable {
         
         if firstInit, UserDefaults.fastSyncEnabled {
             firstBlockSyncInit(wallet!)
-        } else {
-            // Just start or resume the sync
-            defaultInitWallet()
         }
+        // Do not block app launch on the legacy fast-sync API. SPV can start
+        // from local checkpoints while the optional bootstrap request runs.
+        defaultInitWallet()
     }
 
     func launch(application: UIApplication, options: [UIApplication.LaunchOptionsKey: Any]?) {
@@ -111,6 +119,7 @@ class ApplicationController : Subscriber, Trackable {
         application.setMinimumBackgroundFetchInterval(UIApplication.backgroundFetchIntervalMinimum)
         setup()
         handleLaunchOptions(options)
+        startWalletInitialization()
         reachability.didChange = { isReachable in
             if !isReachable {
                 self.reachability.didChange = { isReachable in
