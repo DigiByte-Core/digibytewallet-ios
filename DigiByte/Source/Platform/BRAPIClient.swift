@@ -114,6 +114,12 @@ open class BRAPIClient : NSObject, URLSessionDelegate, URLSessionTaskDelegate, B
         }
         print("[BRAPIClient] \(s)")
     }
+
+    static func isValidAuthPrivateKey(_ keyString: String) -> Bool {
+        var key = BRKey()
+        key.compressed = 1
+        return BRKeySetPrivKey(&key, keyString) != 0
+    }
     
     var deviceId: String {
         return UserDefaults.standard.deviceID
@@ -124,10 +130,9 @@ open class BRAPIClient : NSObject, URLSessionDelegate, URLSessionTaskDelegate, B
         guard let keyStr = authenticator.apiAuthKey else { return nil }
         var key = BRKey()
         key.compressed = 1 
-        if BRKeySetPrivKey(&key, keyStr) == 0 {
-            #if DEBUG
-                fatalError("Unable to decode private key")
-            #endif
+        if !BRAPIClient.isValidAuthPrivateKey(keyStr) || BRKeySetPrivKey(&key, keyStr) == 0 {
+            log("Unable to decode API auth private key")
+            return nil
         }
         return key
     }

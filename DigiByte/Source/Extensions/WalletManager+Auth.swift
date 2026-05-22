@@ -593,7 +593,11 @@ extension WalletManager : WalletAuthenticator {
         return autoreleasepool {
             do {
                 if let apiKey: String = ((try? keychainItem(key: KeychainKey.apiAuthKey)) as String?), !apiKey.isEmpty {
-                    return apiKey
+                    if BRAPIClient.isValidAuthPrivateKey(apiKey) {
+                        return apiKey
+                    }
+                    try? setKeychainItem(key: KeychainKey.apiAuthKey, item: nil as String?)
+                    print("discarding invalid cached API auth key")
                 }
                 var key = BRKey()
                 var seed = UInt512()
@@ -775,4 +779,3 @@ func setKeychainItem<T>(key: String, item: T?, authenticated: Bool = false) thro
         throw NSError(domain: NSOSStatusErrorDomain, code: Int(status))
     }
 }
-

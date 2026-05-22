@@ -48,6 +48,12 @@ class FakeAuthenticator: WalletAuthenticator {
     }
 }
 
+class InvalidAPIKeyAuthenticator: WalletAuthenticator {
+    let noWallet = false
+    let apiAuthKey: String? = "not-a-valid-private-key"
+    var userAccount: [AnyHashable: Any]? = nil
+}
+
 // This test will test against the live API at api.breadwallet.com
 class BRAPIClientTests: XCTestCase {
     var authenticator: WalletAuthenticator!
@@ -76,6 +82,12 @@ class BRAPIClientTests: XCTestCase {
             return k
         }
         XCTAssertEqual(pubKey1, key.publicKey.base58) // the key decoded from our encoded key is the same
+    }
+
+    func testInvalidAPIAuthKeyDoesNotCrash() {
+        client = BRAPIClient(authenticator: InvalidAPIKeyAuthenticator())
+        XCTAssertNil(client.authKey)
+        XCTAssertFalse(BRAPIClient.isValidAuthPrivateKey("not-a-valid-private-key"))
     }
     
     func testHandshake() {
