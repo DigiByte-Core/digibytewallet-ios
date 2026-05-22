@@ -817,6 +817,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         }
     }
     private var didEndLoading = false
+    private var startupOverlayRetryCount = 0
 
     private func showActivity(_ view: UIView) {
         let act = UIActivityIndicatorView()
@@ -1035,6 +1036,8 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         view.addSubview(fadeView)
         view.addSubview(navigationDrawer)
         view.addSubview(assetDrawer)
+        setNavigationDrawerInteractionEnabled(false)
+        setAssetDrawerInteractionEnabled(false)
         
         navigationMenuLeftConstraint = navigationDrawer.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 0)
         menuWidthConstraint = navigationDrawer.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.9)
@@ -1101,7 +1104,8 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     
     func openNavigationDrawer() {
         if assetDrawerOpen { self.closeAssetDrawer() }
-        
+
+        setNavigationDrawerInteractionEnabled(true)
         navigationMenuLeftConstraint?.constant = -15
         fadeView.isHidden = false
         
@@ -1118,7 +1122,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
     func closeNavigationDrawer() {
 //        guard navigationDrawerOpen else { return }
         navigationMenuLeftConstraint?.constant = -navigationDrawer.frame.width
-        
+
         UIView.spring(0.3, animations: {
             self.view.layoutIfNeeded()
             self.fadeView.alpha = 0.0
@@ -1127,12 +1131,14 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
             self.edgeGesture.isEnabled = true
             self.fadeView.isHidden = true
             self.navigationDrawerOpen = false
+            self.setNavigationDrawerInteractionEnabled(false)
         }
     }
-    
+
     func openAssetDrawer() {
         if navigationDrawerOpen { self.closeNavigationDrawer() }
-        
+
+        setAssetDrawerInteractionEnabled(true)
         assetDrawerRightConstraint?.constant = assetDrawerMarginRight
         fadeView.isHidden = false
         
@@ -1156,7 +1162,18 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
             self.edgeGesture.isEnabled = true
             self.fadeView.isHidden = true
             self.assetDrawerOpen = false
+            self.setAssetDrawerInteractionEnabled(false)
         }
+    }
+
+    private func setNavigationDrawerInteractionEnabled(_ isEnabled: Bool) {
+        navigationDrawer.isUserInteractionEnabled = isEnabled
+        navigationDrawer.accessibilityElementsHidden = !isEnabled
+    }
+
+    private func setAssetDrawerInteractionEnabled(_ isEnabled: Bool) {
+        assetDrawer.isUserInteractionEnabled = isEnabled
+        assetDrawer.accessibilityElementsHidden = !isEnabled
     }
     
     private func addBalanceView() {
@@ -1453,9 +1470,20 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         view.addSubview(tempView)
         tempView.constrain(toSuperviewEdges: nil)
         showActivity(tempView)
-        
+
+        resolveTemporaryStartupView()
+    }
+
+    private func resolveTemporaryStartupView() {
+        guard tempView.superview != nil else { return }
+
         guardProtected(queue: DispatchQueue.main) {
             if !WalletManager.staticNoWallet {
+                if self.walletManager == nil {
+                    self.retryTemporaryStartupViewIfNeeded()
+                } else {
+                    self.presentStartupLoginIfNeeded()
+                }
                 return
             } else {
                 self.tempView.removeFromSuperview()
@@ -1476,12 +1504,41 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         }
     }
 
+    private func retryTemporaryStartupViewIfNeeded() {
+        guard tempView.superview != nil else { return }
+        guard walletManager == nil else {
+            presentStartupLoginIfNeeded()
+            return
+        }
+        guard startupOverlayRetryCount < 40 else {
+            tempView.removeFromSuperview()
+            return
+        }
+
+        startupOverlayRetryCount += 1
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.resolveTemporaryStartupView()
+        }
+    }
+
     private func presentStartupLoginIfNeeded() {
-        guard let walletManager = walletManager else { return }
-        guard !walletManager.noWallet else { return }
+        guard let walletManager = walletManager else {
+            retryTemporaryStartupViewIfNeeded()
+            return
+        }
+        guard !walletManager.noWallet else {
+            tempView.removeFromSuperview()
+            return
+        }
         guard isViewLoaded, view.window != nil else { return }
-        guard presentedViewController == nil else { return }
-        guard !loginView.authenticated else { return }
+        guard presentedViewController == nil else {
+            tempView.removeFromSuperview()
+            return
+        }
+        guard !loginView.authenticated else {
+            tempView.removeFromSuperview()
+            return
+        }
 
         loginView.walletManager = walletManager
         loginView.transitioningDelegate = loginTransitionDelegate
@@ -1492,6 +1549,7 @@ class AccountViewController: UIViewController, Subscriber, UIPageViewControllerD
         present(loginView, animated: false) {
             self.tempView.removeFromSuperview()
         }
+        tempView.removeFromSuperview()
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

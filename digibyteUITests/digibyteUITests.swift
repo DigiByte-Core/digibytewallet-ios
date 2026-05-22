@@ -51,6 +51,7 @@ class breadwalletUITests: XCTestCase {
 
         let digiDollarButton = app.descendants(matching: .any)["navigation-menu-digidollar"].firstMatch
         XCTAssert(digiDollarButton.waitForExistence(timeout: 10), app.debugDescription)
+        XCTAssert(waitUntilHittable(digiDollarButton, timeout: 10), app.debugDescription)
         digiDollarButton.tap()
 
         XCTAssert(waitForAnyText(["DigiDollar", "DigiDollar Balances", "Protocol"], timeout: 10), app.debugDescription)
@@ -165,6 +166,15 @@ class breadwalletUITests: XCTestCase {
             RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.2))
         }
         return false
+    }
+
+    private func waitUntilHittable(_ element: XCUIElement, timeout: TimeInterval) -> Bool {
+        let deadline = Date(timeIntervalSinceNow: timeout)
+        while Date() < deadline {
+            if element.exists && element.isHittable { return true }
+            RunLoop.current.run(until: Date(timeIntervalSinceNow: 0.2))
+        }
+        return element.exists && element.isHittable
     }
 
     private func isRecoveryKeyScreenVisible(timeout: TimeInterval) -> Bool {

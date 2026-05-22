@@ -31,6 +31,11 @@ func guardProtected(queue: DispatchQueue, callback: @escaping () -> Void) {
         }
     }
 
+    let runWhenAppCanAccessWallet = {
+        guard UIApplication.shared.isProtectedDataAvailable || UIApplication.shared.applicationState != .background else { return }
+        runCallback()
+    }
+
     if UIApplication.shared.isProtectedDataAvailable || UIApplication.shared.applicationState != .background {
         runCallback()
     } else {
@@ -38,13 +43,13 @@ func guardProtected(queue: DispatchQueue, callback: @escaping () -> Void) {
             forName: UIApplication.protectedDataDidBecomeAvailableNotification,
             object: nil,
             queue: nil,
-            using: { _ in runCallback() }
+            using: { _ in runWhenAppCanAccessWallet() }
         )
         didBecomeActiveObserver = NotificationCenter.default.addObserver(
             forName: UIApplication.didBecomeActiveNotification,
             object: nil,
             queue: nil,
-            using: { _ in runCallback() }
+            using: { _ in runWhenAppCanAccessWallet() }
         )
     }
 }

@@ -37,6 +37,7 @@ class ApplicationController : Subscriber, Trackable {
     private var launchURL: URL?
     private var hasPerformedWalletDependentInitialization = false
     private var didInitWallet = false
+    private var walletInitializationRetryCount = 0
 
     init() {
         transitionDelegate = ModalTransitionDelegate(type: .transactionDetail, store: store)
@@ -86,8 +87,16 @@ class ApplicationController : Subscriber, Trackable {
     private func initWallet() {
         do {
             self.walletManager = try WalletManager(store: self.store, dbPath: nil)
+            self.walletInitializationRetryCount = 0
         } catch {
             print("Error creating WalletManager: \(error)")
+            let nsError = error as NSError
+            if nsError.domain == NSOSStatusErrorDomain && nsError.code == Int(errSecNotAvailable) && walletInitializationRetryCount < 20 {
+                walletInitializationRetryCount += 1
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+                    self.startWalletInitialization()
+                }
+            }
             return
         }
         
