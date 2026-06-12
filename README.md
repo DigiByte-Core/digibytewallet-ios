@@ -1,4 +1,4 @@
-[![DigiByte](/images/top-logo.jpg)](https://apps.apple.com/app/digibyte/id1378061425)
+[![DigiByte](/images/top-logo.jpg)](https://apps.apple.com/app/digibyte/id1378061425) [![Join the chat at https://gitter.im/DigiByte-Core/iOS-wallet](https://badges.gitter.im/DigiByte-Core/iOS-wallet.svg)](https://gitter.im/DigiByte-Core/iOS-wallet?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ## Fast, simple and safe!
 
